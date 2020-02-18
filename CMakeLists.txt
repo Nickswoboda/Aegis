@@ -5,6 +5,7 @@ project ("Aegis")
 add_executable (Aegis 
 	"src/main.cpp"
 	"src/Application.cpp"
+	"src/Window.cpp"
 	"dependencies/GLAD/src/glad.c")
 
 include_directories(

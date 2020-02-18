@@ -1,7 +1,6 @@
 #pragma once
 
-#define GLFW_INCLUDE_NONE
-#include <GLFW/glfw3.h>
+#include "Window.h"
 
 namespace Aegis {
 
@@ -12,7 +11,10 @@ namespace Aegis {
 		~Application();
 
 		void Run();
+		bool OnWindowClose();
+	private:
+		Window* window_ = nullptr;
 
-		GLFWwindow* window_ = nullptr;
+		bool running_ = true;
 	};
 }

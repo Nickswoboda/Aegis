@@ -1,6 +1,8 @@
 #include "Application.h"
 
 #include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
 #include <iostream>
 
 namespace Aegis {
@@ -11,17 +13,15 @@ namespace Aegis {
 			return;
 		}
 
-		window_ = glfwCreateWindow(width, height, "Aegis", NULL, NULL);
-		if (window_ == nullptr) {
-			std::cout << "Unable to create window";
-			glfwTerminate();
-		}
+		window_ = new Window("Aegis", width, height);
 
-		glfwMakeContextCurrent(window_);
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
 			std::cout << "Unable to initialize GLAD";
 		}
+
+
+		window_->callback_ = std::bind(&Application::OnWindowClose, this);
 	}
 
 	Application::~Application()
@@ -31,12 +31,16 @@ namespace Aegis {
 
 	void Application::Run()
 	{
-		while (!glfwWindowShouldClose(window_)) {
+		while (running_) {
 			glClearColor(0.5, 0.0, 0.0, 1.0);
 			glClear(GL_COLOR_BUFFER_BIT);
 
-			glfwSwapBuffers(window_);
-			glfwPollEvents();
+			window_->OnUpdate();
 		}
+	}
+	bool Application::OnWindowClose()
+	{
+		running_ = false;
+		return true;
 	}
 }
