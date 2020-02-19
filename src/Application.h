@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Window.h"
+#include "Event.h"
 
 namespace Aegis {
 
@@ -11,7 +12,8 @@ namespace Aegis {
 		~Application();
 
 		void Run();
-		bool OnWindowClose();
+		void OnEvent(Event& event);
+		void OnWindowClose();
 	private:
 		Window* window_ = nullptr;
 

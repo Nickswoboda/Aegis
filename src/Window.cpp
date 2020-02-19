@@ -12,7 +12,7 @@ namespace Aegis {
 		}
 
 		glfwMakeContextCurrent(window_);
-		glfwSetWindowUserPointer(window_, &callback_);
+		glfwSetWindowUserPointer(window_, (void*)this);
 		SetEventCallbacks();
 	}
 
@@ -23,23 +23,33 @@ namespace Aegis {
 	void Window::SetEventCallbacks()
 	{
 		glfwSetWindowSizeCallback(window_, [](GLFWwindow* window, int width, int height) {
-			std::cout << "Resize: " << width << ", " << height << "\n";
+			Window& window_handle = *(Window*)glfwGetWindowUserPointer(window);
+			window_handle.callback_(WindowResizeEvent(width, height));
 		});
+
 		glfwSetWindowCloseCallback(window_, [](GLFWwindow* window) {
 			Window& window_handle = *(Window*)glfwGetWindowUserPointer(window);
-			window_handle.callback_();
+			window_handle.callback_(WindowCloseEvent());
 		});
+
 		glfwSetKeyCallback(window_, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
-			std::cout << "Key: " << key << ", " << scancode << ", " << action << ", " << mods << "\n";
+			Window& window_handle = *(Window*)glfwGetWindowUserPointer(window);
+			window_handle.callback_(KeyEvent(key, scancode, action, mods));
 		});
+
 		glfwSetCursorPosCallback(window_, [](GLFWwindow* window, double x_pos, double y_pos) {
-			std::cout << "Cursor Pos: " << x_pos << ", " << y_pos << "\n";
+			Window& window_handle = *(Window*)glfwGetWindowUserPointer(window);
+			window_handle.callback_(MouseMoveEvent(x_pos, y_pos));
 		});
+
 		glfwSetMouseButtonCallback(window_, [](GLFWwindow* window, int button, int action, int mods) {
-			std::cout << "Mouse Button" << button << ", " << action << ", " << mods << "\n";
+			Window& window_handle = *(Window*)glfwGetWindowUserPointer(window);
+			window_handle.callback_(MouseClickEvent(button, action, mods));
 		});
+
 		glfwSetScrollCallback(window_, [](GLFWwindow* window, double xoffset, double yoffset) {
-			std::cout << "Scroll: " << xoffset << ", " << yoffset << "\n";
+			Window& window_handle = *(Window*)glfwGetWindowUserPointer(window);
+			window_handle.callback_(MouseScrollEvent(xoffset, yoffset));
 		});
 	}
 

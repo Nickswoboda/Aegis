@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Event.h"
+
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
@@ -15,7 +17,7 @@ namespace Aegis {
 		void SetEventCallbacks();
 		void OnUpdate();
 
-		std::function<bool()> callback_;
+		std::function<void(Event&)> callback_;
 	private:
 		GLFWwindow* window_;
 	};

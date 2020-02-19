@@ -6,6 +6,7 @@ add_executable (Aegis
 	"src/main.cpp"
 	"src/Application.cpp"
 	"src/Window.cpp"
+	"src/Event.h"
 	"dependencies/GLAD/src/glad.c")
 
 include_directories(
