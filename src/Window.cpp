@@ -24,32 +24,39 @@ namespace Aegis {
 	{
 		glfwSetWindowSizeCallback(window_, [](GLFWwindow* window, int width, int height) {
 			Window& window_handle = *(Window*)glfwGetWindowUserPointer(window);
-			window_handle.callback_(WindowResizeEvent(width, height));
+			
+			WindowResizeEvent event(width, height);
+			window_handle.callback_(event);
 		});
 
 		glfwSetWindowCloseCallback(window_, [](GLFWwindow* window) {
 			Window& window_handle = *(Window*)glfwGetWindowUserPointer(window);
-			window_handle.callback_(WindowCloseEvent());
+			WindowCloseEvent event;
+			window_handle.callback_(event);
 		});
 
 		glfwSetKeyCallback(window_, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
 			Window& window_handle = *(Window*)glfwGetWindowUserPointer(window);
-			window_handle.callback_(KeyEvent(key, scancode, action, mods));
+			KeyEvent event(key, scancode, action, mods);
+			window_handle.callback_(event);
 		});
 
 		glfwSetCursorPosCallback(window_, [](GLFWwindow* window, double x_pos, double y_pos) {
 			Window& window_handle = *(Window*)glfwGetWindowUserPointer(window);
-			window_handle.callback_(MouseMoveEvent(x_pos, y_pos));
+			MouseMoveEvent event(x_pos, y_pos);
+			window_handle.callback_(event);
 		});
 
 		glfwSetMouseButtonCallback(window_, [](GLFWwindow* window, int button, int action, int mods) {
 			Window& window_handle = *(Window*)glfwGetWindowUserPointer(window);
-			window_handle.callback_(MouseClickEvent(button, action, mods));
+			MouseClickEvent event(button, action, mods);
+			window_handle.callback_(event);
 		});
 
 		glfwSetScrollCallback(window_, [](GLFWwindow* window, double xoffset, double yoffset) {
 			Window& window_handle = *(Window*)glfwGetWindowUserPointer(window);
-			window_handle.callback_(MouseScrollEvent(xoffset, yoffset));
+			MouseScrollEvent event(xoffset, yoffset);
+			window_handle.callback_(event);
 		});
 	}
 
