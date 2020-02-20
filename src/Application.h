@@ -3,6 +3,8 @@
 #include "Window.h"
 #include "Event.h"
 
+#include <memory>
+
 namespace Aegis {
 
 	class Application
@@ -15,7 +17,7 @@ namespace Aegis {
 		void OnEvent(Event& event);
 		void OnWindowClose();
 	private:
-		Window* window_ = nullptr;
+		std::unique_ptr<Window> window_;
 
 		bool running_ = true;
 	};

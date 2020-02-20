@@ -1,5 +1,7 @@
 #include "Window.h"
 
+#include <glad/glad.h>
+
 #include <iostream>
 
 namespace Aegis {
@@ -10,10 +12,16 @@ namespace Aegis {
 		if (window_ == nullptr) {
 			std::cout << "Unable to create window";
 		}
-
 		glfwMakeContextCurrent(window_);
+		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+		{
+			std::cout << "Unable to initialize GLAD";
+		}
+
 		glfwSetWindowUserPointer(window_, (void*)this);
 		SetEventCallbacks();
+
+		glViewport(0, 0, width, height);
 	}
 
 	Window::~Window()
@@ -24,7 +32,6 @@ namespace Aegis {
 	{
 		glfwSetWindowSizeCallback(window_, [](GLFWwindow* window, int width, int height) {
 			Window& window_handle = *(Window*)glfwGetWindowUserPointer(window);
-			
 			WindowResizeEvent event(width, height);
 			window_handle.callback_(event);
 		});
@@ -57,6 +64,10 @@ namespace Aegis {
 			Window& window_handle = *(Window*)glfwGetWindowUserPointer(window);
 			MouseScrollEvent event(xoffset, yoffset);
 			window_handle.callback_(event);
+		});
+
+		glfwSetFramebufferSizeCallback(window_, [](GLFWwindow* window, int width, int height) {
+			glViewport(0, 0, width, height);
 		});
 	}
 

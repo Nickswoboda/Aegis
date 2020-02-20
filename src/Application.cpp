@@ -1,5 +1,7 @@
 #include "Application.h"
 
+#include "Renderer.h"
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -13,14 +15,10 @@ namespace Aegis {
 			return;
 		}
 
-		window_ = new Window("Aegis", width, height);
-
-		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-		{
-			std::cout << "Unable to initialize GLAD";
-		}
-
+		window_ = std::make_unique<Window>("Aegis", width, height);
 		window_->callback_ = std::bind(&Application::OnEvent, this, std::placeholders::_1);
+
+		Renderer2D::Init();
 	}
 
 	Application::~Application()
@@ -31,9 +29,8 @@ namespace Aegis {
 	void Application::Run()
 	{
 		while (running_) {
-			glClearColor(0.5, 0.0, 0.0, 1.0);
-			glClear(GL_COLOR_BUFFER_BIT);
-
+			Renderer2D::Clear(0.5, 0.05, 0.2, 1.0);
+			Renderer2D::DrawQuad(1, 2, 3, 4);
 			window_->OnUpdate();
 		}
 	}
