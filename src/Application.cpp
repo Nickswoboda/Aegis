@@ -19,6 +19,9 @@ namespace Aegis {
 		window_->callback_ = std::bind(&Application::OnEvent, this, std::placeholders::_1);
 
 		Renderer2D::Init();
+		Renderer2D::SetClearColor(1.0, 0.5, 0.5, 1);
+
+		vertex_array_ = std::make_unique<VertexArray>();
 	}
 
 	Application::~Application()
@@ -28,8 +31,9 @@ namespace Aegis {
 
 	void Application::Run()
 	{
+		vertex_array_->Unbind();
 		while (running_) {
-			Renderer2D::Clear(0.5, 0.05, 0.2, 1.0);
+			Renderer2D::Clear();
 			Renderer2D::DrawQuad(1, 2, 3, 4);
 			window_->OnUpdate();
 		}

@@ -30,49 +30,62 @@ namespace Aegis {
         glAttachShader(shader_program_, vertex_shader_);
         glAttachShader(shader_program_, fragment_shader_);
         glLinkProgram(shader_program_);
+        glUseProgram(shader_program_);
 
         glDeleteShader(vertex_shader_);
         glDeleteShader(fragment_shader_);
-
-        float vertices[] = {
-         0.5f,  0.5f, 0.0f,
-         0.5f, -0.5f, 0.0f,
-        -0.5f, -0.5f, 0.0f,
-        -0.5f,  0.5f, 0.0f 
-        };
-        unsigned int indices[] = {
-            0, 1, 3,
-            1, 2, 3 
-        };
-
-        unsigned int VAO, VBO, EBO;
-        glGenVertexArrays(1, &VAO);
-        glGenBuffers(1, &VBO);
-        glGenBuffers(1, &EBO);
-       
-        glBindVertexArray(VAO);
-
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-        glEnableVertexAttribArray(0);
-
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glUseProgram(shader_program_);
 	}
 
-	void Renderer2D::Clear(float r, float g, float b, float a)
+    void Renderer2D::SetClearColor(float r, float g, float b, float a)
+    {
+        glClearColor(r, g, b, a);
+    }
+
+    void Renderer2D::Clear()
 	{
-		glClearColor(r, g, b, a);
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
 
 	void Renderer2D::DrawQuad(int x_pos, int y_pos, int width, int height)
 	{
+        //glDrawArrays(GL_TRIANGLES, 0, 3);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	}
+    VertexArray::VertexArray()
+    {
+        unsigned int VBO, EBO;
+        glGenVertexArrays(1, &ID_);
+        glBindVertexArray(ID_);
+
+        float vertices[] = {
+         0.5f,  0.5f, 0.0f,
+         0.5f, -0.5f, 0.0f,
+        -0.5f, -0.5f, 0.0f,
+        -0.5f,  0.5f, 0.0f
+        };
+
+        unsigned int buffer;
+        glGenBuffers(1, &buffer);
+        glBindBuffer(GL_ARRAY_BUFFER, buffer);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+        glEnableVertexAttribArray(0);
+
+        unsigned int indices[] = {
+            0, 1, 3,
+            1, 2, 3
+        };
+        glGenBuffers(1, &EBO);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+    }
+    void VertexArray::Bind()
+    {
+        glBindVertexArray(ID_);
+    }
+    void VertexArray::Unbind()
+    {
+        glBindVertexArray(ID_);
+    }
 }
