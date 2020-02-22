@@ -18,3 +18,4 @@ add_subdirectory("dependencies/GLFW")
 
 target_link_libraries(Aegis glfw)
 
+file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})

@@ -1,40 +1,19 @@
 #include "Renderer.h"
 
 #include <glad/glad.h>
+
+#include <fstream>
+#include <iostream>
 namespace Aegis {
 
-	void Renderer2D::Init()
-	{
-        const char* vertexShaderSource = "#version 330 core\n"
-            "layout (location = 0) in vec3 aPos;\n"
-            "void main()\n"
-            "{\n"
-            "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-            "}\0";
-        const char* fragmentShaderSource = "#version 330 core\n"
-            "out vec4 FragColor;\n"
-            "void main()\n"
-            "{\n"
-            "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-            "}\n\0";
+    static std::unique_ptr<Shader> shader_;
+    static std::unique_ptr<VertexArray> vertex_array_;
 
-        int vertex_shader_ = glCreateShader(GL_VERTEX_SHADER);
-        glShaderSource(vertex_shader_, 1, &vertexShaderSource, nullptr);
-        glCompileShader(vertex_shader_);
-
-        int fragment_shader_ = glCreateShader(GL_FRAGMENT_SHADER);
-        glShaderSource(fragment_shader_, 1, &fragmentShaderSource, nullptr);
-        glCompileShader(fragment_shader_);
-
-        int shader_program_ = glCreateProgram();
-        glAttachShader(shader_program_, vertex_shader_);
-        glAttachShader(shader_program_, fragment_shader_);
-        glLinkProgram(shader_program_);
-        glUseProgram(shader_program_);
-
-        glDeleteShader(vertex_shader_);
-        glDeleteShader(fragment_shader_);
-	}
+    void Renderer2D::Init()
+    {
+        shader_ = std::make_unique<Shader>("assets/shaders/Shader.glsl");
+        vertex_array_ = std::make_unique<VertexArray>();
+    }
 
     void Renderer2D::SetClearColor(float r, float g, float b, float a)
     {
@@ -48,12 +27,12 @@ namespace Aegis {
 
 	void Renderer2D::DrawQuad(int x_pos, int y_pos, int width, int height)
 	{
-        //glDrawArrays(GL_TRIANGLES, 0, 3);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	}
+
+
     VertexArray::VertexArray()
     {
-        unsigned int VBO, EBO;
         glGenVertexArrays(1, &ID_);
         glBindVertexArray(ID_);
 
@@ -75,8 +54,10 @@ namespace Aegis {
             0, 1, 3,
             1, 2, 3
         };
-        glGenBuffers(1, &EBO);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+
+        unsigned int elem_buffer;
+        glGenBuffers(1, &elem_buffer);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elem_buffer);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     }
@@ -87,5 +68,80 @@ namespace Aegis {
     void VertexArray::Unbind()
     {
         glBindVertexArray(ID_);
+    }
+
+
+    Shader::Shader(const std::string& file_path)
+    {
+        std::ifstream file(file_path);
+        std::string shader_source;
+
+        if (file) {
+            file.seekg(0, std::ios::end);
+            size_t size = file.tellg();
+            if (size != -1){
+                shader_source.resize(size);
+                file.seekg(0, std::ios::beg);
+                file.read(&shader_source[0], size);
+            }
+        }
+        else {
+            std::cout << "Unable to open shader file\n";
+        }
+
+        std::string vertex_shader;
+        std::string fragment_shader;
+
+        std::string token("#type");
+        auto token_size = token.size();
+
+        auto pos = shader_source.find(token);
+
+        while (pos != std::string::npos) {
+
+            auto eol = shader_source.find('\n', pos);
+            std::string type = shader_source.substr(pos + token_size + 1, eol - (pos + token_size + 1));
+            if (type != "vertex" && type != "fragment") {
+                std::cout << "Unable to read shader, possible syntax error.";
+                return;
+            }
+            else {
+                auto shader_start = shader_source.find_first_not_of('\n', eol);
+                pos = shader_source.find("#type", eol);
+
+                if (type == "vertex") {
+                    vertex_shader = shader_source.substr(shader_start, pos - shader_start);
+                }
+                else {
+                    fragment_shader = shader_source.substr(shader_start, pos - shader_start);
+                }
+            }
+        }
+
+        CompileShaders(vertex_shader, fragment_shader);
+    }
+
+    void Shader::CompileShaders(const std::string& vertex, const std::string& fragment)
+    {
+        int vertex_shader = glCreateShader(GL_VERTEX_SHADER);
+ 
+        auto vertex_source = vertex.c_str();
+        glShaderSource(vertex_shader, 1, &vertex_source, nullptr);
+        glCompileShader(vertex_shader);
+
+
+        auto fragment_source = fragment.c_str();
+        int fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
+        glShaderSource(fragment_shader, 1, &fragment_source, nullptr);
+        glCompileShader(fragment_shader);
+
+        ID_ = glCreateProgram();
+        glAttachShader(ID_, vertex_shader);
+        glAttachShader(ID_, fragment_shader);
+        glLinkProgram(ID_);
+        glUseProgram(ID_);
+
+        glDeleteShader(vertex_shader);
+        glDeleteShader(fragment_shader);
     }
 }

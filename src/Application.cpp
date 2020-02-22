@@ -20,8 +20,6 @@ namespace Aegis {
 
 		Renderer2D::Init();
 		Renderer2D::SetClearColor(1.0, 0.5, 0.5, 1);
-
-		vertex_array_ = std::make_unique<VertexArray>();
 	}
 
 	Application::~Application()
@@ -31,7 +29,6 @@ namespace Aegis {
 
 	void Application::Run()
 	{
-		vertex_array_->Unbind();
 		while (running_) {
 			Renderer2D::Clear();
 			Renderer2D::DrawQuad(1, 2, 3, 4);

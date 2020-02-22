@@ -19,7 +19,6 @@ namespace Aegis {
 		void OnWindowClose();
 	private:
 		std::unique_ptr<Window> window_;
-		std::unique_ptr<VertexArray> vertex_array_;
 		bool running_ = true;
 	};
 }
