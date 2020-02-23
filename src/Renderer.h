@@ -1,7 +1,8 @@
 #pragma once
 
-#include <string>
+#include <glm/glm.hpp>
 
+#include <string>
 namespace Aegis {
 
 	class Renderer2D
@@ -23,7 +24,7 @@ namespace Aegis {
 		void Bind();
 		void Unbind();
 
-		unsigned int ID_;
+		unsigned int ID_ = 0;
 	};
 
 	class Shader
@@ -31,7 +32,8 @@ namespace Aegis {
 	public:
 		Shader(const std::string& file_path);
 
-		unsigned int ID_;
+		void SetMat4(const std::string& name, const glm::mat4& value);
+		unsigned int ID_ = 0;
 
 	private:
 		void CompileShaders(const std::string& vertex, const std::string& fragment);

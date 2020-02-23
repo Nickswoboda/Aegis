@@ -4,7 +4,6 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-
 #include <iostream>
 
 namespace Aegis {
@@ -19,7 +18,7 @@ namespace Aegis {
 		window_->callback_ = std::bind(&Application::OnEvent, this, std::placeholders::_1);
 
 		Renderer2D::Init();
-		Renderer2D::SetClearColor(1.0, 0.5, 0.5, 1);
+		Renderer2D::SetClearColor(0.0, 0.0, 0.0, 1);
 	}
 
 	Application::~Application()
@@ -31,7 +30,7 @@ namespace Aegis {
 	{
 		while (running_) {
 			Renderer2D::Clear();
-			Renderer2D::DrawQuad(1, 2, 3, 4);
+			Renderer2D::DrawQuad(100, 2, 200, 200);
 			window_->OnUpdate();
 		}
 	}

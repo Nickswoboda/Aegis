@@ -12,9 +12,12 @@ add_executable (Aegis
 
 include_directories(
 	"dependencies/GLFW/include"
-	"dependencies/GLAD/include")
+	"dependencies/GLAD/include"
+	"dependencies/GLM/")
 
-add_subdirectory("dependencies/GLFW")
+add_subdirectory(
+	"dependencies/GLFW"
+	"dependencies/GLM")
 
 target_link_libraries(Aegis glfw)
 

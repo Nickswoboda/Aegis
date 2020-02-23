@@ -1,18 +1,26 @@
 #include "Renderer.h"
 
 #include <glad/glad.h>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include <fstream>
 #include <iostream>
+#include <memory>
+#include <vector>
+
 namespace Aegis {
 
     static std::unique_ptr<Shader> shader_;
     static std::unique_ptr<VertexArray> vertex_array_;
+    static glm::mat4 projection_;
 
     void Renderer2D::Init()
     {
         shader_ = std::make_unique<Shader>("assets/shaders/Shader.glsl");
         vertex_array_ = std::make_unique<VertexArray>();
+        projection_ = glm::ortho(0.0f, 640.0f, 480.0f, 0.0f, -1.0f, 1.0f);
+        shader_->SetMat4("u_Projection", projection_);
     }
 
     void Renderer2D::SetClearColor(float r, float g, float b, float a)
@@ -27,6 +35,8 @@ namespace Aegis {
 
 	void Renderer2D::DrawQuad(int x_pos, int y_pos, int width, int height)
 	{
+        glm::mat4 transform = glm::translate(glm::mat4(1.0f), { x_pos, y_pos, 0.0f }) * glm::scale(glm::mat4(1.0), { width, height, 1.0 });
+        shader_->SetMat4("u_Transform", transform);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	}
 
@@ -37,10 +47,10 @@ namespace Aegis {
         glBindVertexArray(ID_);
 
         float vertices[] = {
-         0.5f,  0.5f, 0.0f,
-         0.5f, -0.5f, 0.0f,
-        -0.5f, -0.5f, 0.0f,
-        -0.5f,  0.5f, 0.0f
+         1.0f,  1.0f, 0.0f,
+         1.0f,  0.0f, 0.0f,
+         0.0f,  0.0f, 0.0f,
+         0.0f,  1.0f, 0.0f
         };
 
         unsigned int buffer;
@@ -121,6 +131,12 @@ namespace Aegis {
         CompileShaders(vertex_shader, fragment_shader);
     }
 
+    void Shader::SetMat4(const std::string& name, const glm::mat4& value)
+    {
+        GLint location = glGetUniformLocation(ID_, name.c_str());
+        glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));
+    }
+
     void Shader::CompileShaders(const std::string& vertex, const std::string& fragment)
     {
         int vertex_shader = glCreateShader(GL_VERTEX_SHADER);
@@ -129,11 +145,41 @@ namespace Aegis {
         glShaderSource(vertex_shader, 1, &vertex_source, nullptr);
         glCompileShader(vertex_shader);
 
+        int result1 = 0;
+        glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &result1);
+        if (result1 == GL_FALSE)
+        {
+            GLint maxLength = 0;
+            glGetShaderiv(vertex_shader, GL_INFO_LOG_LENGTH, &maxLength);
+
+            std::vector<GLchar> infoLog(maxLength);
+            glGetShaderInfoLog(vertex_shader, maxLength, &maxLength, &infoLog[0]);
+
+            glDeleteShader(vertex_shader);
+
+            std::cout << "unable to compile shader" << infoLog.data();
+        }
+
 
         auto fragment_source = fragment.c_str();
         int fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
         glShaderSource(fragment_shader, 1, &fragment_source, nullptr);
         glCompileShader(fragment_shader);
+
+        int result2 = 0;
+        glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &result2);
+        if (result2 == GL_FALSE)
+        {
+            GLint maxLength = 0;
+            glGetShaderiv(vertex_shader, GL_INFO_LOG_LENGTH, &maxLength);
+
+            std::vector<GLchar> infoLog(maxLength);
+            glGetShaderInfoLog(vertex_shader, maxLength, &maxLength, &infoLog[0]);
+
+            glDeleteShader(vertex_shader);
+
+            std::cout << "unable to compile shader" << infoLog.data();
+        }
 
         ID_ = glCreateProgram();
         glAttachShader(ID_, vertex_shader);
