@@ -30,7 +30,7 @@ namespace Aegis {
 	{
 		while (running_) {
 			Renderer2D::Clear();
-			Renderer2D::DrawQuad(100, 2, 200, 200);
+			Renderer2D::DrawQuad({ 100, 300 }, { 40, 40 }, { 1.0, 1.0, 0.0, 1.0 });
 			window_->OnUpdate();
 		}
 	}

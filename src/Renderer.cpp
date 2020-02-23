@@ -33,10 +33,11 @@ namespace Aegis {
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
 
-	void Renderer2D::DrawQuad(int x_pos, int y_pos, int width, int height)
+    void Renderer2D::DrawQuad(const glm::vec2& pos, const glm::vec2& size, const glm::vec4& color)
 	{
-        glm::mat4 transform = glm::translate(glm::mat4(1.0f), { x_pos, y_pos, 0.0f }) * glm::scale(glm::mat4(1.0), { width, height, 1.0 });
+        glm::mat4 transform = glm::translate(glm::mat4(1.0f), { pos.x, pos.y, 0.0f }) * glm::scale(glm::mat4(1.0), { size.x, size.y, 1.0 });
         shader_->SetMat4("u_Transform", transform);
+        shader_->SetFloat4("u_Color", color);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	}
 
@@ -135,6 +136,12 @@ namespace Aegis {
     {
         GLint location = glGetUniformLocation(ID_, name.c_str());
         glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));
+    }
+
+    void Shader::SetFloat4(const std::string& name, const glm::vec4& value)
+    {
+        GLint location = glGetUniformLocation(ID_, name.c_str());
+        glUniform4f(location, value.x, value.y, value.z, value.w);
     }
 
     void Shader::CompileShaders(const std::string& vertex, const std::string& fragment)

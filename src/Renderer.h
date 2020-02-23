@@ -13,7 +13,7 @@ namespace Aegis {
 
 		static void SetClearColor(float r, float g, float b, float a);
 		static void Clear();
-		static void DrawQuad(int x_pos, int y_pos, int width, int height);
+		static void DrawQuad(const glm::vec2& pos, const glm::vec2& size, const glm::vec4& color);
 	};
 
 	class VertexArray
@@ -33,6 +33,7 @@ namespace Aegis {
 		Shader(const std::string& file_path);
 
 		void SetMat4(const std::string& name, const glm::mat4& value);
+		void SetFloat4(const std::string& name, const glm::vec4& value);
 		unsigned int ID_ = 0;
 
 	private:
