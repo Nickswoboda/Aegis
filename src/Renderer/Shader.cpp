@@ -1,7 +1,6 @@
-#include "Renderer.h"
+#include "Shader.h"
 
 #include <glad/glad.h>
-#include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
 #include <fstream>
@@ -9,79 +8,7 @@
 #include <memory>
 #include <vector>
 
-namespace Aegis {
-
-    static std::unique_ptr<Shader> shader_;
-    static std::unique_ptr<VertexArray> vertex_array_;
-    static glm::mat4 projection_;
-
-    void Renderer2D::Init()
-    {
-        shader_ = std::make_unique<Shader>("assets/shaders/Shader.glsl");
-        vertex_array_ = std::make_unique<VertexArray>();
-        projection_ = glm::ortho(0.0f, 640.0f, 480.0f, 0.0f, -1.0f, 1.0f);
-        shader_->SetMat4("u_Projection", projection_);
-    }
-
-    void Renderer2D::SetClearColor(float r, float g, float b, float a)
-    {
-        glClearColor(r, g, b, a);
-    }
-
-    void Renderer2D::Clear()
-	{
-		glClear(GL_COLOR_BUFFER_BIT);
-	}
-
-    void Renderer2D::DrawQuad(const glm::vec2& pos, const glm::vec2& size, const glm::vec4& color)
-	{
-        glm::mat4 transform = glm::translate(glm::mat4(1.0f), { pos.x, pos.y, 0.0f }) * glm::scale(glm::mat4(1.0), { size.x, size.y, 1.0 });
-        shader_->SetMat4("u_Transform", transform);
-        shader_->SetFloat4("u_Color", color);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-	}
-
-
-    VertexArray::VertexArray()
-    {
-        glGenVertexArrays(1, &ID_);
-        glBindVertexArray(ID_);
-
-        float vertices[] = {
-         1.0f,  1.0f, 0.0f,
-         1.0f,  0.0f, 0.0f,
-         0.0f,  0.0f, 0.0f,
-         0.0f,  1.0f, 0.0f
-        };
-
-        unsigned int buffer;
-        glGenBuffers(1, &buffer);
-        glBindBuffer(GL_ARRAY_BUFFER, buffer);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-        glEnableVertexAttribArray(0);
-
-        unsigned int indices[] = {
-            0, 1, 3,
-            1, 2, 3
-        };
-
-        unsigned int elem_buffer;
-        glGenBuffers(1, &elem_buffer);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elem_buffer);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-    }
-    void VertexArray::Bind()
-    {
-        glBindVertexArray(ID_);
-    }
-    void VertexArray::Unbind()
-    {
-        glBindVertexArray(ID_);
-    }
-
-
+namespace Aegis{
     Shader::Shader(const std::string& file_path)
     {
         std::ifstream file(file_path);
@@ -90,7 +17,7 @@ namespace Aegis {
         if (file) {
             file.seekg(0, std::ios::end);
             size_t size = file.tellg();
-            if (size != -1){
+            if (size != -1) {
                 shader_source.resize(size);
                 file.seekg(0, std::ios::beg);
                 file.read(&shader_source[0], size);
@@ -138,6 +65,12 @@ namespace Aegis {
         glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));
     }
 
+    void Shader::SetInt(const std::string& name, int value)
+    {
+        GLint location = glGetUniformLocation(ID_, name.c_str());
+        glUniform1i(location, value);
+    }
+
     void Shader::SetFloat4(const std::string& name, const glm::vec4& value)
     {
         GLint location = glGetUniformLocation(ID_, name.c_str());
@@ -147,7 +80,7 @@ namespace Aegis {
     void Shader::CompileShaders(const std::string& vertex, const std::string& fragment)
     {
         int vertex_shader = glCreateShader(GL_VERTEX_SHADER);
- 
+
         auto vertex_source = vertex.c_str();
         glShaderSource(vertex_shader, 1, &vertex_source, nullptr);
         glCompileShader(vertex_shader);
