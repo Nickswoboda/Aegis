@@ -21,6 +21,30 @@ namespace Aegis {
         glTextureSubImage2D(ID_, 0, 0, 0, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &data);
     }
 
+    Texture::Texture(FT_Bitmap data)
+    {
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+        glGenTextures(1, &ID_);
+        glBindTexture(GL_TEXTURE_2D, ID_);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        glTexImage2D(
+            GL_TEXTURE_2D,
+            0,
+            GL_RED,
+            data.width,
+            data.rows,
+            0,
+            GL_RED,
+            GL_UNSIGNED_BYTE,
+            data.buffer
+        );
+    }
+
     Texture::Texture(const std::string& path)
     {
         glCreateTextures(GL_TEXTURE_2D, 1, &ID_);

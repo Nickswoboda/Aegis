@@ -2,6 +2,7 @@
 
 #include "Renderer/Renderer.h"
 #include "Renderer/Texture.h"
+#include "Font.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -20,6 +21,8 @@ namespace Aegis {
 
 		Renderer2D::Init();
 		Renderer2D::SetClearColor(0.2, 0.2, 0.6, 1);
+
+		font_ = std::make_unique<Font>("assets/fonts/WorkSans-Regular.ttf", 16);
 	}
 
 	Application::~Application()
@@ -33,10 +36,11 @@ namespace Aegis {
 		auto container = std::make_unique<Texture>("assets/textures/container.jpg");
 		while (running_) {
 			Renderer2D::Clear();
-			Renderer2D::DrawQuad({ 100, 200 }, { 200, 200 }, { 1.0, 0.0, 0.0, 1.0 });
-			Renderer2D::DrawQuad({ 400, 200 }, { 150, 150 }, smiley);
-			Renderer2D::DrawQuad({ 0, 250 }, { 20, 20 }, { 0.0, 1.0, 0.0, 1.0 });
-			Renderer2D::DrawQuad({ 0, 50 }, { 100, 100 }, container);
+			//Renderer2D::DrawQuad({ 100, 200 }, { 200, 200 }, { 1.0, 0.0, 0.0, 1.0 });
+			Renderer2D::DrawQuad({ 400, 200 }, { 11, 11 }, font_->texture_);
+			//Renderer2D::DrawQuad({ 0, 250 }, { 20, 20 }, { 0.0, 1.0, 0.0, 1.0 });
+			//Renderer2D::DrawQuad({ 0, 50 }, { 100, 100 }, container);
+
 			window_->OnUpdate();
 		}
 	}

@@ -21,7 +21,7 @@ namespace Aegis {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        shader_ = std::make_unique<Shader>("assets/shaders/Shader.glsl");
+        shader_ = std::make_unique<Shader>("assets/shaders/FontShader.glsl");
         vertex_array_ = std::make_unique<VertexArray>();
         projection_ = glm::ortho(0.0f, 640.0f, 480.0f, 0.0f, -1.0f, 1.0f);
         shader_->SetMat4("u_Projection", projection_);

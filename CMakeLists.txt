@@ -7,6 +7,7 @@ add_executable (Aegis
 	"src/Application.cpp"
 	"src/Window.cpp"
 	"src/Event.h"
+	"src/Font.cpp"
 	"src/Renderer/Renderer.cpp"
 	"src/Renderer/Texture.cpp"
 	"src/Renderer/Shader.cpp"
@@ -17,12 +18,14 @@ include_directories(
 	"dependencies/GLFW/include"
 	"dependencies/GLAD/include"
 	"dependencies/GLM/"
-	"dependencies/stb_image/")
+	"dependencies/stb_image/"
+	"dependencies/FreeType/include")
 
-add_subdirectory(
-	"dependencies/GLFW"
-	"dependencies/GLM")
+add_subdirectory("dependencies/GLFW")
+add_subdirectory("dependencies/GLM")
+add_subdirectory("dependencies/FreeType")
 
 target_link_libraries(Aegis glfw)
+target_link_libraries(Aegis freetype)
 
 file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})

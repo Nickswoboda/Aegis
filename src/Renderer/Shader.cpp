@@ -125,6 +125,15 @@ namespace Aegis{
         glAttachShader(ID_, vertex_shader);
         glAttachShader(ID_, fragment_shader);
         glLinkProgram(ID_);
+
+        GLint isLinked = 0;
+        glGetProgramiv(ID_, GL_LINK_STATUS, (int*)&isLinked);
+        if (isLinked == GL_FALSE)
+        {
+            std::cout << "unable to link shader";
+            return;
+        }
+
         glUseProgram(ID_);
 
         glDeleteShader(vertex_shader);
