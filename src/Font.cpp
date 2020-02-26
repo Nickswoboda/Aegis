@@ -44,11 +44,8 @@ namespace Aegis {
 							glyph->bitmap_top,
 							glyph->advance.x};
 
-			if (glyph->bitmap_top > top_border_) {
-				top_border_ = glyph->bitmap_top;
-			}
-			if (top_border_ == 37) {
-				std::cout << i;
+			if (glyph->bitmap_top > tallest_glyph_height_) {
+				tallest_glyph_height_ = glyph->bitmap_top;
 			}
 		}
 

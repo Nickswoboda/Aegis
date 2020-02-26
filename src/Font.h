@@ -22,6 +22,6 @@ namespace Aegis {
 
 		std::unordered_map<char, Glyph> glyphs_;
 		//used to align to top-left corner when rendering
-		int tallest_glyph_height = 0;
+		int tallest_glyph_height_ = 0;
 	};
 }

@@ -77,7 +77,7 @@ namespace Aegis {
         font_shader_->SetFloat4("u_Color", color);
         
         auto pen_pos = pos;
-        pen_pos.y += default_font_->top_border_;
+        pen_pos.y += default_font_->tallest_glyph_height_;
         for (const auto& c : text) {
             auto glyph = default_font_->glyphs_[c];
             glm::mat4 transform = glm::translate(glm::mat4(1.0f), { pen_pos.x + glyph.bearing_x, pen_pos.y - glyph.bearing_y, 0.0f }) * glm::scale(glm::mat4(1.0), { glyph.width, glyph.height, 1.0 });
