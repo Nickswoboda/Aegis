@@ -17,5 +17,6 @@ namespace Aegis {
 		static void Clear();
 		static void DrawQuad(const glm::vec2& pos, const glm::vec2& size, const glm::vec4& color);
 		static void DrawQuad(const glm::vec2& pos, const glm::vec2& size, const std::unique_ptr<Texture>& texture);
+		static void DrawText(const std::string& text, const glm::vec2& pos, const glm::vec4& color);
 	};
 }

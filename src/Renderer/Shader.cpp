@@ -65,6 +65,11 @@ namespace Aegis{
         glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));
     }
 
+    void Shader::Bind()
+    {
+        glUseProgram(ID_);
+    }
+
     void Shader::SetInt(const std::string& name, int value)
     {
         GLint location = glGetUniformLocation(ID_, name.c_str());
@@ -133,8 +138,6 @@ namespace Aegis{
             std::cout << "unable to link shader";
             return;
         }
-
-        glUseProgram(ID_);
 
         glDeleteShader(vertex_shader);
         glDeleteShader(fragment_shader);

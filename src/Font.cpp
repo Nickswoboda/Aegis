@@ -15,28 +15,42 @@ namespace Aegis {
 
 		int error = FT_Init_FreeType(&library);
 		if (error) {
-			std::cout << "UNable to initialize freetype.";
+			std::cout << "Unable to initialize FreeType.\n";
 		}
 		error = FT_New_Face(library, path.c_str(), 0, &face);
 		if (error == FT_Err_Unknown_File_Format)
 		{
-			std::cout << "Font format not supported";
+			std::cout << "Font format not supported.\n";
 		}
 		else if (error)
 		{
-			std::cout << "Unable to read font";
+			std::cout << "Unable to read font.\n";
 		}
 
 		error = FT_Set_Pixel_Sizes(face, size, size);
 
-		error = FT_Load_Char(face, 'A', FT_LOAD_RENDER);
+		for (int i = 0; i < 128; ++i) {
 
-		texture_ = std::make_unique<Texture>(face->glyph->bitmap);
-		
-		auto test = face->glyph->bitmap.buffer[255];
+			error = FT_Load_Char(face, i, FT_LOAD_RENDER);
+			if (error) {
+				std::cout << "Unable to load character.\n";
+			}
 
+			auto glyph = face->glyph;
+			glyphs_[i] = { Texture(glyph->bitmap), 
+							glyph->bitmap.width, 
+							glyph->bitmap.rows,
+							glyph->bitmap_left,
+							glyph->bitmap_top,
+							glyph->advance.x};
 
-
+			if (glyph->bitmap_top > top_border_) {
+				top_border_ = glyph->bitmap_top;
+			}
+			if (top_border_ == 37) {
+				std::cout << i;
+			}
+		}
 
 	}
 }

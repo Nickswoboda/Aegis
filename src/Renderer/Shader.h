@@ -12,6 +12,9 @@ namespace Aegis {
 		void SetInt(const std::string& name, int value);
 		void SetFloat4(const std::string& name, const glm::vec4& value);
 		void SetMat4(const std::string& name, const glm::mat4& value);
+
+		void Bind();
+
 		unsigned int ID_ = 0;
 
 	private:
