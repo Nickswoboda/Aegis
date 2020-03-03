@@ -2,8 +2,7 @@
 
 project ("Aegis")
 
-add_executable (Aegis 
-	"src/main.cpp"
+add_library (Aegis STATIC
 	"src/Application.cpp"
 	"src/Window.cpp"
 	"src/Event.h"
@@ -13,6 +12,9 @@ add_executable (Aegis
 	"src/Renderer/Shader.cpp"
 	"src/Renderer/VertexArray.cpp"
 	"dependencies/GLAD/src/glad.c")
+
+add_executable(Sandbox 
+	"Sandbox/Sandbox.cpp")
 
 include_directories(
 	"dependencies/GLFW/include"
@@ -27,5 +29,7 @@ add_subdirectory("dependencies/FreeType")
 
 target_link_libraries(Aegis glfw)
 target_link_libraries(Aegis freetype)
+
+target_link_libraries(Sandbox Aegis)
 
 file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})

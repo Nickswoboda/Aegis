@@ -32,16 +32,12 @@ namespace Aegis {
 
 	void Application::Run()
 	{
-		auto smiley = std::make_unique<Texture>("assets/textures/smiley.png");
-		auto container = std::make_unique<Texture>("assets/textures/container.jpg");
 		while (running_) {
-			Renderer2D::Clear();
-			Renderer2D::DrawQuad({ 100, 200 }, { 200, 200 }, { 1.0, 0.0, 0.0, 1.0 });
-			Renderer2D::DrawText("The Quick Brown $ | Dog Jumped Over The Lazy Fox", { 20, 0 }, { 0.0, 0.0, 0.0, 1.0 });
-			//Renderer2D::DrawQuad({ 0, 250 }, { 20, 20 }, { 0.0, 1.0, 0.0, 1.0 });
-			Renderer2D::DrawQuad({ 0, 50 }, { 100, 100 }, container);
-
 			window_->OnUpdate();
+			
+			for (auto& layer : layers_) {
+				layer->OnUpdate();
+			}
 		}
 	}
 	void Application::OnEvent(Event& event)
@@ -82,4 +78,8 @@ namespace Aegis {
 	{
 		running_ = false;
 	}
-}
+	void Application::PushLayer(Layer* layer)
+	{
+		layers_.emplace_back(std::move(layer));
+	}
+}	
