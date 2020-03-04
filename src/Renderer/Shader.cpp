@@ -40,7 +40,7 @@ namespace Aegis{
             auto eol = shader_source.find('\n', pos);
             std::string type = shader_source.substr(pos + token_size + 1, eol - (pos + token_size + 1));
             if (type != "vertex" && type != "fragment") {
-                std::cout << "Unable to read shader, possible syntax error.";
+                std::cout << "Unable to read shader, possible syntax error.\n";
                 return;
             }
             else {
@@ -85,14 +85,13 @@ namespace Aegis{
     void Shader::CompileShaders(const std::string& vertex, const std::string& fragment)
     {
         int vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-
         auto vertex_source = vertex.c_str();
         glShaderSource(vertex_shader, 1, &vertex_source, nullptr);
         glCompileShader(vertex_shader);
 
-        int result1 = 0;
-        glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &result1);
-        if (result1 == GL_FALSE)
+        int result = 0;
+        glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &result);
+        if (result == GL_FALSE)
         {
             GLint maxLength = 0;
             glGetShaderiv(vertex_shader, GL_INFO_LOG_LENGTH, &maxLength);
@@ -102,18 +101,17 @@ namespace Aegis{
 
             glDeleteShader(vertex_shader);
 
-            std::cout << "unable to compile shader" << infoLog.data();
+            std::cout << "unable to compile vertex shader:" << infoLog.data();
         }
 
 
-        auto fragment_source = fragment.c_str();
         int fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
+        auto fragment_source = fragment.c_str();
         glShaderSource(fragment_shader, 1, &fragment_source, nullptr);
         glCompileShader(fragment_shader);
 
-        int result2 = 0;
-        glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &result2);
-        if (result2 == GL_FALSE)
+        glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &result);
+        if (result == GL_FALSE)
         {
             GLint maxLength = 0;
             glGetShaderiv(vertex_shader, GL_INFO_LOG_LENGTH, &maxLength);
@@ -123,7 +121,7 @@ namespace Aegis{
 
             glDeleteShader(vertex_shader);
 
-            std::cout << "unable to compile shader" << infoLog.data();
+            std::cout << "unable to compile fragment shader:" << infoLog.data();
         }
 
         ID_ = glCreateProgram();
@@ -135,7 +133,7 @@ namespace Aegis{
         glGetProgramiv(ID_, GL_LINK_STATUS, (int*)&isLinked);
         if (isLinked == GL_FALSE)
         {
-            std::cout << "unable to link shader";
+            std::cout << "unable to link shader.\n";
             return;
         }
 

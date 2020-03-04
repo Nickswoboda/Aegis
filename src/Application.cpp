@@ -7,12 +7,16 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <chrono>
 
 namespace Aegis {
+
+	double Application::frame_time_ms_ = 0.0;
+
 	Application::Application(int width, int height)
 	{
 		if (!glfwInit()) {
-			std::cout << "Unable to initiate GLFW";
+			std::cout << "Unable to initiate GLFW.\n";
 			return;
 		}
 
@@ -20,9 +24,6 @@ namespace Aegis {
 		window_->callback_ = std::bind(&Application::OnEvent, this, std::placeholders::_1);
 
 		Renderer2D::Init();
-		Renderer2D::SetClearColor(0.2, 0.2, 0.6, 1);
-
-		font_ = std::make_unique<Font>("assets/fonts/WorkSans-Regular.ttf", 16);
 	}
 
 	Application::~Application()
@@ -33,11 +34,15 @@ namespace Aegis {
 	void Application::Run()
 	{
 		while (running_) {
+			auto begin_frame_time_ = std::chrono::high_resolution_clock::now();
 			window_->OnUpdate();
 			
 			for (auto& layer : layers_) {
 				layer->OnUpdate();
 			}
+
+			auto end_frame_time_ = std::chrono::high_resolution_clock::now();
+			frame_time_ms_ = std::chrono::duration<double, std::milli>(end_frame_time_ - begin_frame_time_).count();
 		}
 	}
 	void Application::OnEvent(Event& event)
@@ -48,29 +53,10 @@ namespace Aegis {
 			return;
 		}
 
-		auto resize_event = dynamic_cast<WindowResizeEvent*>(&event);
-		if (resize_event) {
-			return;
-		}
-
-		auto mouse_move = dynamic_cast<MouseMoveEvent*>(&event);
-		if (mouse_move) {
-			return;
-		}
-
-		auto mouse_scroll = dynamic_cast<MouseScrollEvent*>(&event);
-		if (mouse_scroll) {
-			return;
-		}
-
-		auto mouse_click = dynamic_cast<MouseClickEvent*>(&event);
-		if (mouse_click) {
-			return;
-		}
-
-		auto key = dynamic_cast<KeyEvent*>(&event);
-		if (key) {
-			return;
+		if (!event.handled_) {
+			for (auto& layer : layers_) {
+				layer->OnEvent(event);
+			}
 		}
 	}
 
@@ -81,5 +67,18 @@ namespace Aegis {
 	void Application::PushLayer(Layer* layer)
 	{
 		layers_.emplace_back(std::move(layer));
+	}
+	void Application::SetVsync(bool vsync)
+	{
+		if (vsync) {
+			glfwSwapInterval(1);
+		}
+		else {
+			glfwSwapInterval(0);
+		}
+	}
+	double Application::GetFrameTime()
+	{
+		return frame_time_ms_;
 	}
 }	

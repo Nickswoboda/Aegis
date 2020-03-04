@@ -1,17 +1,47 @@
 #include "../src/Aegis.h"
 
+#include <deque>
+#include <iostream>
+
 class Sandbox : public Aegis::Layer
 {
 public:
 	void OnUpdate() override
 	{
-		auto smiley = std::make_unique<Aegis::Texture>("assets/textures/smiley.png");
-		auto container = std::make_unique<Aegis::Texture>("assets/textures/container.jpg");
+		static std::deque<double> fps (10, 60.0);
+		fps.push_back(Aegis::Application::GetFrameTime());
+		fps.pop_front();
+
+		double total_time = 0;
+		for (const auto time : fps) {
+			total_time += time;
+		}
+
+		int average_fps = 1000 / (total_time / fps.size());
+		
 		Aegis::Renderer2D::Clear();
-		Aegis::Renderer2D::DrawQuad({ 100, 200 }, { 200, 200 }, { 1.0, 0.0, 0.0, 1.0 });
-		Aegis::Renderer2D::DrawText("The Quick Brown $ | Dog Jumped Over The Lazy Fox", { 20, 0 }, { 0.0, 0.0, 0.0, 1.0 });
-		Aegis::Renderer2D::DrawQuad({ 0, 50 }, { 100, 100 }, container);
+		
+		Aegis::Renderer2D::DrawText("FPS: " + std::to_string(average_fps), { 0,0 }, { 1.0, 0.0, 1.0, 1.0f });
+		//auto smiley = std::make_unique<Aegis::Texture>("assets/textures/smiley.png");
+		//auto container = std::make_unique<Aegis::Texture>("assets/textures/container.jpg");
+		//Aegis::Renderer2D::DrawQuad({ 100, 200 }, { 200, 200 }, { 1.0, 0.0, 0.0, 1.0 });
+		//Aegis::Renderer2D::DrawText("The Quick Brown", { 20, 0 }, { 1.0, 0.0, 0.0, 1.0 });
+		//Aegis::Renderer2D::DrawQuad({ 0, 50 }, { 100, 100 }, container);
 	}
+	void OnEvent(Aegis::Event& event)
+	{
+		auto key_event = dynamic_cast<Aegis::KeyEvent*>(&event);
+		if (key_event) {
+			if (key_event->key_ == GLFW_KEY_A) {
+				Aegis::Application::SetVsync(true);
+			}
+			else if (key_event->key_ == GLFW_KEY_S) {
+				Aegis::Application::SetVsync(false);
+			}
+		}
+
+	}
+
 };
 
 int main()

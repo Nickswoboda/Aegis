@@ -17,17 +17,16 @@ namespace Aegis {
 		if (error) {
 			std::cout << "Unable to initialize FreeType.\n";
 		}
+
 		error = FT_New_Face(library, path.c_str(), 0, &face);
-		if (error == FT_Err_Unknown_File_Format)
-		{
-			std::cout << "Font format not supported.\n";
-		}
-		else if (error)
-		{
+		if (error){
 			std::cout << "Unable to read font.\n";
 		}
 
 		error = FT_Set_Pixel_Sizes(face, size, size);
+		if (error) {
+			std::cout << "Unable to set pixel size.\n";
+		}
 
 		for (int i = 0; i < 128; ++i) {
 
@@ -49,5 +48,7 @@ namespace Aegis {
 			}
 		}
 
+		FT_Done_Face(face);
+		FT_Done_FreeType(library);
 	}
 }

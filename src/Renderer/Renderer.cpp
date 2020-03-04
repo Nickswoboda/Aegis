@@ -25,21 +25,21 @@ namespace Aegis {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+        projection_ = glm::ortho(0.0f, 640.0f, 480.0f, 0.0f, -1.0f, 1.0f);
 
         font_shader_ = std::make_unique<Shader>("assets/shaders/FontShader.glsl");
-        shader_ = std::make_unique<Shader>("assets/shaders/Shader.glsl");
-
-        vertex_array_ = std::make_unique<VertexArray>();
-        projection_ = glm::ortho(0.0f, 640.0f, 480.0f, 0.0f, -1.0f, 1.0f);
-        shader_->Bind();
-        shader_->SetMat4("u_Projection", projection_);
-        shader_->SetInt("u_Texture", 0);
         font_shader_->Bind();
         font_shader_->SetMat4("u_Projection", projection_);
         font_shader_->SetInt("u_Texture", 0);
-        white_texture_ = std::make_unique<Texture>();
 
-        default_font_ = std::make_unique<Font>("assets/fonts/WorkSans-Regular.ttf", 48);
+        shader_ = std::make_unique<Shader>("assets/shaders/Shader.glsl");
+        shader_->Bind();
+        shader_->SetMat4("u_Projection", projection_);
+        shader_->SetInt("u_Texture", 0);
+
+        vertex_array_ = std::make_unique<VertexArray>();
+        white_texture_ = std::make_unique<Texture>();
+        default_font_ = std::make_unique<Font>("assets/fonts/WorkSans-Regular.ttf", 16);
     }
 
     void Renderer2D::SetClearColor(float r, float g, float b, float a)
