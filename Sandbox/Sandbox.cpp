@@ -6,6 +6,11 @@
 class Sandbox : public Aegis::Layer
 {
 public:
+	Sandbox()
+	{
+		smiley_ = std::make_unique<Aegis::Texture>("assets/textures/smiley.png");
+		container_ = std::make_unique<Aegis::Texture>("assets/textures/container.jpg");
+	}
 	void OnUpdate() override
 	{
 		static std::deque<double> fps (10, 60.0);
@@ -20,19 +25,22 @@ public:
 		int average_fps = 1000 / (total_time / fps.size());
 		
 		Aegis::Renderer2D::Clear();
-		
-		//auto smiley = std::make_unique<Aegis::Texture>("assets/textures/smiley.png");
-		//auto container = std::make_unique<Aegis::Texture>("assets/textures/container.jpg");
+	
 
-		for (int y = 0; y < 480; y+=25) {
-			for (int x = 0; x < 640; x += 25)
-				Aegis::Renderer2D::DrawQuad({ x, y }, { 20, 20 }, { 1.0, 0.0, 0.0, 1.0 });
+		glm::vec4 red = {1.0, 0.0, 0.0, 1.0};
+		glm::vec4 yellow = {1.0, 1.0, 0.0, 1.0};
+		for (int y = 0; y < 10; ++y) {
+			if (y % 2 == 0) {
+				Aegis::Renderer2D::DrawQuad({ 100.0f, y * 100.0f }, { 100.0f, 100.0f }, red);
+			}
+			else{
+				Aegis::Renderer2D::DrawQuad({ 100.0f, y * 100.0f }, { 100.0f, 100.0f }, smiley_);
+			}
 		}
-
-		Aegis::Renderer2D::EndBatch();
-		Aegis::Renderer2D::DrawText("FPS: " + std::to_string(average_fps), { 0,0 }, { 1.0, 1.0, 1.0, 1.0f });
+		
+		
+		//Aegis::Renderer2D::DrawText("FPS: " + std::to_string(average_fps), { 0,0 }, { 1.0, 1.0, 1.0, 1.0f });
 		//Aegis::Renderer2D::DrawText("The Quick Brown", { 20, 0 }, { 1.0, 0.0, 0.0, 1.0 });
-		//Aegis::Renderer2D::DrawQuad({ 0, 50 }, { 100, 100 }, container);
 	}
 	void OnEvent(Aegis::Event& event)
 	{
@@ -47,6 +55,9 @@ public:
 		}
 
 	}
+
+	std::unique_ptr<Aegis::Texture> smiley_;
+	std::unique_ptr<Aegis::Texture> container_;
 
 };
 

@@ -1,7 +1,6 @@
 #include "Application.h"
 
 #include "Renderer/Renderer.h"
-#include "Renderer/Texture.h"
 #include "Font.h"
 
 #include <glad/glad.h>
