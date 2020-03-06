@@ -21,10 +21,16 @@ public:
 		
 		Aegis::Renderer2D::Clear();
 		
-		Aegis::Renderer2D::DrawText("FPS: " + std::to_string(average_fps), { 0,0 }, { 1.0, 0.0, 1.0, 1.0f });
 		//auto smiley = std::make_unique<Aegis::Texture>("assets/textures/smiley.png");
 		//auto container = std::make_unique<Aegis::Texture>("assets/textures/container.jpg");
-		//Aegis::Renderer2D::DrawQuad({ 100, 200 }, { 200, 200 }, { 1.0, 0.0, 0.0, 1.0 });
+
+		for (int y = 0; y < 480; y+=25) {
+			for (int x = 0; x < 640; x += 25)
+				Aegis::Renderer2D::DrawQuad({ x, y }, { 20, 20 }, { 1.0, 0.0, 0.0, 1.0 });
+		}
+
+		Aegis::Renderer2D::EndBatch();
+		Aegis::Renderer2D::DrawText("FPS: " + std::to_string(average_fps), { 0,0 }, { 1.0, 1.0, 1.0, 1.0f });
 		//Aegis::Renderer2D::DrawText("The Quick Brown", { 20, 0 }, { 1.0, 0.0, 0.0, 1.0 });
 		//Aegis::Renderer2D::DrawQuad({ 0, 50 }, { 100, 100 }, container);
 	}

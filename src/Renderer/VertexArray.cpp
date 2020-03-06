@@ -2,10 +2,13 @@
 
 #include <glad/glad.h>
 
+#include <array>
+
 namespace Aegis {
+
     VertexArray::VertexArray()
     {
-        glGenVertexArrays(1, &ID_);
+        glCreateVertexArrays(1, &ID_);
         glBindVertexArray(ID_);
 
         float vertices[] = {

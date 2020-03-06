@@ -12,6 +12,10 @@ namespace Aegis {
 	{
 	public:
 		static void Init();
+		static void Shutdown();
+
+		static void BeginBatch();
+		static void EndBatch();
 
 		static void SetClearColor(float r, float g, float b, float a);
 		static void Clear();

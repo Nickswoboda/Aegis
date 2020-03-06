@@ -110,16 +110,16 @@ namespace Aegis{
         glShaderSource(fragment_shader, 1, &fragment_source, nullptr);
         glCompileShader(fragment_shader);
 
-        glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &result);
+        glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &result);
         if (result == GL_FALSE)
         {
             GLint maxLength = 0;
-            glGetShaderiv(vertex_shader, GL_INFO_LOG_LENGTH, &maxLength);
+            glGetShaderiv(fragment_shader, GL_INFO_LOG_LENGTH, &maxLength);
 
             std::vector<GLchar> infoLog(maxLength);
-            glGetShaderInfoLog(vertex_shader, maxLength, &maxLength, &infoLog[0]);
+            glGetShaderInfoLog(fragment_shader, maxLength, &maxLength, &infoLog[0]);
 
-            glDeleteShader(vertex_shader);
+            glDeleteShader(fragment_shader);
 
             std::cout << "unable to compile fragment shader:" << infoLog.data();
         }
@@ -133,7 +133,13 @@ namespace Aegis{
         glGetProgramiv(ID_, GL_LINK_STATUS, (int*)&isLinked);
         if (isLinked == GL_FALSE)
         {
-            std::cout << "unable to link shader.\n";
+            GLint maxLength = 0;
+            glGetProgramiv(ID_, GL_INFO_LOG_LENGTH, &maxLength);
+
+            std::vector<GLchar> infoLog(maxLength);
+            glGetProgramInfoLog(ID_, maxLength, &maxLength, &infoLog[0]);
+
+            std::cout << "unable to link shader." << infoLog.data() << "\n";
             return;
         }
 

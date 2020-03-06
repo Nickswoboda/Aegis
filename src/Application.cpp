@@ -28,6 +28,7 @@ namespace Aegis {
 
 	Application::~Application()
 	{
+		Renderer2D::Shutdown();
 		glfwTerminate();
 	}
 
@@ -37,9 +38,11 @@ namespace Aegis {
 			auto begin_frame_time_ = std::chrono::high_resolution_clock::now();
 			window_->OnUpdate();
 			
+			Renderer2D::BeginBatch();
 			for (auto& layer : layers_) {
 				layer->OnUpdate();
 			}
+			Renderer2D::EndBatch();
 
 			auto end_frame_time_ = std::chrono::high_resolution_clock::now();
 			frame_time_ms_ = std::chrono::duration<double, std::milli>(end_frame_time_ - begin_frame_time_).count();
