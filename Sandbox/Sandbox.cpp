@@ -13,7 +13,7 @@ public:
 	}
 	void OnUpdate() override
 	{
-		static std::deque<double> fps (10, 60.0);
+		static std::deque<double> fps (20, 60.0);
 		fps.push_back(Aegis::Application::GetFrameTime());
 		fps.pop_front();
 
@@ -22,25 +22,18 @@ public:
 			total_time += time;
 		}
 
-		int average_fps = 1000 / (total_time / fps.size());
+		double average_frame_time = total_time / fps.size();
 		
 		Aegis::Renderer2D::Clear();
-	
-		Aegis::Renderer2D::DrawText("The Quick Brown Fox Jumped Over The Lazy Dog.", { 100, 0 }, { 1.0, 0.0, 0.0, 1.0 });
+		
 
-		//glm::vec4 red = {1.0, 0.0, 0.0, 1.0};
-		//glm::vec4 yellow = {1.0, 1.0, 0.0, 1.0};
-		//for (int y = 0; y < 10; ++y) {
-		//	if (y % 2 == 0) {
-		//		Aegis::Renderer2D::DrawQuad({ 100.0f, y * 100.0f }, { 100.0f, 100.0f }, red);
-		//	}
-		//	else{
-		//		Aegis::Renderer2D::DrawQuad({ 100.0f, y * 100.0f }, { 100.0f, 100.0f }, smiley_);
-		//	}
-		//}
-		
-		
-		Aegis::Renderer2D::DrawText("FPS: " + std::to_string(average_fps), { 0,0 }, { 1.0, 1.0, 1.0, 1.0f });
+		for (int y = 0; y < 100; ++y) {
+			for (int x = 0; x < 100; ++x) {
+				Aegis::Renderer2D::DrawQuad({ x * 26, y*26 }, { 25, 25 }, { 0.3f, 0.6f, 0.9f, 1.0f });
+			}
+		}
+		Aegis::Renderer2D::DrawText("Test1", { 240, 240 }, { 1.0f, 0.0f, 1.0f, .7f });
+		Aegis::Renderer2D::DrawText("FPS: " + std::to_string(average_frame_time), { 0,0 }, { 1.0, 1.0, 1.0, 1.0f });
 
 	}
 	void OnEvent(Aegis::Event& event)

@@ -57,22 +57,25 @@ namespace Aegis {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+        SetClearColor(0.0f, 0.0f, 0.7f, 1.0f);
         projection_ = glm::ortho(0.0f, 640.0f, 480.0f, 0.0f, -1.0f, 1.0f);
 
-        font_shader_ = std::make_unique<Shader>("assets/shaders/FontShader.glsl");
-        font_shader_->Bind();
-        font_shader_->SetMat4("u_Projection", projection_);
-        font_shader_->SetInt("u_Texture", 0);
-
-        shader_ = std::make_unique<Shader>("assets/shaders/Shader.glsl");
-        shader_->Bind();
-        shader_->SetMat4("u_Projection", projection_);
-
-        auto loc = glGetUniformLocation(shader_->ID_, "u_Textures");
         int samplers[32];
         for (int i = 0; i < 32; ++i) {
             samplers[i] = i;
         }
+
+        
+        font_shader_ = std::make_unique<Shader>("assets/shaders/FontShader.glsl");
+        font_shader_->Bind();
+        font_shader_->SetMat4("u_Projection", projection_);
+        auto loc = glGetUniformLocation(font_shader_->ID_, "u_Textures");
+        glUniform1iv(loc, 32, samplers);
+
+        shader_ = std::make_unique<Shader>("assets/shaders/Shader.glsl");
+        shader_->Bind();
+        shader_->SetMat4("u_Projection", projection_);
+        loc = glGetUniformLocation(shader_->ID_, "u_Textures");
         glUniform1iv(loc, 32, samplers);
 
         vertex_array_ = std::make_unique<VertexArray>();
@@ -151,7 +154,6 @@ namespace Aegis {
 
 	void Renderer2D::EndBatch()
 	{
-        shader_->Bind();
         GLsizeiptr size = (uint8_t*)data_.quad_buffer_ptr_ - (uint8_t*)data_.quad_buffer_;
         glBindBuffer(GL_ARRAY_BUFFER, data_.quad_VB_);
         glBufferSubData(GL_ARRAY_BUFFER, 0, size, data_.quad_buffer_);
@@ -278,10 +280,9 @@ namespace Aegis {
     }
     void Renderer2D::DrawText(const std::string& text, const glm::vec2& pos, const glm::vec4& color)
     {
-        if (data_.index_count_ >= max_index_count || data_.texture_slot_index_ > 31) {
-            EndBatch();
-            BeginBatch();
-        }
+        EndBatch();
+        BeginBatch();
+        font_shader_->Bind();
 
         auto texture = default_font_->atlas_;
         float texture_index = 0.0f;
@@ -338,5 +339,9 @@ namespace Aegis {
 
             pen_pos.x += glyph.advance;
         }
+
+        EndBatch();
+        shader_->Bind();
+        BeginBatch();
     }
 }
