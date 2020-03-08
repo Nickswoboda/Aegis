@@ -38,5 +38,4 @@ void main()
    int index = int(v_TexIndex);
    vec4 sampled = vec4(1.0, 1.0, 1.0, texture(u_Textures[index], v_TexCoord).r);
    o_Color = sampled * v_Color;
-
 }

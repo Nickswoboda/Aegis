@@ -12,7 +12,7 @@ namespace Aegis {
 	{
 	public:
 		Texture();
-		Texture(FT_Bitmap data);
+		~Texture();
 		Texture(const std::string& path);
 		Texture(char* data, int width, int height);
 		void Bind();

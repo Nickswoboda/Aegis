@@ -1,7 +1,5 @@
 #include "Font.h"
 
-#include "Renderer/Texture.h"
-
 #include <ft2build.h>
 #include FT_FREETYPE_H
 

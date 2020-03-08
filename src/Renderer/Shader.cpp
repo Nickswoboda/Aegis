@@ -76,6 +76,12 @@ namespace Aegis{
         glUniform1i(location, value);
     }
 
+    void Shader::SetIntVector(const std::string& name, int count, int* values)
+    {
+        GLint location = glGetUniformLocation(ID_, name.c_str());
+        glUniform1iv(location, count, values);
+    }
+
     void Shader::SetFloat4(const std::string& name, const glm::vec4& value)
     {
         GLint location = glGetUniformLocation(ID_, name.c_str());
