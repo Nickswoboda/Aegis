@@ -26,21 +26,22 @@ public:
 		
 		Aegis::Renderer2D::Clear();
 	
+		Aegis::Renderer2D::DrawText("The Quick Brown Fox Jumped Over The Lazy Dog.", { 100, 0 }, { 1.0, 0.0, 0.0, 1.0 });
 
-		glm::vec4 red = {1.0, 0.0, 0.0, 1.0};
-		glm::vec4 yellow = {1.0, 1.0, 0.0, 1.0};
-		for (int y = 0; y < 10; ++y) {
-			if (y % 2 == 0) {
-				Aegis::Renderer2D::DrawQuad({ 100.0f, y * 100.0f }, { 100.0f, 100.0f }, red);
-			}
-			else{
-				Aegis::Renderer2D::DrawQuad({ 100.0f, y * 100.0f }, { 100.0f, 100.0f }, smiley_);
-			}
-		}
+		//glm::vec4 red = {1.0, 0.0, 0.0, 1.0};
+		//glm::vec4 yellow = {1.0, 1.0, 0.0, 1.0};
+		//for (int y = 0; y < 10; ++y) {
+		//	if (y % 2 == 0) {
+		//		Aegis::Renderer2D::DrawQuad({ 100.0f, y * 100.0f }, { 100.0f, 100.0f }, red);
+		//	}
+		//	else{
+		//		Aegis::Renderer2D::DrawQuad({ 100.0f, y * 100.0f }, { 100.0f, 100.0f }, smiley_);
+		//	}
+		//}
 		
 		
-		//Aegis::Renderer2D::DrawText("FPS: " + std::to_string(average_fps), { 0,0 }, { 1.0, 1.0, 1.0, 1.0f });
-		//Aegis::Renderer2D::DrawText("The Quick Brown", { 20, 0 }, { 1.0, 0.0, 0.0, 1.0 });
+		Aegis::Renderer2D::DrawText("FPS: " + std::to_string(average_fps), { 0,0 }, { 1.0, 1.0, 1.0, 1.0f });
+
 	}
 	void OnEvent(Aegis::Event& event)
 	{

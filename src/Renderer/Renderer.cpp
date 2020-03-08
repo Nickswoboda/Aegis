@@ -166,6 +166,12 @@ namespace Aegis {
         data_.texture_slot_index_ = 1;
 	}
 
+    void Renderer2D::ShowFontAtlas()
+    {
+        auto texture = std::make_unique<Texture>(default_font_->atlas_);
+        DrawQuad({ 240, 240 }, { texture->width_, texture->height_ }, texture);
+    }
+
     void Renderer2D::SetClearColor(float r, float g, float b, float a)
     {
         glClearColor(r, g, b, a);
@@ -272,20 +278,65 @@ namespace Aegis {
     }
     void Renderer2D::DrawText(const std::string& text, const glm::vec2& pos, const glm::vec4& color)
     {
-        font_shader_->Bind();
-        font_shader_->SetFloat4("u_Color", color);
-        vertex_array_->Bind();
-        
+        if (data_.index_count_ >= max_index_count || data_.texture_slot_index_ > 31) {
+            EndBatch();
+            BeginBatch();
+        }
+
+        auto texture = default_font_->atlas_;
+        float texture_index = 0.0f;
+        for (uint32_t i = 1; i < data_.texture_slot_index_; ++i) {
+            if (data_.texture_slots_[i] == texture.ID_) {
+                texture_index = (float)i;
+                break;
+            }
+        }
+        if (texture_index == 0.0f) {
+            texture_index = (float)data_.texture_slot_index_;
+            data_.texture_slots_[data_.texture_slot_index_] = texture.ID_;
+            data_.texture_slot_index_++;
+        }
+
         auto pen_pos = pos;
         pen_pos.y += default_font_->tallest_glyph_height_;
-        for (const auto& c : text) {
-            auto glyph = default_font_->glyphs_[c];
-            glm::mat4 transform = glm::translate(glm::mat4(1.0f), { pen_pos.x + glyph.bearing_x, pen_pos.y - glyph.bearing_y, 0.0f }) * glm::scale(glm::mat4(1.0), { glyph.width, glyph.height, 1.0 });
-            font_shader_->SetMat4("u_Transform", transform);
-            glyph.texture.Bind();
-            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-            pen_pos.x += glyph.advance >> 6;
+        for (const auto& c : text) {
+
+            auto glyph = default_font_->glyphs_[c];
+    
+            glm::mat4 transform = glm::translate(glm::mat4(1.0f), { pen_pos.x + glyph.bearing.x, pen_pos.y - glyph.bearing.y, 0.0f }) * glm::scale(glm::mat4(1.0), { glyph.size.x, glyph.size.y, 1.0 });
+
+            glm::vec4 vertex1_pos = transform * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+            data_.quad_buffer_ptr_->position_ = { vertex1_pos.x, vertex1_pos.y, 0.0f };
+            data_.quad_buffer_ptr_->color_ = color;
+            data_.quad_buffer_ptr_->tex_coords_ = { glyph.atlas_pos.x / texture.width_, glyph.atlas_pos.y / texture.height_ };
+            data_.quad_buffer_ptr_->texture_ID_ = texture_index;
+            data_.quad_buffer_ptr_++;
+
+            glm::vec4 vertex2_pos = transform * glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+            data_.quad_buffer_ptr_->position_ = { vertex2_pos.x, vertex2_pos.y, 0.0f };
+            data_.quad_buffer_ptr_->color_ = color;
+            data_.quad_buffer_ptr_->tex_coords_ = { (glyph.atlas_pos.x + glyph.size.x) / texture.width_, glyph.atlas_pos.y / texture.height_ };
+            data_.quad_buffer_ptr_->texture_ID_ = texture_index;
+            data_.quad_buffer_ptr_++;
+
+            glm::vec4 vertex3_pos = transform * glm::vec4(1.0f, 1.0f, 0.0f, 1.0f);
+            data_.quad_buffer_ptr_->position_ = { vertex3_pos.x, vertex3_pos.y, 0.0f };
+            data_.quad_buffer_ptr_->color_ = color;
+            data_.quad_buffer_ptr_->tex_coords_ = { (glyph.atlas_pos.x + glyph.size.x) / texture.width_, (glyph.atlas_pos.y + glyph.size.y) / texture.height_ };
+            data_.quad_buffer_ptr_->texture_ID_ = texture_index;
+            data_.quad_buffer_ptr_++;
+
+            glm::vec4 vertex4_pos = transform * glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
+            data_.quad_buffer_ptr_->position_ = { vertex4_pos.x, vertex4_pos.y, 0.0f };
+            data_.quad_buffer_ptr_->color_ = color;
+            data_.quad_buffer_ptr_->tex_coords_ = { glyph.atlas_pos.x / texture.width_, (glyph.atlas_pos.y + glyph.size.y) / texture.height_ };
+            data_.quad_buffer_ptr_->texture_ID_ = texture_index;
+            data_.quad_buffer_ptr_++;
+
+            data_.index_count_ += 6;
+
+            pen_pos.x += glyph.advance;
         }
     }
 }

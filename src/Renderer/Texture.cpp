@@ -9,6 +9,8 @@
 namespace Aegis {
     Texture::Texture()
     {
+        width_ = 1;
+        height_ = 1;
         glCreateTextures(GL_TEXTURE_2D, 1, &ID_);
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -21,26 +23,15 @@ namespace Aegis {
         glTextureSubImage2D(ID_, 0, 0, 0, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &data);
     }
 
-    Texture::Texture(FT_Bitmap data)
-    {
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
-        glGenTextures(1, &ID_);
-        glBindTexture(GL_TEXTURE_2D, ID_);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, data.width, data.rows, 0, GL_RED, GL_UNSIGNED_BYTE, data.buffer);
-    }
-
     Texture::Texture(const std::string& path)
     {
         glCreateTextures(GL_TEXTURE_2D, 1, &ID_);
 
         int width, height, channels;
         unsigned char* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
+
+        width_ = width;
+        height_ = height;
 
         GLint internal_format = 0, format = 0;
         if (channels == 3) {
@@ -64,6 +55,20 @@ namespace Aegis {
         glTextureSubImage2D(ID_, 0, 0, 0, width, height, format, GL_UNSIGNED_BYTE, data);
 
         stbi_image_free(data);
+    }
+    Texture::Texture(char* data, int width, int height)
+        :width_(width), height_(height)
+    {
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+        glGenTextures(1, &ID_);
+        glBindTexture(GL_TEXTURE_2D, ID_);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, width, height, 0, GL_RED, GL_UNSIGNED_BYTE, data);
     }
     void Texture::Bind()
     {

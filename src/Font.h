@@ -4,24 +4,25 @@
 
 #include <unordered_map>
 #include <memory>
+#include <vector>
 namespace Aegis {
 
 	struct Glyph
 	{
-		Texture texture;
-		unsigned int width;
-		unsigned int height;
-		int bearing_x;
-		int bearing_y;
+		glm::vec2 atlas_pos;
+		glm::vec2 size;
+		glm::vec2 bearing;
 		int advance;
 	};
 
 	class Font {
 	public:
-		Font(const std::string& path, int size);
-
-		std::unordered_map<char, Glyph> glyphs_;
+		Font(const std::string& path, int size, int num_glyphs = 128);
+		Texture CreateTextureAtlas(const FT_Face& face);
+		std::vector<Glyph> glyphs_;
 		//used to align to top-left corner when rendering
 		int tallest_glyph_height_ = 0;
+		Texture atlas_;
+		int num_glyphs_ = 0;
 	};
 }
