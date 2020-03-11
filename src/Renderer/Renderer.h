@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Texture.h"
-
+#include "../Font.h"
 #include <glm/glm.hpp>
 
 #include <string>
@@ -24,5 +24,7 @@ namespace Aegis {
 		static void DrawQuad(const glm::vec2& pos, const glm::vec2& size, const std::unique_ptr<Texture>& texture, const glm::vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f });
 		static void DrawQuad(const glm::vec2& pos, const glm::vec2& size, const float texture_index, const glm::vec4& color, const glm::vec4& tex_coords = { 0.0f, 0.0f, 1.0f, 1.0f });
 		static void DrawText(const std::string& text, const glm::vec2& pos, const glm::vec4& color);
+
+		static void SetDefaultFont(std::shared_ptr<Font>& font);
 	};
 }

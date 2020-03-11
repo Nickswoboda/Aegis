@@ -19,7 +19,7 @@ namespace Aegis {
     static std::unique_ptr<Shader> font_shader_;
     static std::unique_ptr<VertexArray> vertex_array_;
     static glm::mat4 projection_;
-    static std::unique_ptr<Font> default_font_;
+    static std::shared_ptr<Font> default_font_;
     static std::unique_ptr<Texture> white_texture_;
 
     struct RenderData
@@ -59,7 +59,7 @@ namespace Aegis {
         shader_->SetMat4("u_Projection", projection_);
         shader_->SetIntVector("u_Textures", 32, samplers);
 
-        default_font_ = std::make_unique<Font>("assets/fonts/WorkSans-Regular.ttf", 36);
+        default_font_ = std::make_shared<Font>("assets/fonts/WorkSans-Regular.ttf", 16);
 
         white_texture_ = std::make_unique<Texture>();
         vertex_array_ = std::make_unique<VertexArray>();
@@ -213,5 +213,9 @@ namespace Aegis {
         EndBatch();
         shader_->Bind();
         BeginBatch();
+    }
+    void Renderer2D::SetDefaultFont(std::shared_ptr<Font>& font)
+    {
+        default_font_ = font;
     }
 }

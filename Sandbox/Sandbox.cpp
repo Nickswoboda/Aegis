@@ -10,7 +10,11 @@ public:
 	{
 		smiley_ = std::make_unique<Aegis::Texture>("assets/textures/smiley.png");
 		container_ = std::make_unique<Aegis::Texture>("assets/textures/container.jpg");
+
+		fonts_.emplace_back(std::make_shared<Aegis::Font>("assets/fonts/Roboto-Regular.ttf", 16));
+		fonts_.emplace_back(std::make_shared<Aegis::Font>("assets/fonts/WorkSans-Regular.ttf", 16));
 	}
+
 	void OnUpdate() override
 	{
 		static std::deque<double> fps (20, 60.0);
@@ -49,12 +53,19 @@ public:
 			else if (key_event->key_ == GLFW_KEY_S) {
 				Aegis::Application::SetVsync(false);
 			}
+			else if (key_event->key_ == GLFW_KEY_F) {
+				Aegis::Renderer2D::SetDefaultFont(fonts_[0]);
+			}
+			else if (key_event->key_ == GLFW_KEY_G) {
+				Aegis::Renderer2D::SetDefaultFont(fonts_[1]);
+			}
 		}
 
 	}
 
 	std::unique_ptr<Aegis::Texture> smiley_;
 	std::unique_ptr<Aegis::Texture> container_;
+	std::vector<std::shared_ptr<Aegis::Font>> fonts_;
 
 };
 
