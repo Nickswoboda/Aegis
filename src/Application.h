@@ -19,6 +19,7 @@ namespace Aegis {
 		void Run();
 		void OnEvent(Event& event);
 		void OnWindowClose();
+		void OnWindowResize(const WindowResizeEvent& event);
 		void PushLayer(Layer* layer);
 		static void SetVsync(bool vsync);
 		static double GetFrameTime();

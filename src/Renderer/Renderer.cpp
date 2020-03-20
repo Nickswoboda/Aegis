@@ -218,4 +218,14 @@ namespace Aegis {
     {
         default_font_ = font;
     }
+    void Renderer2D::SetProjection(int width, int height)
+    {
+        projection_ = glm::ortho(0.0f, (float)width, (float)height, 0.0f, -1.0f, 1.0f);
+
+        font_shader_->Bind();
+        font_shader_->SetMat4("u_Projection", projection_);
+
+        shader_->Bind();
+        shader_->SetMat4("u_Projection", projection_);
+    }
 }

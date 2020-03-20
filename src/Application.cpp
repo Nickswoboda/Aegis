@@ -55,6 +55,11 @@ namespace Aegis {
 			return;
 		}
 
+		auto resize_event = dynamic_cast<WindowResizeEvent*>(&event);
+		if (resize_event) {
+			OnWindowResize(*resize_event);
+		}
+
 		if (!event.handled_) {
 			for (auto& layer : layers_) {
 				layer->OnEvent(event);
@@ -65,6 +70,11 @@ namespace Aegis {
 	void Application::OnWindowClose()
 	{
 		running_ = false;
+	}
+	void Application::OnWindowResize(const WindowResizeEvent& event)
+	{
+		glViewport(0, 0, event.width_, event.height_);
+		Renderer2D::SetProjection(event.width_, event.height_);
 	}
 	void Application::PushLayer(Layer* layer)
 	{
