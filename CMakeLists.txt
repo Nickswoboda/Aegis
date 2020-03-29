@@ -17,15 +17,15 @@ add_executable(Sandbox
 	"Sandbox/Sandbox.cpp")
 
 include_directories(
-	"dependencies/GLFW/include"
-	"dependencies/GLAD/include"
-	"dependencies/GLM/"
-	"dependencies/stb_image/"
-	"dependencies/FreeType/include")
+	"${CMAKE_CURRENT_LIST_DIR}/dependencies/GLFW/include"
+	"${CMAKE_CURRENT_LIST_DIR}/dependencies/GLAD/include"
+	"${CMAKE_CURRENT_LIST_DIR}/dependencies/GLM/"
+	"${CMAKE_CURRENT_LIST_DIR}/dependencies/stb_image/"
+	"${CMAKE_CURRENT_LIST_DIR}/dependencies/FreeType/include")
 
-add_subdirectory("dependencies/GLFW")
-add_subdirectory("dependencies/GLM")
-add_subdirectory("dependencies/FreeType")
+add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/dependencies/GLFW")
+add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/dependencies/GLM")
+add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/dependencies/FreeType")
 
 target_link_libraries(Aegis glfw)
 target_link_libraries(Aegis freetype)
