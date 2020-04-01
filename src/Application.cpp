@@ -33,18 +33,34 @@ namespace Aegis {
 
 	void Application::Run()
 	{
+
+		float MS_PER_UPDATE = 16.66666;
+		auto previous_time = std::chrono::high_resolution_clock::now();
+		double accumulator_ = 0.0;
 		while (running_) {
-			auto begin_frame_time_ = std::chrono::high_resolution_clock::now();
+
+			auto current_time = std::chrono::high_resolution_clock::now();
+			frame_time_ms_ = std::chrono::duration<double, std::milli>(current_time - previous_time).count();
+			previous_time = current_time;
+
+			accumulator_ += frame_time_ms_;
+
 			window_->OnUpdate();
 			
+			while (accumulator_ >= MS_PER_UPDATE) {
+				for (auto& layer : layers_) {
+					layer->OnUpdate();
+				}
+
+				accumulator_ -= MS_PER_UPDATE;
+			}
+
 			Renderer2D::BeginBatch();
 			for (auto& layer : layers_) {
-				layer->OnUpdate();
+				layer->OnRender(accumulator_ / MS_PER_UPDATE);
 			}
 			Renderer2D::EndBatch();
 
-			auto end_frame_time_ = std::chrono::high_resolution_clock::now();
-			frame_time_ms_ = std::chrono::duration<double, std::milli>(end_frame_time_ - begin_frame_time_).count();
 		}
 	}
 	void Application::OnEvent(Event& event)

@@ -8,5 +8,6 @@ namespace Aegis {
 	public:
 		virtual void OnUpdate() {};
 		virtual void OnEvent(Event& event) {};
+		virtual void OnRender(float delta_time) {};
 	};
 }
