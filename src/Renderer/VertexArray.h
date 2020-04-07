@@ -1,6 +1,7 @@
 #pragma once
 
-#include <glm/glm.hpp>
+#include "../Math.h"
+
 namespace Aegis {
 
 	class VertexArray
@@ -8,9 +9,9 @@ namespace Aegis {
 	public:
 		struct Vertex
 		{
-			glm::vec3 position_;
-			glm::vec4 color_;
-			glm::vec2 tex_coords_;
+			Vec3 position_;
+			Vec4 color_;
+			Vec2 tex_coords_;
 			float texture_ID_;
 		};
 		VertexArray();

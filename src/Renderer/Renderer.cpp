@@ -98,12 +98,6 @@ namespace Aegis {
         data_.texture_slot_index_ = 1;
 	}
 
-    void Renderer2D::ShowFontAtlas()
-    {
-        auto texture = std::make_unique<Texture>(default_font_->atlas_);
-        DrawQuad({ 240, 240 }, { texture->width_, texture->height_ }, texture);
-    }
-
     void Renderer2D::SetClearColor(float r, float g, float b, float a)
     {
         glClearColor(r, g, b, a);
@@ -114,7 +108,7 @@ namespace Aegis {
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
 
-    void Renderer2D::DrawQuad(const glm::vec2& pos, const glm::vec2& size, const glm::vec4& color)
+    void Renderer2D::DrawQuad(const Vec2& pos, const Vec2& size, const Vec4& color)
 	{
         if (data_.index_count_ >= vertex_array_->max_index_count_) {
             EndBatch();
@@ -124,7 +118,7 @@ namespace Aegis {
         DrawQuad(pos, size, 0, color);
 	}
 
-    void Renderer2D::DrawQuad(const glm::vec2& pos, const glm::vec2& size, const std::unique_ptr<Texture>& texture, const glm::vec4& color)
+    void Renderer2D::DrawQuad(const Vec2& pos, const Vec2& size, const std::unique_ptr<Texture>& texture, const Vec4& color)
     {
         if (data_.index_count_ >= vertex_array_->max_index_count_ || data_.texture_slot_index_ > 31) {
             EndBatch();
@@ -146,7 +140,7 @@ namespace Aegis {
         
         DrawQuad(pos, size, texture_index, color);
     }
-    void Renderer2D::DrawQuad(const glm::vec2& pos, const glm::vec2& size, const float texture_index, const glm::vec4& color, const glm::vec4& tex_coords)
+    void Renderer2D::DrawQuad(const Vec2& pos, const Vec2& size, const float texture_index, const Vec4& color, const Vec4& tex_coords)
     {
         glm::mat4 transform = glm::translate(glm::mat4(1.0f), { pos.x, pos.y, 0.0f }) * glm::scale(glm::mat4(1.0), { size.x, size.y, 1.0 });
         glm::vec4 vertex1_pos = transform * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
@@ -179,7 +173,7 @@ namespace Aegis {
 
         data_.index_count_ += 6;
     }
-    void Renderer2D::DrawText(const std::string& text, const glm::vec2& pos, const glm::vec4& color)
+    void Renderer2D::DrawText(const std::string& text, const Vec2& pos, const Vec4& color)
     {
         EndBatch();
         BeginBatch();

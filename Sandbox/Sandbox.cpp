@@ -52,16 +52,16 @@ public:
 
 		for (int y = 0; y < 10; ++y) {
 			for (int x = 0; x < 10; ++x) {
-				Aegis::Renderer2D::DrawQuad({ x * 26, y * 26 }, { 25, 25 }, { 0.3f, 0.6f, 0.9f, 1.0f });
-				Aegis::Renderer2D::DrawQuad({ x * 2, y * 2 }, { 1, 1 }, smiley_);
+				Aegis::Renderer2D::DrawQuad({ x * 26.0f, y * 26.0f }, { 25.0f, 25.0f }, { 0.3f, 0.6f, 0.9f, 1.0f });
+				Aegis::Renderer2D::DrawQuad({ x * 2.0f, y * 2.0f }, { 1.0f, 1.0f }, smiley_);
 			}
 		}
 		Aegis::Renderer2D::DrawText("ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890", { 240, 240 }, { 1.0f, 0.0f, 1.0f, 1.0f });
-		Aegis::Renderer2D::DrawText("FPS: " + std::to_string(Aegis::Application::GetFrameTime()), { 0,0 }, { 1.0, 1.0, 1.0, 1.0f });
+		Aegis::Renderer2D::DrawText("FPS: " + std::to_string(Aegis::Application::GetFrameTime()), { 0.0f,0.0f }, { 1.0, 1.0, 1.0, 1.0f });
 
 
-		Aegis::Renderer2D::DrawQuad({ x_pos_ + (x_vel_ * delta_time), 200 }, { 100, 100 }, smiley_);
-		Aegis::Renderer2D::DrawQuad({ 400, 200 }, { 100, 100 }, container_);
+		Aegis::Renderer2D::DrawQuad({ x_pos_ + (x_vel_ * delta_time), 200.0f }, { 100.0f, 100.0f }, smiley_);
+		Aegis::Renderer2D::DrawQuad({ 400.0f, 200.0f }, { 100.0f, 100.0f }, container_);
 	}
 	std::unique_ptr<Aegis::Texture> smiley_;
 	std::unique_ptr<Aegis::Texture> container_;

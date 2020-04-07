@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../Math.h"
+
 #include <glm/glm.hpp>
 
 #include <string>
@@ -11,7 +13,7 @@ namespace Aegis {
 
 		void SetInt(const std::string& name, int value);
 		void SetIntVector(const std::string& name, int count, int* values);
-		void SetFloat4(const std::string& name, const glm::vec4& value);
+		void SetFloat4(const std::string& name, const Vec4& value);
 		void SetMat4(const std::string& name, const glm::mat4& value);
 
 		void Bind();

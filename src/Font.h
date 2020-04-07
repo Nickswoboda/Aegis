@@ -1,11 +1,11 @@
 #pragma once
 
 #include "Renderer/Texture.h"
+#include "Math.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
-#include <glm/glm.hpp>
 
 #include <unordered_map>
 #include <memory>
@@ -14,9 +14,9 @@ namespace Aegis {
 
 	struct Glyph
 	{
-		glm::vec2 atlas_pos;
-		glm::vec2 size;
-		glm::vec2 bearing;
+		Vec2 atlas_pos;
+		Vec2 size;
+		Vec2 bearing;
 		int advance;
 	};
 

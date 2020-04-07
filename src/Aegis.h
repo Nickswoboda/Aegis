@@ -3,3 +3,4 @@
 #include "Renderer/Texture.h"
 #include "Event.h"
 #include "Window.h"
+#include "Math.h"
