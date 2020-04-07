@@ -96,7 +96,7 @@ namespace Aegis {
 	{
 		layers_.emplace_back(std::move(layer));
 	}
-	void Application::SetVsync(bool vsync)
+	void SetVsync(bool vsync)
 	{
 		if (vsync) {
 			glfwSwapInterval(1);

@@ -21,7 +21,6 @@ namespace Aegis {
 		void OnWindowClose();
 		void OnWindowResize(const WindowResizeEvent& event);
 		void PushLayer(Layer* layer);
-		static void SetVsync(bool vsync);
 		static double GetFrameTime();
 	private:
 		std::unique_ptr<Window> window_;
@@ -29,4 +28,6 @@ namespace Aegis {
 		std::vector<std::unique_ptr<Layer>> layers_;
 		static double frame_time_ms_;
 	};
+
+	void SetVsync(bool vsync);
 }

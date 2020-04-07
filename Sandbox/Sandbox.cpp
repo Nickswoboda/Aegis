@@ -25,10 +25,10 @@ public:
 		auto key_event = dynamic_cast<Aegis::KeyEvent*>(&event);
 		if (key_event) {
 			if (key_event->key_ == GLFW_KEY_A) {
-				Aegis::Application::SetVsync(true);
+				Aegis::SetVsync(true);
 			}
 			else if (key_event->key_ == GLFW_KEY_S) {
-				Aegis::Application::SetVsync(false);
+				Aegis::SetVsync(false);
 			}
 			else if (key_event->key_ == GLFW_KEY_F) {
 				Aegis::Renderer2D::SetDefaultFont(fonts_[0]);
@@ -48,20 +48,20 @@ public:
 
 	void OnRender(float delta_time) override
 	{
-		Aegis::Renderer2D::Clear();
+		Aegis::RendererClear();
 
 		for (int y = 0; y < 10; ++y) {
 			for (int x = 0; x < 10; ++x) {
-				Aegis::Renderer2D::DrawQuad({ x * 26.0f, y * 26.0f }, { 25.0f, 25.0f }, { 0.3f, 0.6f, 0.9f, 1.0f });
-				Aegis::Renderer2D::DrawQuad({ x * 2.0f, y * 2.0f }, { 1.0f, 1.0f }, smiley_);
+				Aegis::DrawQuad({ x * 26.0f, y * 26.0f }, { 25.0f, 25.0f }, { 0.3f, 0.6f, 0.9f, 1.0f });
+				Aegis::DrawQuad({ x * 2.0f, y * 2.0f }, { 1.0f, 1.0f }, smiley_);
 			}
 		}
-		Aegis::Renderer2D::DrawText("ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890", { 240, 240 }, { 1.0f, 0.0f, 1.0f, 1.0f });
-		Aegis::Renderer2D::DrawText("FPS: " + std::to_string(Aegis::Application::GetFrameTime()), { 0.0f,0.0f }, { 1.0, 1.0, 1.0, 1.0f });
+		Aegis::DrawText("ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890", { 240, 240 }, { 1.0f, 0.0f, 1.0f, 1.0f });
+		Aegis::DrawText("FPS: " + std::to_string(Aegis::Application::GetFrameTime()), { 0.0f,0.0f }, { 1.0, 1.0, 1.0, 1.0f });
 
 
-		Aegis::Renderer2D::DrawQuad({ x_pos_ + (x_vel_ * delta_time), 200.0f }, { 100.0f, 100.0f }, smiley_);
-		Aegis::Renderer2D::DrawQuad({ 400.0f, 200.0f }, { 100.0f, 100.0f }, container_);
+		Aegis::DrawQuad({ x_pos_ + (x_vel_ * delta_time), 200.0f }, { 100.0f, 100.0f }, smiley_);
+		Aegis::DrawQuad({ 400.0f, 200.0f }, { 100.0f, 100.0f }, container_);
 	}
 	std::unique_ptr<Aegis::Texture> smiley_;
 	std::unique_ptr<Aegis::Texture> container_;

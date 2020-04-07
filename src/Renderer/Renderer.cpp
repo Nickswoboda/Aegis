@@ -103,26 +103,26 @@ namespace Aegis {
         glClearColor(r, g, b, a);
     }
 
-    void Renderer2D::Clear()
+    void RendererClear()
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
 
-    void Renderer2D::DrawQuad(const Vec2& pos, const Vec2& size, const Vec4& color)
+    void DrawQuad(const Vec2& pos, const Vec2& size, const Vec4& color)
 	{
         if (data_.index_count_ >= vertex_array_->max_index_count_) {
-            EndBatch();
-            BeginBatch();
+            Renderer2D::EndBatch();
+            Renderer2D::BeginBatch();
         } 
 
         DrawQuad(pos, size, 0, color);
 	}
 
-    void Renderer2D::DrawQuad(const Vec2& pos, const Vec2& size, const std::unique_ptr<Texture>& texture, const Vec4& color)
+    void DrawQuad(const Vec2& pos, const Vec2& size, const std::unique_ptr<Texture>& texture, const Vec4& color)
     {
         if (data_.index_count_ >= vertex_array_->max_index_count_ || data_.texture_slot_index_ > 31) {
-            EndBatch();
-            BeginBatch();
+            Renderer2D::EndBatch();
+            Renderer2D::BeginBatch();
         }
 
         float texture_index = 0.0f;
@@ -140,7 +140,7 @@ namespace Aegis {
         
         DrawQuad(pos, size, texture_index, color);
     }
-    void Renderer2D::DrawQuad(const Vec2& pos, const Vec2& size, const float texture_index, const Vec4& color, const Vec4& tex_coords)
+    void DrawQuad(const Vec2& pos, const Vec2& size, const float texture_index, const Vec4& color, const Vec4& tex_coords)
     {
         glm::mat4 transform = glm::translate(glm::mat4(1.0f), { pos.x, pos.y, 0.0f }) * glm::scale(glm::mat4(1.0), { size.x, size.y, 1.0 });
         glm::vec4 vertex1_pos = transform * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
@@ -173,10 +173,10 @@ namespace Aegis {
 
         data_.index_count_ += 6;
     }
-    void Renderer2D::DrawText(const std::string& text, const Vec2& pos, const Vec4& color)
+    void DrawText(const std::string& text, const Vec2& pos, const Vec4& color)
     {
-        EndBatch();
-        BeginBatch();
+        Renderer2D::EndBatch();
+        Renderer2D::BeginBatch();
         font_shader_->Bind();
 
         auto& texture = default_font_->atlas_;
@@ -204,9 +204,9 @@ namespace Aegis {
             pen_pos.x += glyph.advance;
         }
 
-        EndBatch();
+        Renderer2D::EndBatch();
         shader_->Bind();
-        BeginBatch();
+        Renderer2D::BeginBatch();
     }
     void Renderer2D::SetDefaultFont(std::shared_ptr<Font>& font)
     {
