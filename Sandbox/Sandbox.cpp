@@ -13,6 +13,7 @@ public:
 
 		fonts_.emplace_back(std::make_shared<Aegis::Font>("assets/fonts/Roboto-Regular.ttf", 16));
 		fonts_.emplace_back(std::make_shared<Aegis::Font>("assets/fonts/WorkSans-Regular.ttf", 16));
+
 	}
 
 	void OnUpdate() override
@@ -25,10 +26,10 @@ public:
 		auto key_event = dynamic_cast<Aegis::KeyEvent*>(&event);
 		if (key_event) {
 			if (key_event->key_ == GLFW_KEY_A) {
-				Aegis::SetVsync(true);
+				Aegis::Application::SetVsync(true);
 			}
 			else if (key_event->key_ == GLFW_KEY_S) {
-				Aegis::SetVsync(false);
+				Aegis::Application::SetVsync(false);
 			}
 			else if (key_event->key_ == GLFW_KEY_F) {
 				Aegis::Renderer2D::SetDefaultFont(fonts_[0]);

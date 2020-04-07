@@ -22,12 +22,17 @@ namespace Aegis {
 		void OnWindowResize(const WindowResizeEvent& event);
 		void PushLayer(Layer* layer);
 		static double GetFrameTime();
+		static Application& Get() { return *instance_; }
+		static int GetWindowHeight() { return Get().window_->height_; }
+		static int GetWindowWidth() { return Get().window_->width_; }
+		static bool IsVsync() { return  Get().vsync_; }
+		static void SetVsync(bool vsync);
 	private:
+		static Application* instance_;
 		std::unique_ptr<Window> window_;
-		bool running_ = true;
 		std::vector<std::unique_ptr<Layer>> layers_;
 		static double frame_time_ms_;
+		bool running_ = true;
+		bool vsync_ = false;
 	};
-
-	void SetVsync(bool vsync);
 }

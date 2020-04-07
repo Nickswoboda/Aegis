@@ -18,6 +18,8 @@ namespace Aegis {
 		void OnUpdate();
 
 		std::function<void(Event&)> callback_;
+		int width_;
+		int height_;
 	private:
 		GLFWwindow* window_;
 	};

@@ -7,6 +7,7 @@
 namespace Aegis {
 
 	Window::Window(const std::string& title, int width, int height)
+		:width_(width), height_(height)
 	{
 		window_ = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
 		if (window_ == nullptr) {

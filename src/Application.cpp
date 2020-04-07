@@ -11,9 +11,14 @@
 namespace Aegis {
 
 	double Application::frame_time_ms_ = 0.0;
+	Application* Application::instance_ = nullptr;
 
 	Application::Application(int width, int height)
 	{
+		if (instance_) {
+			std::cout << "Application already created\n";
+		}
+		instance_ = this;
 		if (!glfwInit()) {
 			std::cout << "Unable to initiate GLFW.\n";
 			return;
@@ -96,13 +101,15 @@ namespace Aegis {
 	{
 		layers_.emplace_back(std::move(layer));
 	}
-	void SetVsync(bool vsync)
+	void Application::SetVsync(bool vsync)
 	{
-		if (vsync) {
+		if (vsync && !Get().IsVsync()) {
 			glfwSwapInterval(1);
+			Get().vsync_ = true;
 		}
-		else {
+		else if (!vsync && Get().IsVsync()){
 			glfwSwapInterval(0);
+			Get().vsync_ = false;
 		}
 	}
 	double Application::GetFrameTime()
