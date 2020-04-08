@@ -116,4 +116,10 @@ namespace Aegis {
 	{
 		return frame_time_ms_;
 	}
+	Vec2 Application::GetMousePos()
+	{
+		double x, y;
+		glfwGetCursorPos(Get().window_->GetWindowHandle(), &x, &y);
+		return Vec2(x, y);
+	}
 }	

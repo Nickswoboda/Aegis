@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Event.h"
-
+#include "Math.h"
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
@@ -16,7 +16,8 @@ namespace Aegis {
 
 		void SetEventCallbacks();
 		void OnUpdate();
-
+		GLFWwindow* GetWindowHandle() { return window_; };
+		
 		std::function<void(Event&)> callback_;
 		int width_;
 		int height_;

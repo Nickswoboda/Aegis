@@ -39,6 +39,8 @@ public:
 			}
 			else if (key_event->key_ == GLFW_KEY_LEFT) {
 				x_vel_ = accel_;
+				auto pos = Aegis::Application::GetMousePos();
+				std::cout << pos.x << pos.y << "\n";
 			}
 			else if (key_event->key_ == GLFW_KEY_RIGHT) {
 				x_vel_ = -accel_;
