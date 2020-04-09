@@ -36,13 +36,13 @@ namespace Aegis {
 
     static RenderData data_;
 
-    void Renderer2D::Init()
+    void Renderer2D::Init(int width, int height)
     {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         SetClearColor(0.0f, 0.0f, 0.7f, 1.0f);
-        projection_ = glm::ortho(0.0f, 640.0f, 480.0f, 0.0f, -1.0f, 1.0f);
+        projection_ = glm::ortho(0.0f, (float)width, (float)height, 0.0f, -1.0f, 1.0f);
 
         int samplers[max_textures];
         for (int i = 0; i < max_textures; ++i) {

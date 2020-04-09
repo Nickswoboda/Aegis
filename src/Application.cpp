@@ -27,7 +27,7 @@ namespace Aegis {
 		window_ = std::make_unique<Window>("Aegis", width, height);
 		window_->callback_ = std::bind(&Application::OnEvent, this, std::placeholders::_1);
 
-		Renderer2D::Init();
+		Renderer2D::Init(width, height);
 	}
 
 	Application::~Application()

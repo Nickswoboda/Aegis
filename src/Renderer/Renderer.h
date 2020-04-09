@@ -11,7 +11,7 @@ namespace Aegis {
 	class Renderer2D
 	{
 	public:
-		static void Init();
+		static void Init(int width, int height);
 		static void Shutdown();
 
 		static void BeginBatch();
