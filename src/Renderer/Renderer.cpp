@@ -118,7 +118,7 @@ namespace Aegis {
         DrawQuad(pos, size, 0, color);
 	}
 
-    void DrawQuad(const Vec2& pos, const Vec2& size, const std::unique_ptr<Texture>& texture, const Vec4& color)
+    void DrawQuad(const Vec2& pos, const Vec2& size, const std::unique_ptr<Texture>& texture, const Vec4& color, const Vec4& tex_coords)
     {
         if (data_.index_count_ >= vertex_array_->max_index_count_ || data_.texture_slot_index_ > 31) {
             Renderer2D::EndBatch();
@@ -138,7 +138,7 @@ namespace Aegis {
             data_.texture_slot_index_++;
         }
         
-        DrawQuad(pos, size, texture_index, color);
+        DrawQuad(pos, size, texture_index, color, tex_coords);
     }
     void DrawQuad(const Vec2& pos, const Vec2& size, const float texture_index, const Vec4& color, const Vec4& tex_coords)
     {

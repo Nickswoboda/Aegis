@@ -77,7 +77,7 @@ public:
 
 int main()
 {
-	Aegis::Application app(800, 600);
+	Aegis::Application app(1280, 720);
 	app.PushLayer(new Sandbox());
 	app.Run();
 }
