@@ -138,7 +138,13 @@ namespace Aegis {
             data_.texture_slot_index_++;
         }
         
-        DrawQuad(pos, size, texture_index, color, tex_coords);
+        Vec4 uv_coords;
+        uv_coords.x = tex_coords.x / texture->width_;
+        uv_coords.y = tex_coords.y / texture->height_;
+        uv_coords.z = tex_coords.z / texture->width_;
+        uv_coords.w = tex_coords.w / texture->height_;
+
+        DrawQuad(pos, size, texture_index, color, uv_coords);
     }
     void DrawQuad(const Vec2& pos, const Vec2& size, const float texture_index, const Vec4& color, const Vec4& tex_coords)
     {
