@@ -139,10 +139,15 @@ namespace Aegis {
         }
         
         Vec4 uv_coords;
-        uv_coords.x = tex_coords.x / texture->width_;
-        uv_coords.y = tex_coords.y / texture->height_;
-        uv_coords.z = tex_coords.z / texture->width_;
-        uv_coords.w = tex_coords.w / texture->height_;
+        if (tex_coords.w == 1.0f && tex_coords.z == 1.0f) {
+            uv_coords = tex_coords;
+        }
+        else {
+            uv_coords.x = tex_coords.x / texture->width_;
+            uv_coords.y = tex_coords.y / texture->height_;
+            uv_coords.z = tex_coords.z / texture->width_;
+            uv_coords.w = tex_coords.w / texture->height_;
+        }
 
         DrawQuad(pos, size, texture_index, color, uv_coords);
     }

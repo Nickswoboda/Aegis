@@ -12,10 +12,10 @@ add_library (Aegis STATIC
 	"src/Renderer/Shader.cpp"
 	"src/Renderer/VertexArray.cpp"
 	"dependencies/GLAD/src/glad.c"
-	"src/Math.h")
+	"src/Math.h" "src/Math.cpp")
 
 add_executable(Sandbox 
-	"Sandbox/Sandbox.cpp")
+	"Sandbox/Sandbox.cpp" "src/Math.cpp")
 
 target_include_directories(Aegis
 PUBLIC
