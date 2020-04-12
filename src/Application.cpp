@@ -2,6 +2,7 @@
 
 #include "Renderer/Renderer.h"
 #include "Font.h"
+#include "Timer.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -40,13 +41,13 @@ namespace Aegis {
 	{
 
 		float MS_PER_UPDATE = 16.66666;
-		auto previous_time = std::chrono::high_resolution_clock::now();
+		Timer timer;
 		double accumulator_ = 0.0;
 		while (running_) {
 
-			auto current_time = std::chrono::high_resolution_clock::now();
-			frame_time_ms_ = std::chrono::duration<double, std::milli>(current_time - previous_time).count();
-			previous_time = current_time;
+			timer.Update();
+			frame_time_ms_ = timer.GetElapsedInMilliseconds();
+			timer.Reset();
 
 			accumulator_ += frame_time_ms_;
 
