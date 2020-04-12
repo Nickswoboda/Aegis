@@ -3,6 +3,8 @@
 #include <deque>
 #include <iostream>
 
+#include <glm/glm.hpp>
+
 class Sandbox : public Aegis::Layer
 {
 public:
@@ -13,6 +15,9 @@ public:
 
 		fonts_.emplace_back(std::make_shared<Aegis::Font>("assets/fonts/Roboto-Regular.ttf", 16));
 		fonts_.emplace_back(std::make_shared<Aegis::Font>("assets/fonts/WorkSans-Regular.ttf", 16));
+
+		auto vec4 = sizeof(Aegis::Vec4);
+		auto glm4 = sizeof(glm::vec4);
 
 	}
 
@@ -25,24 +30,24 @@ public:
 	{
 		auto key_event = dynamic_cast<Aegis::KeyEvent*>(&event);
 		if (key_event) {
-			if (key_event->key_ == GLFW_KEY_A) {
+			if (key_event->key_ == AE_KEY_A) {
 				Aegis::Application::SetVsync(true);
 			}
-			else if (key_event->key_ == GLFW_KEY_S) {
+			else if (key_event->key_ == AE_KEY_S) {
 				Aegis::Application::SetVsync(false);
 			}
-			else if (key_event->key_ == GLFW_KEY_F) {
+			else if (key_event->key_ == AE_KEY_F) {
 				Aegis::Renderer2D::SetDefaultFont(fonts_[0]);
 			}
-			else if (key_event->key_ == GLFW_KEY_G) {
+			else if (key_event->key_ == AE_KEY_G) {
 				Aegis::Renderer2D::SetDefaultFont(fonts_[1]);
 			}
-			else if (key_event->key_ == GLFW_KEY_LEFT) {
+			else if (key_event->key_ == AE_KEY_LEFT) {
 				x_vel_ = accel_;
 				auto pos = Aegis::Application::GetMousePos();
 				std::cout << pos.x << pos.y << "\n";
 			}
-			else if (key_event->key_ == GLFW_KEY_RIGHT) {
+			else if (key_event->key_ == AE_KEY_RIGHT) {
 				x_vel_ = -accel_;
 			}
 		}

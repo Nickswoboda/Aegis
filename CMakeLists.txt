@@ -12,7 +12,8 @@ add_library (Aegis STATIC
 	"src/Renderer/Shader.cpp"
 	"src/Renderer/VertexArray.cpp"
 	"dependencies/GLAD/src/glad.c"
-	"src/Math.h" "src/Math.cpp")
+	"src/Math.h" "src/Math.cpp"
+	"src/KeyCodes.h" "src/MouseCodes.h")
 
 add_executable(Sandbox 
 	"Sandbox/Sandbox.cpp" "src/Math.cpp")

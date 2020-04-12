@@ -4,3 +4,5 @@
 #include "Event.h"
 #include "Window.h"
 #include "Math.h"
+#include "KeyCodes.h"
+#include "MouseCodes.h"
