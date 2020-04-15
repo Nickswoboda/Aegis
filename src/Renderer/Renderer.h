@@ -24,7 +24,7 @@ namespace Aegis {
 
 	void RendererClear();
 	void DrawQuad(const Vec2& pos, const Vec2& size, const Vec4& color);
-	void DrawQuad(const Vec2& pos, const Vec2& size, const std::unique_ptr<Texture>& texture, const Vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f }, const Vec4& tex_coords = { 0.0f, 0.0f, 1.0f, 1.0f });
+	void DrawQuad(const Vec2& pos, const Vec2& size, const std::shared_ptr<Texture>& texture, const Vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f }, const Vec4& tex_coords = { 0.0f, 0.0f, 1.0f, 1.0f });
 	void DrawQuad(const Vec2& pos, const Vec2& size, const float texture_index, const Vec4& color, const Vec4& tex_coords = { 0.0f, 0.0f, 1.0f, 1.0f });
 	void DrawText(const std::string& text, const Vec2& size, const Vec4& color);
 }
