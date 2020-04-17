@@ -8,3 +8,4 @@
 #include "MouseCodes.h"
 #include "Timer.h"
 #include "TextureManager.h"
+#include "Camera.h"

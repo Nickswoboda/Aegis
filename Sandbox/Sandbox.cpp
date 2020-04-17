@@ -9,6 +9,7 @@ class Sandbox : public Aegis::Layer
 {
 public:
 	Sandbox()
+		:camera_(0, 1280, 720, 0)
 	{
 		smiley_ = Aegis::TextureManager::Instance().Load("assets/textures/smiley.png");
 		container_ = Aegis::TextureManager::Instance().Load("assets/textures/container.jpg");
@@ -38,14 +39,16 @@ public:
 			else if (key_event->key_ == AE_KEY_G) {
 				Aegis::Renderer2D::SetDefaultFont(fonts_[1]);
 			}
-			else if (key_event->key_ == AE_KEY_LEFT) {
-				x_vel_ = accel_;
-				auto pos = Aegis::Application::GetMousePos();
-				std::cout << pos.x << pos.y << "\n";
+			static int x = 0;
+
+			if (key_event->key_ == AE_KEY_LEFT) {
+				--x;
 			}
 			else if (key_event->key_ == AE_KEY_RIGHT) {
-				x_vel_ = -accel_;
+				++x;
 			}
+
+			camera_.SetPosition({ x, 0, 0 });
 		}
 
 	}
@@ -53,6 +56,7 @@ public:
 	void OnRender(float delta_time) override
 	{
 		Aegis::RendererClear();
+		Aegis::Renderer2D::SetProjection(camera_.view_projection_matrix_);
 
 		for (int y = 0; y < 10; ++y) {
 			for (int x = 0; x < 10; ++x) {
@@ -70,6 +74,7 @@ public:
 	std::shared_ptr<Aegis::Texture> container_;
 	std::vector<std::shared_ptr<Aegis::Font>> fonts_;
 
+	Aegis::Camera camera_;
 	int x_vel_ = 0;
 	int accel_ = 2;
 	int x_pos_ = 0;

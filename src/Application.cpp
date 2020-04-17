@@ -6,6 +6,8 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+
+#include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 #include <chrono>
 
@@ -96,7 +98,7 @@ namespace Aegis {
 	void Application::OnWindowResize(const WindowResizeEvent& event)
 	{
 		glViewport(0, 0, event.width_, event.height_);
-		Renderer2D::SetProjection(event.width_, event.height_);
+		Renderer2D::SetProjection(glm::ortho(0.0f, (float)event.width_, (float)event.height_, 0.0f));
 	}
 	void Application::PushLayer(Layer* layer)
 	{

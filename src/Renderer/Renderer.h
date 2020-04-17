@@ -3,6 +3,7 @@
 #include "Texture.h"
 #include "../Font.h"
 #include "../Math.h"
+#include <glm/glm.hpp>
 
 #include <string>
 #include <memory>
@@ -19,7 +20,7 @@ namespace Aegis {
 
 		static void SetClearColor(float r, float g, float b, float a);
 		static void SetDefaultFont(std::shared_ptr<Font>& font);
-		static void SetProjection(int width, int height);
+		static void SetProjection(const glm::mat4& projection);
 	};
 
 	void RendererClear();
