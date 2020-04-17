@@ -9,6 +9,7 @@ namespace Aegis
 	class Sprite
 	{
 	public:
+		Sprite() {};
 		Sprite(const std::shared_ptr<Texture>& texture)
 		{
 			texture_ = texture;
