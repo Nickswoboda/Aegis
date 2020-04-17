@@ -219,6 +219,10 @@ namespace Aegis {
         shader_->Bind();
         Renderer2D::BeginBatch();
     }
+    void RenderSprite(const Sprite& sprite)
+    {
+        DrawQuad(sprite.pos_, sprite.size_, sprite.texture_, sprite.color_, sprite.tex_coords_);
+    }
     void Renderer2D::SetDefaultFont(std::shared_ptr<Font>& font)
     {
         default_font_ = font;

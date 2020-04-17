@@ -16,11 +16,12 @@ public:
 
 		fonts_.emplace_back(std::make_shared<Aegis::Font>("assets/fonts/Roboto-Regular.ttf", 16));
 		fonts_.emplace_back(std::make_shared<Aegis::Font>("assets/fonts/WorkSans-Regular.ttf", 16));
+
+		sprite_ = new Aegis::Sprite(smiley_);
 	}
 
 	void OnUpdate() override
 	{
-		
 		x_pos_ += x_vel_;
 	}
 	void OnEvent(Aegis::Event& event)
@@ -67,13 +68,15 @@ public:
 		Aegis::DrawText("ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890", { 240, 240 }, { 1.0f, 0.0f, 1.0f, 1.0f });
 		Aegis::DrawText("FPS: " + std::to_string(Aegis::Application::GetFrameTime()), { 0.0f,0.0f }, { 1.0, 1.0, 1.0, 1.0f });
 
-		Aegis::DrawQuad({ x_pos_ + (x_vel_ * delta_time), 200.0f }, { 100.0f, 100.0f }, smiley_);
+		Aegis::RenderSprite(*sprite_);
+		//Aegis::DrawQuad({ x_pos_ + (x_vel_ * delta_time), 200.0f }, { 100.0f, 100.0f }, smiley_);
 		Aegis::DrawQuad({ 400.0f, 200.0f }, { 100.0f, 100.0f }, container_);
 	}
 	std::shared_ptr<Aegis::Texture> smiley_;
 	std::shared_ptr<Aegis::Texture> container_;
 	std::vector<std::shared_ptr<Aegis::Font>> fonts_;
-
+	
+	Aegis::Sprite* sprite_;
 	Aegis::Camera camera_;
 	int x_vel_ = 0;
 	int accel_ = 2;

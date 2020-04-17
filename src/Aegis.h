@@ -9,3 +9,4 @@
 #include "Timer.h"
 #include "TextureManager.h"
 #include "Camera.h"
+#include "Sprite.h"

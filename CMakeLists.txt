@@ -13,7 +13,7 @@ add_library (Aegis STATIC
 	"src/Renderer/VertexArray.cpp"
 	"dependencies/GLAD/src/glad.c"
 	"src/Math.h" "src/Math.cpp"
-	"src/KeyCodes.h" "src/MouseCodes.h" "src/Timer.cpp" "src/Timer.h" "src/Camera.cpp")
+	"src/KeyCodes.h" "src/MouseCodes.h" "src/Timer.cpp" "src/Timer.h" "src/Camera.cpp" "src/Sprite.h")
 
 add_executable(Sandbox 
 	"Sandbox/Sandbox.cpp")
