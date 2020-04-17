@@ -26,7 +26,7 @@ namespace Aegis {
 			}
 
 			std::shared_ptr<Texture> texture = std::make_shared<Texture>(path);
-			textures_[path] = texture;
+			textures_.emplace(path, texture);
 
 			return texture;
 		}

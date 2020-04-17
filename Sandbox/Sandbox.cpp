@@ -77,6 +77,15 @@ public:
 
 int main()
 {
+
+	Aegis::Vec2 a(2, 0);
+	Aegis::Vec2 b(3, 2);
+	Aegis::Vec2 c = a / b;
+	Aegis::Vec2 d = a * b;
+	
+	Aegis::Vec2 e = (a * b).Normalized();
+	b.Normalize();
+
 	Aegis::Application app(1280, 720);
 	app.PushLayer(new Sandbox());
 	app.Run();
