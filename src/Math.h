@@ -97,4 +97,9 @@ namespace Aegis
 	Vec4 operator*(Vec4 a, float val);
 	Vec4 operator/(Vec4 a, const Vec4& b);
 	Vec4 operator/(Vec4 a, float val);
+
+	Vec2 LERP(const Vec2& a, const Vec2& b, float percentage);
+	Vec2 EaseInQuad(const Vec2& a, const Vec2& b, float percentage);
+	Vec2 EaseInOutQuad(const Vec2& a, const Vec2& b, float percentage);
+	Vec2 EaseInOutQuart(const Vec2& a, const Vec2& b, float percentage);
 };
