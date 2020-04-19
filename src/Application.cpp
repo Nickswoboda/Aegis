@@ -44,6 +44,7 @@ namespace Aegis {
 
 		float MS_PER_UPDATE = 16.66666;
 		Timer timer;
+		timer.Start();
 		double accumulator_ = 0.0;
 		while (running_) {
 
