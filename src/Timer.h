@@ -7,8 +7,6 @@ namespace Aegis
 	class Timer
 	{
 	public:
-		Timer();
-
 		void Start();
 		void Update();
 		void Reset();
