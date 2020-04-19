@@ -2,11 +2,6 @@
 
 namespace Aegis
 {
-	//starts on creation
-	Timer::Timer()
-	{
-		Start();
-	}
 	void Timer::Start()
 	{
 		if (stopped_) {
