@@ -21,7 +21,7 @@ namespace Aegis
 		float z = 0;
 		float w = 0;
 	};
-
+	bool operator!=(const Vec4& a, const Vec4& b);
 	bool operator==(const Vec4& a, const Vec4& b);
 	Vec4 operator+(Vec4 a, const Vec4& b);
 	Vec4 operator-(Vec4 a, const Vec4& b);

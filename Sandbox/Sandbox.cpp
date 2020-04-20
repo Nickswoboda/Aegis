@@ -22,6 +22,8 @@ public:
 
 	void OnUpdate() override
 	{
+		Aegis::Color color(175, 175, 175, 255);
+		Aegis::Vec4 normalized = color.Normalized();
 		x_pos_ += x_vel_;
 	}
 	void OnEvent(Aegis::Event& event)

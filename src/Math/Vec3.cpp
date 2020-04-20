@@ -64,7 +64,7 @@ namespace Aegis {
 		z /= val;
 		return *this;
 	}
-
+	bool operator!=(const Vec3& a, const Vec3& b) { return (a.x != b.x || a.y != b.y || a.z != b.z); }
 	bool operator==(const Vec3& a, const Vec3& b) { return (a.x == b.x && a.y == b.y && a.z == b.z); }
 	Vec3 operator+(Vec3 a, const Vec3& b) { return a += b; }
 	Vec3 operator-(Vec3 a, const Vec3& b) { return a -= b; }

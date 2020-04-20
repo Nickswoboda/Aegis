@@ -4,6 +4,7 @@
 #include "../Font.h"
 #include "../Math/Vec2.h"
 #include "../Math/Vec4.h"
+#include "../Math/Color.h"
 #include <glm/glm.hpp>
 #include "../Sprite.h"
 
