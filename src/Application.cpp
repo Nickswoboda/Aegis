@@ -63,12 +63,9 @@ namespace Aegis {
 				accumulator_ -= time_step_;
 			}
 
-			Renderer2D::BeginBatch();
 			for (auto& layer : layers_) {
 				layer->OnRender(accumulator_ / time_step_);
 			}
-			Renderer2D::EndBatch();
-
 		}
 	}
 	void Application::OnEvent(Event& event)

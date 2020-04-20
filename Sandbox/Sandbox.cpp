@@ -66,8 +66,8 @@ public:
 
 	void OnRender(float delta_time) override
 	{
+		Aegis::Renderer2D::BeginScene(camera_.view_projection_matrix_);
 		Aegis::RendererClear();
-		Aegis::Renderer2D::SetProjection(camera_.view_projection_matrix_);
 
 		for (int y = 0; y < 10; ++y) {
 			for (int x = 0; x < 10; ++x) {
@@ -80,6 +80,7 @@ public:
 
 		Aegis::DrawQuad({ x_pos_ + (x_vel_ * delta_time), 200.0f }, { 100.0f, 100.0f }, smiley_);
 		Aegis::DrawQuad({ 400.0f, 200.0f }, { 100.0f, 100.0f }, container_);
+		Aegis::Renderer2D::EndScene();
 	}
 	std::shared_ptr<Aegis::Texture> smiley_;
 	std::shared_ptr<Aegis::Texture> container_;

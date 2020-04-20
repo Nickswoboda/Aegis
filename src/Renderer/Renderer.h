@@ -18,8 +18,8 @@ namespace Aegis {
 		static void Init(int width, int height);
 		static void Shutdown();
 
-		static void BeginBatch();
-		static void EndBatch();
+		static void BeginScene(const glm::mat4& camera_projection);
+		static void EndScene();
 
 		static void SetClearColor(float r, float g, float b, float a);
 		static void SetDefaultFont(std::shared_ptr<Font>& font);

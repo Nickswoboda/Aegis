@@ -57,7 +57,7 @@ namespace Aegis {
         shader_ = std::make_unique<Shader>("assets/shaders/Shader.glsl");
         shader_->Bind();
         shader_->SetMat4("u_Projection", projection_);
-        shader_->SetIntVector("u_Textures", 32, samplers);
+        shader_->SetIntVector("u_Textures", max_textures, samplers);
 
         default_font_ = std::make_shared<Font>("assets/fonts/WorkSans-Regular.ttf", 16);
 
@@ -77,12 +77,19 @@ namespace Aegis {
         delete[] data_.quad_buffer_;
     }
 
-	void Renderer2D::BeginBatch()
+    void Renderer2D::BeginScene(const glm::mat4& camera_projection)
 	{
+        projection_ = camera_projection;
+        font_shader_->Bind();
+        font_shader_->SetMat4("u_Projection", projection_);
+
+        shader_->Bind();
+        shader_->SetMat4("u_Projection", projection_);
+
         data_.quad_buffer_ptr_ = data_.quad_buffer_;
 	}
 
-	void Renderer2D::EndBatch()
+	void Renderer2D::EndScene()
 	{
         GLsizeiptr size = (uint8_t*)data_.quad_buffer_ptr_ - (uint8_t*)data_.quad_buffer_;
         glBindBuffer(GL_ARRAY_BUFFER, vertex_array_->vertex_buffer_);
@@ -111,8 +118,8 @@ namespace Aegis {
     void DrawQuad(const Vec2& pos, const Vec2& size, const Vec4& color)
 	{
         if (data_.index_count_ >= vertex_array_->max_index_count_) {
-            Renderer2D::EndBatch();
-            Renderer2D::BeginBatch();
+            Renderer2D::EndScene();
+            Renderer2D::BeginScene(projection_);
         } 
 
         DrawQuad(pos, size, 0, color);
@@ -121,8 +128,8 @@ namespace Aegis {
     void DrawQuad(const Vec2& pos, const Vec2& size, const std::shared_ptr<Texture>& texture, const Vec4& color, const Vec4& tex_coords)
     {
         if (data_.index_count_ >= vertex_array_->max_index_count_ || data_.texture_slot_index_ > 31) {
-            Renderer2D::EndBatch();
-            Renderer2D::BeginBatch();
+            Renderer2D::EndScene();
+            Renderer2D::BeginScene(projection_);
         }
 
         float texture_index = 0.0f;
@@ -186,8 +193,8 @@ namespace Aegis {
     }
     void DrawText(const std::string& text, const Vec2& pos, const Vec4& color)
     {
-        Renderer2D::EndBatch();
-        Renderer2D::BeginBatch();
+        Renderer2D::EndScene();
+        Renderer2D::BeginScene(projection_);
         font_shader_->Bind();
 
         auto& texture = default_font_->atlas_;
@@ -215,9 +222,9 @@ namespace Aegis {
             pen_pos.x += glyph.advance;
         }
 
-        Renderer2D::EndBatch();
+        Renderer2D::EndScene();
         shader_->Bind();
-        Renderer2D::BeginBatch();
+        Renderer2D::BeginScene(projection_);
     }
     void RenderSprite(const Sprite& sprite)
     {
