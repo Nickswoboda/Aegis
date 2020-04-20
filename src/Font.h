@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Renderer/Texture.h"
-#include "Math.h"
+#include "Math/Vec2.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H

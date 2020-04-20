@@ -1,7 +1,8 @@
 #pragma once
 
 #include "Renderer/Texture.h"
-#include "Math.h"
+#include "Math/Vec2.h"
+#include "Math/Vec4.h"
 
 #include <memory>
 namespace Aegis

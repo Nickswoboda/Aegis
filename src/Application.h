@@ -4,7 +4,6 @@
 #include "Event.h"
 #include "Font.h"
 #include "Layer.h"
-#include "Math.h"
 
 #include <memory>
 #include <vector>

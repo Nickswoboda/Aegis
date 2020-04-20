@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Math.h"
+#include "../Math/Vec4.h"
 
 #include <glm/glm.hpp>
 
