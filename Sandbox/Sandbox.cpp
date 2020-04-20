@@ -35,10 +35,12 @@ public:
 		auto key_event = dynamic_cast<Aegis::KeyEvent*>(&event);
 		if (key_event) {
 			if (key_event->key_ == AE_KEY_A) {
-				Aegis::Application::SetVsync(true);
+				time_step_ *= 2.0f;
+				Aegis::Application::SetTimeStep(time_step_);
 			}
 			else if (key_event->key_ == AE_KEY_S) {
-				Aegis::Application::SetVsync(false);
+				time_step_ /= 2.0f;
+				Aegis::Application::SetTimeStep(time_step_);
 			}
 			else if (key_event->key_ == AE_KEY_F) {
 				Aegis::Renderer2D::SetDefaultFont(fonts_[0]);
@@ -49,10 +51,12 @@ public:
 			static int x = 0;
 
 			if (key_event->key_ == AE_KEY_LEFT) {
+				--x_vel_;
 				--x;
 			}
 			else if (key_event->key_ == AE_KEY_RIGHT) {
 				++x;
+				++x_vel_;
 			}
 
 			camera_.SetPosition({ x, 0, 0 });
@@ -74,8 +78,7 @@ public:
 		Aegis::DrawText("ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890", { 240, 240 }, { 1.0f, 0.0f, 1.0f, 1.0f });
 		Aegis::DrawText("FPS: " + std::to_string(Aegis::Application::GetFrameTime()), { 0.0f,0.0f }, { 1.0, 1.0, 1.0, 1.0f });
 
-		Aegis::RenderSprite(*sprite_);
-		//Aegis::DrawQuad({ x_pos_ + (x_vel_ * delta_time), 200.0f }, { 100.0f, 100.0f }, smiley_);
+		Aegis::DrawQuad({ x_pos_ + (x_vel_ * delta_time), 200.0f }, { 100.0f, 100.0f }, smiley_);
 		Aegis::DrawQuad({ 400.0f, 200.0f }, { 100.0f, 100.0f }, container_);
 	}
 	std::shared_ptr<Aegis::Texture> smiley_;
@@ -87,6 +90,7 @@ public:
 	int x_vel_ = 0;
 	int accel_ = 2;
 	int x_pos_ = 0;
+	float time_step_ = 1.0 / 60.0f;
 };
 
 int main()

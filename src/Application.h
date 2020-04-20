@@ -28,11 +28,15 @@ namespace Aegis {
 		static int GetWindowWidth() { return Get().window_->width_; }
 		static bool IsVsync() { return  Get().vsync_; }
 		static void SetVsync(bool vsync);
+
+		static float GetTimeStep();
+		static void SetTimeStep(float time_step);
 	private:
 		std::unique_ptr<Window> window_;
 		static Application* instance_;
 		std::vector<std::unique_ptr<Layer>> layers_;
 		static double frame_time_ms_;
+		static float time_step_;
 		bool running_ = true;
 		bool vsync_ = false;
 	};

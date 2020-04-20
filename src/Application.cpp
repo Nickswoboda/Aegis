@@ -14,6 +14,7 @@
 namespace Aegis {
 
 	double Application::frame_time_ms_ = 0.0;
+	float Application::time_step_ = 1.0f / 60.0f;
 	Application* Application::instance_ = nullptr;
 
 	Application::Application(int width, int height)
@@ -41,32 +42,30 @@ namespace Aegis {
 
 	void Application::Run()
 	{
-
-		float MS_PER_UPDATE = 16.66666;
 		Timer timer;
 		timer.Start();
 		double accumulator_ = 0.0;
 		while (running_) {
 
 			timer.Update();
-			frame_time_ms_ = timer.GetElapsedInMilliseconds();
+			frame_time_ms_ = timer.GetElapsedInSeconds();
 			timer.Reset();
 
 			accumulator_ += frame_time_ms_;
 
 			window_->OnUpdate();
 			
-			while (accumulator_ >= MS_PER_UPDATE) {
+			while (accumulator_ >= time_step_) {
 				for (auto& layer : layers_) {
 					layer->OnUpdate();
 				}
 
-				accumulator_ -= MS_PER_UPDATE;
+				accumulator_ -= time_step_;
 			}
 
 			Renderer2D::BeginBatch();
 			for (auto& layer : layers_) {
-				layer->OnRender(accumulator_ / MS_PER_UPDATE);
+				layer->OnRender(accumulator_ / time_step_);
 			}
 			Renderer2D::EndBatch();
 
@@ -116,9 +115,17 @@ namespace Aegis {
 			Get().vsync_ = false;
 		}
 	}
+	float Application::GetTimeStep()
+	{
+		return time_step_;
+	}
+	void Application::SetTimeStep(float time_step)
+	{
+		time_step_ = time_step;
+	}
 	double Application::GetFrameTime()
 	{
-		return frame_time_ms_;
+		return frame_time_ms_ * 1000;
 	}
 	Vec2 Application::GetMousePos()
 	{
