@@ -56,16 +56,12 @@ namespace Aegis {
 			window_->OnUpdate();
 			
 			while (accumulator_ >= time_step_) {
-				for (auto& layer : layers_) {
-					layer->OnUpdate();
-				}
+				scene_mgr_.CurrentScene()->Update();
 
 				accumulator_ -= time_step_;
 			}
 
-			for (auto& layer : layers_) {
-				layer->OnRender(accumulator_ / time_step_);
-			}
+			scene_mgr_.CurrentScene()->Render(accumulator_ / time_step_);
 		}
 	}
 	void Application::OnEvent(Event& event)
@@ -82,9 +78,7 @@ namespace Aegis {
 		}
 
 		if (!event.handled_) {
-			for (auto& layer : layers_) {
-				layer->OnEvent(event);
-			}
+			scene_mgr_.CurrentScene()->OnEvent(event);
 		}
 	}
 
@@ -97,9 +91,9 @@ namespace Aegis {
 		glViewport(0, 0, event.width_, event.height_);
 		Renderer2D::SetProjection(glm::ortho(0.0f, (float)event.width_, (float)event.height_, 0.0f));
 	}
-	void Application::PushLayer(Layer* layer)
+	void Application::PushScene(std::unique_ptr<Scene> scene)
 	{
-		layers_.emplace_back(std::move(layer));
+		scene_mgr_.PushScene(std::move(scene));
 	}
 	void Application::SetVsync(bool vsync)
 	{

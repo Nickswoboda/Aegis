@@ -4,9 +4,11 @@
 #include "Event.h"
 #include "Font.h"
 #include "Layer.h"
+#include "Scene.h"
 
 #include <memory>
 #include <vector>
+
 
 namespace Aegis {
 
@@ -20,7 +22,7 @@ namespace Aegis {
 		void OnEvent(Event& event);
 		void OnWindowClose();
 		void OnWindowResize(const WindowResizeEvent& event);
-		void PushLayer(Layer* layer);
+		void PushScene(std::unique_ptr<Scene> scene);
 		static double GetFrameTime();
 		static Application& Get() { return *instance_; }
 		static Vec2 GetMousePos();
@@ -34,7 +36,7 @@ namespace Aegis {
 	private:
 		std::unique_ptr<Window> window_;
 		static Application* instance_;
-		std::vector<std::unique_ptr<Layer>> layers_;
+		SceneManager scene_mgr_;
 		static double frame_time_ms_;
 		static float time_step_;
 		bool running_ = true;

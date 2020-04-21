@@ -5,7 +5,37 @@
 
 #include <glm/glm.hpp>
 
-class Sandbox : public Aegis::Layer
+class MenuScene : public Aegis::Scene
+{
+public:
+	MenuScene()
+		: camera_(0, 1280, 720, 0)
+	{}
+	void Update() override
+	{
+
+	}
+	void Render(float delta_time) override
+	{
+		Aegis::Renderer2D::BeginScene(camera_.view_projection_matrix_);
+		Aegis::RendererClear();
+		Aegis::DrawQuad({ 400, 200 }, { 200, 200 }, { 1.0, 1.0, 1.0, 1.0f });
+		Aegis::Renderer2D::EndScene();
+	}
+
+	void OnEvent(Aegis::Event& event) override
+	{
+		auto key_event = dynamic_cast<Aegis::KeyEvent*>(&event);
+		if (key_event) {
+			if (key_event->key_ == AE_KEY_ENTER  && key_event->action_ == AE_BUTTON_PRESS) {
+				manager_->PopScene();
+			}
+		}
+	}
+
+	Aegis::Camera camera_;
+};
+class Sandbox : public Aegis::Scene
 {
 public:
 	Sandbox()
@@ -20,7 +50,7 @@ public:
 		sprite_ = new Aegis::Sprite(smiley_);
 	}
 
-	void OnUpdate() override
+	void Update() override
 	{
 		Aegis::Vec2 a(1, 0);
 		Aegis::Vec2 b(0, 1);
@@ -58,13 +88,16 @@ public:
 				++x;
 				++x_vel_;
 			}
+			if (key_event->key_ == AE_KEY_ENTER && key_event->action_ == AE_BUTTON_PRESS) {
+				manager_->ReplaceScene(std::unique_ptr<Aegis::Scene>(new MenuScene));
+			}
 
 			camera_.SetPosition({ x, 0, 0 });
 		}
 
 	}
 
-	void OnRender(float delta_time) override
+	void Render(float delta_time) override
 	{
 		Aegis::Renderer2D::BeginScene(camera_.view_projection_matrix_);
 		Aegis::RendererClear();
@@ -106,6 +139,7 @@ int main()
 	b.Normalize();
 
 	Aegis::Application app(1280, 720);
-	app.PushLayer(new Sandbox());
+	app.PushScene(std::unique_ptr<Aegis::Scene>(new Sandbox));
+	app.PushScene(std::unique_ptr<Aegis::Scene>(new MenuScene));
 	app.Run();
 }

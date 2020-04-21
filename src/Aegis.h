@@ -9,6 +9,7 @@
 #include "TextureManager.h"
 #include "Camera.h"
 #include "Sprite.h"
+#include "Scene.h"
 
 #include "Math/AABB.h"
 #include "Math/Interpolation.h"
