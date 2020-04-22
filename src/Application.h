@@ -28,6 +28,7 @@ namespace Aegis {
 		static Vec2 GetMousePos();
 		static int GetWindowHeight() { return Get().window_->height_; }
 		static int GetWindowWidth() { return Get().window_->width_; }
+		static void Quit() {Get().running_ = false;}
 		static bool IsVsync() { return  Get().vsync_; }
 		static void SetVsync(bool vsync);
 
