@@ -47,7 +47,7 @@ public:
 		fonts_.emplace_back(std::make_shared<Aegis::Font>("assets/fonts/Roboto-Regular.ttf", 16));
 		fonts_.emplace_back(std::make_shared<Aegis::Font>("assets/fonts/WorkSans-Regular.ttf", 16));
 
-		sprite_ = new Aegis::Sprite(smiley_);
+		sprite_ = new Aegis::Sprite(container_);
 	}
 
 	void Update() override
@@ -95,6 +95,14 @@ public:
 			camera_.SetPosition({ x, 0, 0 });
 		}
 
+		auto mouse_click = dynamic_cast<Aegis::MouseClickEvent*>(&event);
+		if (mouse_click && mouse_click->action_ == AE_BUTTON_PRESS) {
+			auto mouse_pos = Aegis::Application::GetMousePos();
+			Aegis::AABB sprite_rect(sprite_->pos_.x, sprite_->pos_.y, sprite_->size_.x, sprite_->size_.y);
+			if (Aegis::PointInAABB(mouse_pos, sprite_rect)) {
+				std::cout << "In Rect\n";
+			}
+		}
 	}
 
 	void Render(float delta_time) override
@@ -102,17 +110,18 @@ public:
 		Aegis::Renderer2D::BeginScene(camera_.view_projection_matrix_);
 		Aegis::RendererClear();
 
-		for (int y = 0; y < 10; ++y) {
-			for (int x = 0; x < 10; ++x) {
-				Aegis::DrawQuad({ x * 26.0f, y * 26.0f }, { 25.0f, 25.0f }, { 0.3f, 0.6f, 0.9f, 1.0f });
-				Aegis::DrawQuad({ x * 2.0f, y * 2.0f }, { 1.0f, 1.0f }, smiley_);
-			}
-		}
-		Aegis::DrawText("ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890", { 240, 240 }, { 1.0f, 0.0f, 1.0f, 1.0f });
-		Aegis::DrawText("FPS: " + std::to_string(Aegis::Application::GetFrameTime()), { 0.0f,0.0f }, { 1.0, 1.0, 1.0, 1.0f });
-
-		Aegis::DrawQuad({ x_pos_ + (x_vel_ * delta_time), 200.0f }, { 100.0f, 100.0f }, smiley_);
-		Aegis::DrawQuad({ 400.0f, 200.0f }, { 100.0f, 100.0f }, container_);
+		Aegis::RenderSprite(*sprite_);
+		//or (int y = 0; y < 10; ++y) {
+		//	for (int x = 0; x < 10; ++x) {
+		//		Aegis::DrawQuad({ x * 26.0f, y * 26.0f }, { 25.0f, 25.0f }, { 0.3f, 0.6f, 0.9f, 1.0f });
+		//		Aegis::DrawQuad({ x * 2.0f, y * 2.0f }, { 1.0f, 1.0f }, smiley_);
+		//	}
+		//
+		//egis::DrawText("ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890", { 240, 240 }, { 1.0f, 0.0f, 1.0f, 1.0f });
+		//egis::DrawText("FPS: " + std::to_string(Aegis::Application::GetFrameTime()), { 0.0f,0.0f }, { 1.0, 1.0, 1.0, 1.0f });
+		//
+		//egis::DrawQuad({ x_pos_ + (x_vel_ * delta_time), 200.0f }, { 100.0f, 100.0f }, smiley_);
+		//egis::DrawQuad({ 400.0f, 200.0f }, { 100.0f, 100.0f }, container_);
 		Aegis::Renderer2D::EndScene();
 	}
 	std::shared_ptr<Aegis::Texture> smiley_;
@@ -141,6 +150,6 @@ int main()
 	Aegis::Application app(1280, 720);
 	app.ShowFrameTime(false);
 	app.PushScene(std::unique_ptr<Aegis::Scene>(new Sandbox));
-	app.PushScene(std::unique_ptr<Aegis::Scene>(new MenuScene));
+	//app.PushScene(std::unique_ptr<Aegis::Scene>(new MenuScene));
 	app.Run();
 }
