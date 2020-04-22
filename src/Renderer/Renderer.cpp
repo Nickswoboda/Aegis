@@ -59,8 +59,6 @@ namespace Aegis {
         shader_->SetMat4("u_Projection", projection_);
         shader_->SetIntVector("u_Textures", max_textures, samplers);
 
-        default_font_ = std::make_shared<Font>("assets/fonts/WorkSans-Regular.ttf", 16);
-
         white_texture_ = std::make_unique<Texture>();
         vertex_array_ = std::make_unique<VertexArray>();
         data_.quad_buffer_ = new VertexArray::Vertex[vertex_array_->max_vertex_count_];

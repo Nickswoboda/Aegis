@@ -31,7 +31,10 @@ namespace Aegis {
 		window_ = std::make_unique<Window>("Aegis", width, height);
 		window_->callback_ = std::bind(&Application::OnEvent, this, std::placeholders::_1);
 
+
 		Renderer2D::Init(width, height);
+		default_font_ = std::make_shared<Font>("assets/fonts/WorkSans-Regular.ttf", 16);
+		Renderer2D::SetDefaultFont(default_font_);
 	}
 
 	Application::~Application()
@@ -64,6 +67,7 @@ namespace Aegis {
 			scene_mgr_.CurrentScene()->Render(accumulator_ / time_step_);
 
 			if (show_frame_time_) {
+				Renderer2D::SetDefaultFont(default_font_);
 				DrawText(std::to_string(frame_time_sec_ * 1000), { 0, 0 }, { 1.0f, 1.0f, 1.0f, 1.0f });
 			}
 		}
