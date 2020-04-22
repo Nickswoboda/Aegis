@@ -139,6 +139,7 @@ int main()
 	b.Normalize();
 
 	Aegis::Application app(1280, 720);
+	app.ShowFrameTime(false);
 	app.PushScene(std::unique_ptr<Aegis::Scene>(new Sandbox));
 	app.PushScene(std::unique_ptr<Aegis::Scene>(new MenuScene));
 	app.Run();

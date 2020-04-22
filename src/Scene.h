@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Event.h"
+#include "Renderer/Renderer.h"
 
 #include <stack>
 #include <memory>
@@ -20,9 +21,20 @@ namespace Aegis {
 		SceneManager* manager_ = nullptr;
 	};
 
+	class BaseScene : public Scene
+	{
+	public:
+		BaseScene() {}
+
+		virtual void Update() override {}
+		virtual void Render(float delta_time) override { Aegis::RendererClear(); }
+		virtual void OnEvent(Event& event) override {}
+		
+	};
 	class SceneManager
 	{
 	public:
+		SceneManager() { PushScene(std::unique_ptr<Scene>(new BaseScene())); }
 		void PushScene(std::unique_ptr<Scene> scene) { scene->manager_ = this; scenes_.push(std::move(scene)); }
 		void PopScene() { if (scenes_.size() > 1) scenes_.pop();}
 		void ReplaceScene(std::unique_ptr<Scene> scene) { scenes_.pop(); PushScene(std::move(scene));}

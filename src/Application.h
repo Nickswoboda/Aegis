@@ -34,13 +34,15 @@ namespace Aegis {
 
 		static float GetTimeStep();
 		static void SetTimeStep(float time_step);
+		static void ShowFrameTime(bool show) { Get().show_frame_time_ = show; }
 	private:
 		std::unique_ptr<Window> window_;
 		static Application* instance_;
 		SceneManager scene_mgr_;
-		static double frame_time_ms_;
+		static double frame_time_sec_;
 		static float time_step_;
 		bool running_ = true;
 		bool vsync_ = false;
+		bool show_frame_time_ = false;
 	};
 }

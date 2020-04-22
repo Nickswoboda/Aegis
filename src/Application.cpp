@@ -13,7 +13,7 @@
 
 namespace Aegis {
 
-	double Application::frame_time_ms_ = 0.0;
+	double Application::frame_time_sec_ = 0.0;
 	float Application::time_step_ = 1.0f / 60.0f;
 	Application* Application::instance_ = nullptr;
 
@@ -48,10 +48,10 @@ namespace Aegis {
 		while (running_) {
 
 			timer.Update();
-			frame_time_ms_ = timer.GetElapsedInSeconds();
+			frame_time_sec_ = timer.GetElapsedInSeconds();
 			timer.Reset();
 
-			accumulator_ += frame_time_ms_;
+			accumulator_ += frame_time_sec_;
 
 			window_->OnUpdate();
 			
@@ -62,6 +62,10 @@ namespace Aegis {
 			}
 
 			scene_mgr_.CurrentScene()->Render(accumulator_ / time_step_);
+
+			if (show_frame_time_) {
+				DrawText(std::to_string(frame_time_sec_ * 1000), { 0, 0 }, { 1.0f, 1.0f, 1.0f, 1.0f });
+			}
 		}
 	}
 	void Application::OnEvent(Event& event)
@@ -116,7 +120,7 @@ namespace Aegis {
 	}
 	double Application::GetFrameTime()
 	{
-		return frame_time_ms_ * 1000;
+		return frame_time_sec_ * 1000;
 	}
 	Vec2 Application::GetMousePos()
 	{

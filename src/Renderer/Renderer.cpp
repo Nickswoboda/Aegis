@@ -160,6 +160,10 @@ namespace Aegis {
     }
     void DrawQuad(const Vec2& pos, const Vec2& size, const float texture_index, const Vec4& color, const Vec4& tex_coords)
     {
+
+        if (data_.quad_buffer_ptr_ == nullptr) {
+            std::cout << "Must Call BeginScene() before drawing\n";
+        }
         glm::mat4 transform = glm::translate(glm::mat4(1.0f), { pos.x, pos.y, 0.0f }) * glm::scale(glm::mat4(1.0), { size.x, size.y, 1.0 });
         glm::vec4 vertex1_pos = transform * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
         data_.quad_buffer_ptr_->position_ = { vertex1_pos.x, vertex1_pos.y, 0.0f };
