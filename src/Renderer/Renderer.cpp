@@ -77,6 +77,8 @@ namespace Aegis {
 
     void Renderer2D::BeginScene(const glm::mat4& camera_projection)
 	{
+        RendererClear();
+
         projection_ = camera_projection;
         font_shader_->Bind();
         font_shader_->SetMat4("u_Projection", projection_);
@@ -232,7 +234,7 @@ namespace Aegis {
     {
         DrawQuad(sprite.pos_, sprite.size_, sprite.texture_, sprite.color_, sprite.tex_coords_);
     }
-    void Renderer2D::SetDefaultFont(std::shared_ptr<Font>& font)
+    void Renderer2D::SetFont(std::shared_ptr<Font>& font)
     {
         default_font_ = font;
     }

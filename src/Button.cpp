@@ -34,7 +34,7 @@ namespace Aegis {
 		Aegis::DrawQuad(rect_.pos, rect_.size, color_);
 
 		if (!text_.empty()){
-		Aegis::Renderer2D::SetDefaultFont(font_);
+		Aegis::Renderer2D::SetFont(font_);
 		Aegis::DrawText(text_, rect_.pos, { 1.0, 1.0f, 1.0f, 1.0f });
 		}
 	}

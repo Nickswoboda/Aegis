@@ -19,7 +19,6 @@ public:
 	void Render(float delta_time) override
 	{
 		Aegis::Renderer2D::BeginScene(camera_.view_projection_matrix_);
-		Aegis::RendererClear();
 		Aegis::DrawQuad({ 400, 200 }, { 200, 200 }, { 1.0, 1.0, 1.0, 1.0f });
 		button->Render();
 		Aegis::Renderer2D::EndScene();
@@ -80,10 +79,10 @@ public:
 				Aegis::Application::SetTimeStep(time_step_);
 			}
 			else if (key_event->key_ == AE_KEY_F) {
-				Aegis::Renderer2D::SetDefaultFont(fonts_[0]);
+				Aegis::Renderer2D::SetFont(fonts_[0]);
 			}
 			else if (key_event->key_ == AE_KEY_G) {
-				Aegis::Renderer2D::SetDefaultFont(fonts_[1]);
+				Aegis::Renderer2D::SetFont(fonts_[1]);
 			}
 			static int x = 0;
 
@@ -115,7 +114,6 @@ public:
 	void Render(float delta_time) override
 	{
 		Aegis::Renderer2D::BeginScene(camera_.view_projection_matrix_);
-		Aegis::RendererClear();
 
 		Aegis::RenderSprite(*sprite_);
 		//or (int y = 0; y < 10; ++y) {
