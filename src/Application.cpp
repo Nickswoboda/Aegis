@@ -31,6 +31,8 @@ namespace Aegis {
 		window_ = std::make_unique<Window>("Aegis", width, height);
 		window_->callback_ = std::bind(&Application::OnEvent, this, std::placeholders::_1);
 
+		scene_mgr_.PushScene(std::unique_ptr<Scene>(new BaseScene()));
+
 
 		Renderer2D::Init(width, height);
 		default_font_ = std::make_shared<Font>("assets/fonts/WorkSans-Regular.ttf", 16);

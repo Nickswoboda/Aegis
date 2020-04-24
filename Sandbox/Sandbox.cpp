@@ -9,7 +9,6 @@ class MenuScene : public Aegis::Scene
 {
 public:
 	MenuScene()
-		: camera_(0, 1280, 720, 0)
 	{ 
 		button = new Aegis::Button({ 200, 200, 200, 20 });
 	}
@@ -43,13 +42,11 @@ public:
 	}
 
 	Aegis::Button* button;
-	Aegis::Camera camera_;
 };
 class Sandbox : public Aegis::Scene
 {
 public:
 	Sandbox()
-		:camera_(0, 1280, 720, 0)
 	{
 		smiley_ = Aegis::TextureManager::Instance().Load("assets/textures/smiley.png");
 		container_ = Aegis::TextureManager::Instance().Load("assets/textures/container.jpg");
@@ -139,7 +136,6 @@ public:
 	std::vector<std::shared_ptr<Aegis::Font>> fonts_;
 	
 	Aegis::Sprite* sprite_;
-	Aegis::Camera camera_;
 	int x_vel_ = 0;
 	int accel_ = 2;
 	int x_pos_ = 0;
