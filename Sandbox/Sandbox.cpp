@@ -19,6 +19,7 @@ public:
 	void Render(float delta_time) override
 	{
 		Aegis::Renderer2D::BeginScene(camera_.view_projection_matrix_);
+		Aegis::RendererClear();
 		Aegis::DrawQuad({ 400, 200 }, { 200, 200 }, { 1.0, 1.0, 1.0, 1.0f });
 		button->Render();
 		Aegis::Renderer2D::EndScene();

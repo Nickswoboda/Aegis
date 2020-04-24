@@ -77,8 +77,6 @@ namespace Aegis {
 
     void Renderer2D::BeginScene(const glm::mat4& camera_projection)
 	{
-        RendererClear();
-
         projection_ = camera_projection;
         font_shader_->Bind();
         font_shader_->SetMat4("u_Projection", projection_);
