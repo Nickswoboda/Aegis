@@ -10,7 +10,9 @@ class MenuScene : public Aegis::Scene
 public:
 	MenuScene()
 		: camera_(0, 1280, 720, 0)
-	{}
+	{ 
+		button = new Aegis::Button({ 200, 200, 200, 20 });
+	}
 	void Update() override
 	{
 
@@ -20,6 +22,7 @@ public:
 		Aegis::Renderer2D::BeginScene(camera_.view_projection_matrix_);
 		Aegis::RendererClear();
 		Aegis::DrawQuad({ 400, 200 }, { 200, 200 }, { 1.0, 1.0, 1.0, 1.0f });
+		button->Render();
 		Aegis::Renderer2D::EndScene();
 	}
 
@@ -31,8 +34,15 @@ public:
 				manager_->PopScene();
 			}
 		}
+		auto mouse_event = dynamic_cast<Aegis::MouseClickEvent*>(&event);
+		if (mouse_event) {
+			if (button->IsPressed(mouse_event->action_)) {
+				std::cout << "pressed";
+			}
+		}
 	}
 
+	Aegis::Button* button;
 	Aegis::Camera camera_;
 };
 class Sandbox : public Aegis::Scene
@@ -150,6 +160,6 @@ int main()
 	Aegis::Application app(1280, 720);
 	app.ShowFrameTime(false);
 	app.PushScene(std::unique_ptr<Aegis::Scene>(new Sandbox));
-	//app.PushScene(std::unique_ptr<Aegis::Scene>(new MenuScene));
+	app.PushScene(std::unique_ptr<Aegis::Scene>(new MenuScene));
 	app.Run();
 }
