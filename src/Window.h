@@ -15,6 +15,7 @@ namespace Aegis {
 		~Window();
 
 		void SetEventCallbacks();
+		void SetSize(int width, int height);
 		void OnUpdate();
 		GLFWwindow* GetWindowHandle() { return window_; };
 		

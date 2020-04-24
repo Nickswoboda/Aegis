@@ -100,7 +100,10 @@ namespace Aegis {
 	{
 		glViewport(0, 0, event.width_, event.height_);
 		scene_mgr_.CurrentScene()->camera_.SetProjection(0.0f, (float)event.width_, (float)event.height_, 0.0f);
+		window_->width_ = event.width_;
+		window_->height_ = event.height_;
 	}
+
 	void Application::PushScene(std::unique_ptr<Scene> scene)
 	{
 		scene_mgr_.PushScene(std::move(scene));
