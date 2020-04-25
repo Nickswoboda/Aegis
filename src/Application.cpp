@@ -15,6 +15,7 @@ namespace Aegis {
 
 	double Application::frame_time_sec_ = 0.0;
 	float Application::time_step_ = 1.0f / 60.0f;
+	Vec2 default_window_size_;
 	Application* Application::instance_ = nullptr;
 
 	Application::Application(int width, int height)
@@ -33,7 +34,7 @@ namespace Aegis {
 
 		scene_mgr_.PushScene(std::unique_ptr<Scene>(new BaseScene()));
 
-
+		default_window_size_ = Vec2(width, height);
 		Renderer2D::Init(width, height);
 		default_font_ = std::make_shared<Font>("assets/fonts/WorkSans-Regular.ttf", 16);
 		Renderer2D::SetFont(default_font_);
@@ -99,7 +100,7 @@ namespace Aegis {
 	void Application::OnWindowResize(const WindowResizeEvent& event)
 	{
 		glViewport(0, 0, event.width_, event.height_);
-		scene_mgr_.CurrentScene()->camera_.SetProjection(0.0f, (float)event.width_, (float)event.height_, 0.0f);
+		//scene_mgr_.CurrentScene()->camera_.SetProjection(0.0f, (float)event.width_, (float)event.height_, 0.0f);
 		window_->width_ = event.width_;
 		window_->height_ = event.height_;
 	}
@@ -135,6 +136,12 @@ namespace Aegis {
 	{
 		double x, y;
 		glfwGetCursorPos(Get().window_->GetWindowHandle(), &x, &y);
-		return Vec2(x, y);
+
+		//used to scale mouse with window resizing
+		Vec2 current_window_size = Vec2(GetWindowWidth(), GetWindowHeight());
+		Vec2 scale = default_window_size_ / current_window_size;
+		
+
+		return Vec2(x, y) * scale;
 	}
 }	

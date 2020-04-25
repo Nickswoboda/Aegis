@@ -10,7 +10,7 @@ class MenuScene : public Aegis::Scene
 public:
 	MenuScene()
 	{ 
-		button = new Aegis::Button({ 200, 200, 200, 20 });
+		button = new Aegis::Button({ 0, 0, 100, 100 });
 	}
 	void Update() override
 	{
