@@ -72,6 +72,29 @@ namespace Aegis {
 		});
 	}
 
+	void Window::SetScreenMode(ScreenMode screen_mode)
+	{
+
+		GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+		const GLFWvidmode* vid = glfwGetVideoMode(monitor);
+
+		switch (screen_mode)
+		{
+			case ScreenMode::Fullscreen: {
+				screen_mode_ = ScreenMode::Fullscreen;
+				glfwSetWindowMonitor(window_, monitor, 0, 0, vid->width, vid->height, vid->refreshRate); break;
+			}
+			case ScreenMode::Windowed: {
+				screen_mode_ = ScreenMode::Windowed;
+				glfwSetWindowMonitor(window_, nullptr, 50, 50, width_, height_, vid->refreshRate); break;
+			}
+			case ScreenMode::FullscreenWindow: {
+				screen_mode_ = ScreenMode::FullscreenWindow;
+				glfwSetWindowMonitor(window_, monitor, 0, 0, vid->width, vid->height, vid->refreshRate); break;
+			}
+		}
+	}
+
 	void Window::OnUpdate()
 	{
 		glfwSwapBuffers(window_);

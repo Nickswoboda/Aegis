@@ -8,6 +8,13 @@
 #include <string>
 #include <functional>
 namespace Aegis {
+
+	enum class ScreenMode
+	{
+		Fullscreen,
+		Windowed,
+		FullscreenWindow
+	};
 	class Window
 	{
 	public:
@@ -15,12 +22,14 @@ namespace Aegis {
 		~Window();
 
 		void SetEventCallbacks();
+		void SetScreenMode(ScreenMode screen_mode);
 		void OnUpdate();
 		GLFWwindow* GetWindowHandle() { return window_; };
 		
 		std::function<void(Event&)> callback_;
 		int width_;
 		int height_;
+		ScreenMode screen_mode_ = ScreenMode::Windowed;
 	private:
 		GLFWwindow* window_;
 	};

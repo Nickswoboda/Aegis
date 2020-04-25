@@ -31,6 +31,7 @@ namespace Aegis {
 		static void Quit() {Get().running_ = false;}
 		static bool IsVsync() { return  Get().vsync_; }
 		static void SetVsync(bool vsync);
+		static void SetFullscreen(ScreenMode screen_mode) { Get().window_->SetScreenMode(screen_mode); }
 
 		static float GetTimeStep();
 		static void SetTimeStep(float time_step);

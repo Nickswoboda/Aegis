@@ -11,6 +11,7 @@ public:
 	MenuScene()
 	{ 
 		button = new Aegis::Button({ 0, 0, 100, 100 });
+		button1 = new Aegis::Button({ 200, 0, 100, 100 });
 	}
 	void Update() override
 	{
@@ -20,8 +21,8 @@ public:
 	{
 		Aegis::Renderer2D::BeginScene(camera_.view_projection_matrix_);
 		Aegis::RendererClear();
-		Aegis::DrawQuad({ 400, 200 }, { 200, 200 }, { 1.0, 1.0, 1.0, 1.0f });
 		button->Render();
+		button1->Render();
 		Aegis::Renderer2D::EndScene();
 	}
 
@@ -36,12 +37,16 @@ public:
 		auto mouse_event = dynamic_cast<Aegis::MouseClickEvent*>(&event);
 		if (mouse_event) {
 			if (button->IsPressed(mouse_event->action_)) {
-				std::cout << "pressed";
+				Aegis::Application::SetFullscreen(Aegis::ScreenMode::Fullscreen);
+			}
+			if (button1->IsPressed(mouse_event->action_)) {
+				Aegis::Application::SetFullscreen(Aegis::ScreenMode::Windowed);
 			}
 		}
 	}
 
 	Aegis::Button* button;
+	Aegis::Button* button1;
 };
 class Sandbox : public Aegis::Scene
 {

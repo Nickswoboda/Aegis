@@ -102,12 +102,14 @@ namespace Aegis {
 	void Application::OnWindowResize(const WindowResizeEvent& event)
 	{
 		glViewport(0, 0, event.width_, event.height_);
-		//scene_mgr_.CurrentScene()->camera_.SetProjection(0.0f, (float)event.width_, (float)event.height_, 0.0f);
-		window_->width_ = event.width_;
-		window_->height_ = event.height_;
+
+		if (window_->screen_mode_ == ScreenMode::Windowed) {
+			window_->width_ = event.width_;
+			window_->height_ = event.height_;
+		}
 
 		//used to scale mouse pos with window resizing
-		Vec2 current_window_size = Vec2(GetWindowWidth(), GetWindowHeight());
+		Vec2 current_window_size = Vec2(event.width_, event.height_);
 		scale_ = default_camera_size_ / current_window_size;
 	}
 
