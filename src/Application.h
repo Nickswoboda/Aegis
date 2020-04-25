@@ -35,6 +35,7 @@ namespace Aegis {
 		static float GetTimeStep();
 		static void SetTimeStep(float time_step);
 		static void ShowFrameTime(bool show) { Get().show_frame_time_ = show; }
+		static Vec2 default_camera_size_;
 	private:
 		std::unique_ptr<Window> window_;
 		std::shared_ptr<Font> default_font_;
