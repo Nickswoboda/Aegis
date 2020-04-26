@@ -103,10 +103,8 @@ namespace Aegis {
 	{
 		glViewport(0, 0, event.width_, event.height_);
 
-		if (window_->screen_mode_ == ScreenMode::Windowed) {
-			window_->width_ = event.width_;
-			window_->height_ = event.height_;
-		}
+		window_->width_ = event.width_;
+		window_->height_ = event.height_;
 
 		//used to scale mouse pos with window resizing
 		Vec2 current_window_size = Vec2(event.width_, event.height_);
