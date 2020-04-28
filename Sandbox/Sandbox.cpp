@@ -37,10 +37,10 @@ public:
 		auto mouse_event = dynamic_cast<Aegis::MouseClickEvent*>(&event);
 		if (mouse_event) {
 			if (button->IsPressed(mouse_event->action_)) {
-				Aegis::Application::SetFullscreen(Aegis::ScreenMode::Fullscreen);
+				Aegis::Application::SetScreenMode(Aegis::ScreenMode::Fullscreen);
 			}
 			if (button1->IsPressed(mouse_event->action_)) {
-				Aegis::Application::SetFullscreen(Aegis::ScreenMode::Windowed);
+				Aegis::Application::SetScreenMode(Aegis::ScreenMode::Windowed);
 			}
 		}
 	}

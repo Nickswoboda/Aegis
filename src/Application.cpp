@@ -3,6 +3,7 @@
 #include "Renderer/Renderer.h"
 #include "Font.h"
 #include "Timer.h"
+#include "Assert.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -16,7 +17,7 @@ namespace Aegis {
 	double Application::frame_time_sec_ = 0.0;
 	float Application::time_step_ = 1.0f / 60.0f;
 	Vec2 Application::resolution_;
-	static Vec2 scale_;
+	static Vec2 mouse_pos_scale_;
 	Application* Application::instance_ = nullptr;
 
 	Application::Application(int width, int height)
@@ -36,7 +37,7 @@ namespace Aegis {
 		scene_mgr_.PushScene(std::unique_ptr<Scene>(new BaseScene()));
 
 		resolution_ = Vec2(width, height);
-		scale_ = { 1, 1 };
+		mouse_pos_scale_ = { 1, 1 };
 		Renderer2D::Init(width, height);
 		default_font_ = std::make_shared<Font>("assets/fonts/WorkSans-Regular.ttf", 16);
 		Renderer2D::SetFont(default_font_);
@@ -108,7 +109,7 @@ namespace Aegis {
 
 		//used to scale mouse pos with window resizing
 		Vec2 current_window_size = Vec2(event.width_, event.height_);
-		scale_ = resolution_ / current_window_size;
+		mouse_pos_scale_ = resolution_ / current_window_size;
 	}
 
 	void Application::PushScene(std::unique_ptr<Scene> scene)
@@ -139,7 +140,7 @@ namespace Aegis {
 		resolution_ = Vec2(x, y);
 		
 		Vec2 current_window_size = Vec2(Get().window_->width_, Get().window_->height_);
-		scale_ = resolution_ / current_window_size;
+		mouse_pos_scale_ = resolution_ / current_window_size;
 	}
 	double Application::GetFrameTime()
 	{
@@ -150,6 +151,6 @@ namespace Aegis {
 		double x, y;
 		glfwGetCursorPos(Get().window_->GetWindowHandle(), &x, &y);
 
-		return Vec2(x, y) * scale_;
+		return Vec2(x, y) * mouse_pos_scale_;
 	}
 }	
