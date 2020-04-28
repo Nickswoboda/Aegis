@@ -21,7 +21,8 @@ namespace Aegis {
 			if (action == AE_BUTTON_PRESS) {
 				pressed_ = true;
 			}
-			else if (action == AE_BUTTON_RELEASE) {
+			else if (action == AE_BUTTON_RELEASE && pressed_) {
+				pressed_ = false;
 				return true;
 			}
 		}
