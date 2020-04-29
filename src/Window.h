@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Event.h"
+#include "Math/Vec2.h"
 
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
@@ -21,16 +22,34 @@ namespace Aegis {
 		Window(const std::string& title, int width, int height);
 		~Window();
 
-		void SetEventCallbacks();
-		void SetScreenMode(ScreenMode screen_mode);
+		GLFWwindow* GetWindowHandle() { return window_handle_; };
+
+		void SetEventCallbacks(std::function<void(Event&)> callback);
+		void OnResize(const WindowResizeEvent& event);
+
 		void OnUpdate();
-		GLFWwindow* GetWindowHandle() { return window_; };
+
+		int GetHeight() { return height_; }
+		int GetWidth() { return width_; }
+
+		bool IsVsync() { return vsync_; }
+		void SetVsync(bool vsync);
+
+		void SetScreenMode(ScreenMode screen_mode);
+		void SetResolution(int x, int y);
+		Vec2 GetResolution() { return resolution_; }
+
+		Vec2 GetMousePos();
 		
+	private:
+		//ratio between resolution and window size. Useful for buttons that change size due to resolution changes
+		Vec2 mouse_pos_scale_ = { 1,1 };
+		Vec2 resolution_;
 		std::function<void(Event&)> callback_;
+		GLFWwindow* window_handle_;
+		ScreenMode screen_mode_ = ScreenMode::Windowed;
 		int width_;
 		int height_;
-		ScreenMode screen_mode_ = ScreenMode::Windowed;
-	private:
-		GLFWwindow* window_;
+		bool vsync_ = true;
 	};
 }

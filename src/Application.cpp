@@ -14,30 +14,26 @@
 
 namespace Aegis {
 
+	std::unique_ptr<Window> Application::window_;
+	std::shared_ptr<Font> Application::default_font_;
+	SceneManager Application::scene_mgr_;
 	double Application::frame_time_sec_ = 0.0;
 	float Application::time_step_ = 1.0f / 60.0f;
-	Vec2 Application::resolution_;
-	static Vec2 mouse_pos_scale_;
-	Application* Application::instance_ = nullptr;
+	bool Application::running_ = true;
+	bool Application::show_frame_time_ = false;
 
 	Application::Application(int width, int height)
 	{
-		if (instance_) {
-			std::cout << "Application already created\n";
-		}
-		instance_ = this;
 		if (!glfwInit()) {
 			std::cout << "Unable to initiate GLFW.\n";
 			return;
 		}
 
 		window_ = std::make_unique<Window>("Aegis", width, height);
-		window_->callback_ = std::bind(&Application::OnEvent, this, std::placeholders::_1);
+		window_->SetEventCallbacks(std::bind(&Application::OnEvent, std::placeholders::_1));
 
 		scene_mgr_.PushScene(std::unique_ptr<Scene>(new BaseScene()));
 
-		resolution_ = Vec2(width, height);
-		mouse_pos_scale_ = { 1, 1 };
 		Renderer2D::Init(width, height);
 		default_font_ = std::make_shared<Font>("assets/fonts/WorkSans-Regular.ttf", 16);
 		Renderer2D::SetFont(default_font_);
@@ -102,31 +98,14 @@ namespace Aegis {
 	}
 	void Application::OnWindowResize(const WindowResizeEvent& event)
 	{
-		glViewport(0, 0, event.width_, event.height_);
-
-		window_->width_ = event.width_;
-		window_->height_ = event.height_;
-
-		//used to scale mouse pos with window resizing
-		Vec2 current_window_size = Vec2(event.width_, event.height_);
-		mouse_pos_scale_ = resolution_ / current_window_size;
+		window_->OnResize(event);
 	}
 
 	void Application::PushScene(std::unique_ptr<Scene> scene)
 	{
 		scene_mgr_.PushScene(std::move(scene));
 	}
-	void Application::SetVsync(bool vsync)
-	{
-		if (vsync && !Get().IsVsync()) {
-			glfwSwapInterval(1);
-			Get().vsync_ = true;
-		}
-		else if (!vsync && Get().IsVsync()){
-			glfwSwapInterval(0);
-			Get().vsync_ = false;
-		}
-	}
+
 	float Application::GetTimeStep()
 	{
 		return time_step_;
@@ -135,22 +114,9 @@ namespace Aegis {
 	{
 		time_step_ = time_step;
 	}
-	void Application::SetResolution(int x, int y)
-	{
-		resolution_ = Vec2(x, y);
-		
-		Vec2 current_window_size = Vec2(Get().window_->width_, Get().window_->height_);
-		mouse_pos_scale_ = resolution_ / current_window_size;
-	}
+
 	double Application::GetFrameTime()
 	{
 		return frame_time_sec_ * 1000;
-	}
-	Vec2 Application::GetMousePos()
-	{
-		double x, y;
-		glfwGetCursorPos(Get().window_->GetWindowHandle(), &x, &y);
-
-		return Vec2(x, y) * mouse_pos_scale_;
 	}
 }	

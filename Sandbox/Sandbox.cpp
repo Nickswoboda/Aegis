@@ -37,10 +37,10 @@ public:
 		auto mouse_event = dynamic_cast<Aegis::MouseClickEvent*>(&event);
 		if (mouse_event) {
 			if (button->IsPressed(mouse_event->action_)) {
-				Aegis::Application::SetScreenMode(Aegis::ScreenMode::Fullscreen);
+				Aegis::Application::GetWindow().SetScreenMode(Aegis::ScreenMode::Fullscreen);
 			}
 			if (button1->IsPressed(mouse_event->action_)) {
-				Aegis::Application::SetScreenMode(Aegis::ScreenMode::Windowed);
+				Aegis::Application::GetWindow().SetScreenMode(Aegis::ScreenMode::Windowed);
 			}
 		}
 	}
@@ -109,7 +109,7 @@ public:
 
 		auto mouse_click = dynamic_cast<Aegis::MouseClickEvent*>(&event);
 		if (mouse_click && mouse_click->action_ == AE_BUTTON_PRESS) {
-			auto mouse_pos = Aegis::Application::GetMousePos();
+			auto mouse_pos = Aegis::Application::GetWindow().GetMousePos();
 			Aegis::AABB sprite_rect(sprite_->pos_.x, sprite_->pos_.y, sprite_->size_.x, sprite_->size_.y);
 			if (Aegis::PointInAABB(mouse_pos, sprite_rect)) {
 				std::cout << "In Rect\n";
@@ -148,17 +148,8 @@ public:
 
 int main()
 {
-
-	Aegis::Vec2 a(2, 0);
-	Aegis::Vec2 b(3, 2);
-	Aegis::Vec2 c = a / b;
-	Aegis::Vec2 d = a * b;
-	
-	Aegis::Vec2 e = (a * b).Normalized();
-	b.Normalize();
-
 	Aegis::Application app(1280, 720);
-	app.ShowFrameTime(false);
+	app.ShowFrameTime(true);
 	app.PushScene(std::unique_ptr<Aegis::Scene>(new Sandbox));
 	app.PushScene(std::unique_ptr<Aegis::Scene>(new MenuScene));
 	app.Run();

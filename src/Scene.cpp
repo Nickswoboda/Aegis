@@ -3,7 +3,7 @@
 #include "Application.h"
 
 Aegis::Scene::Scene()
-	: camera_(0, Application::GetResolution().x, Application::GetResolution().y, 0)
+	: camera_(0, Application::GetWindow().GetResolution().x, Application::GetWindow().GetResolution().y, 0)
 {
 
 }

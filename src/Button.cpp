@@ -17,7 +17,7 @@ namespace Aegis {
 
 	bool Button::IsPressed(int action)
 	{
-		if (PointInAABB(Application::GetMousePos(), rect_)) {
+		if (PointInAABB(Application::GetWindow().GetMousePos(), rect_)) {
 			if (action == AE_BUTTON_PRESS) {
 				pressed_ = true;
 			}
