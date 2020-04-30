@@ -7,21 +7,23 @@
 namespace Aegis {
 
 	Window::Window(const std::string& title, int width, int height)
-		:width_(width), height_(height)
+		:size_{width, height}
 	{
 		window_handle_ = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
 		if (window_handle_ == nullptr) {
 			std::cout << "Unable to create window";
 		}
 		glfwMakeContextCurrent(window_handle_);
-		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-		{
+		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)){
 			std::cout << "Unable to initialize GLAD";
 		}
 
 		glfwSetWindowUserPointer(window_handle_, (void*)this);
+
 		resolution_ = { (float)width, (float)height };
 		glViewport(0, 0, width, height);
+
+		CenterWindowOnScreen();
 	}
 
 	Window::~Window()
@@ -87,7 +89,12 @@ namespace Aegis {
 			}
 			case ScreenMode::Windowed: {
 				screen_mode_ = ScreenMode::Windowed;
-				glfwSetWindowMonitor(window_handle_, nullptr, 50, 50, width_, height_, vid->refreshRate); break;
+				glfwSetWindowMonitor(window_handle_, nullptr, pos_.x, pos_.y, windowed_size_.x, windowed_size_.y, vid->refreshRate);
+
+				//cache window pos for when returning to windowed mode
+				int window_x, window_y;
+				glfwGetWindowPos(window_handle_, &window_x, &window_y);
+				pos_ = Vec2(window_x, window_y);  break;
 			}
 			case ScreenMode::FullscreenWindow: {
 				screen_mode_ = ScreenMode::FullscreenWindow;
@@ -102,14 +109,58 @@ namespace Aegis {
 		glfwPollEvents();
 	}
 
+	void Window::CenterWindowOnScreen()
+	{
+		const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+
+		int monitor_x, monitor_y;
+		glfwGetMonitorPos(glfwGetPrimaryMonitor(), &monitor_x, &monitor_y);
+
+		int window_width, window_height;
+		glfwGetWindowSize(window_handle_, &window_width, &window_height);
+		windowed_size_ = Vec2(window_width, window_height);
+
+		glfwSetWindowPos(window_handle_,
+			monitor_x + (mode->width - window_width) / 2,
+			monitor_y + (mode->height - window_height) / 2);
+
+		int window_x, window_y;
+		glfwGetWindowPos(window_handle_, &window_x, &window_y);
+		pos_ = Vec2(window_x, window_y);
+	}
+
+	void Window::SetPos(int x, int y)
+	{
+		glfwSetWindowPos(window_handle_, x, y);
+	}
+
+	Vec2 Window::GetPos()
+	{
+		return size_;
+	}
+
+	void Window::SetSize(int x, int y)
+	{
+		glfwSetWindowSize(window_handle_, x, y);
+		windowed_size_ = Vec2(x, y);
+	}
+
+	Vec2 Window::GetSize()
+	{
+		return size_;
+	}
+
 	void Window::OnResize(const WindowResizeEvent& event)
 	{
 		glViewport(0, 0, event.width_, event.height_);
 
-		width_ = event.width_;
-		height_ = event.height_;
+		size_ = Vec2(event.width_, event.height_);
 
-		mouse_pos_scale_ = resolution_ / Vec2(width_, height_);
+		if (screen_mode_ == ScreenMode::Windowed) {
+			windowed_size_ = Vec2(event.width_, event.height_);
+		}
+
+		mouse_pos_scale_ = resolution_ / size_;
 		
 	}
 
@@ -129,7 +180,7 @@ namespace Aegis {
 	{
 		resolution_ = Vec2(x, y);
 
-		mouse_pos_scale_ = resolution_ / Vec2(width_, height_);
+		mouse_pos_scale_ = resolution_ / size_;
 	}
 
 	Vec2 Window::GetMousePos()

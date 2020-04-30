@@ -29,9 +29,15 @@ public:
 	void OnEvent(Aegis::Event& event) override
 	{
 		auto key_event = dynamic_cast<Aegis::KeyEvent*>(&event);
-		if (key_event) {
-			if (key_event->key_ == AE_KEY_ENTER  && key_event->action_ == AE_BUTTON_PRESS) {
-				manager_->PopScene();
+		if (key_event && key_event->action_ == AE_BUTTON_PRESS) {
+			if (key_event->key_ == AE_KEY_ENTER) {
+				Aegis::Application::GetWindow().CenterWindowOnScreen();
+			}
+			if (key_event->key_ == AE_KEY_A) {
+				Aegis::Application::GetWindow().SetSize(200, 200);
+			}
+			if (key_event->key_ == AE_KEY_S) {
+				Aegis::Application::GetWindow().SetPos(20, 25);
 			}
 		}
 		auto mouse_event = dynamic_cast<Aegis::MouseClickEvent*>(&event);

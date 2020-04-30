@@ -29,8 +29,13 @@ namespace Aegis {
 
 		void OnUpdate();
 
-		int GetHeight() { return height_; }
-		int GetWidth() { return width_; }
+		void CenterWindowOnScreen();
+
+		void SetPos(int x, int y);
+		Vec2 GetPos();
+
+		void SetSize(int x, int y);
+		Vec2 GetSize();
 
 		bool IsVsync() { return vsync_; }
 		void SetVsync(bool vsync);
@@ -43,13 +48,15 @@ namespace Aegis {
 		
 	private:
 		//ratio between resolution and window size. Useful for buttons that change size due to resolution changes
+		Vec2 pos_;
+		Vec2 size_;
+		//size in windowed mode, does not update when fullscreen
+		Vec2 windowed_size_;
 		Vec2 mouse_pos_scale_ = { 1,1 };
 		Vec2 resolution_;
 		std::function<void(Event&)> callback_;
 		GLFWwindow* window_handle_;
 		ScreenMode screen_mode_ = ScreenMode::Windowed;
-		int width_;
-		int height_;
 		bool vsync_ = true;
 	};
 }
