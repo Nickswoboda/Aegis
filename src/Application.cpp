@@ -22,27 +22,27 @@ namespace Aegis {
 	bool Application::running_ = true;
 	bool Application::show_frame_time_ = false;
 
-	Application::Application(int width, int height)
+	void Application::Shutdown()
+	{
+		Renderer2D::Shutdown();
+		glfwTerminate();
+	}
+
+	void Application::CreateWindow(const std::string& title, int width, int height)
 	{
 		if (!glfwInit()) {
 			std::cout << "Unable to initiate GLFW.\n";
 			return;
 		}
 
-		window_ = std::make_unique<Window>("Aegis", width, height);
+		window_ = std::make_unique<Window>(title, width, height);
 		window_->SetEventCallbacks(std::bind(&Application::OnEvent, std::placeholders::_1));
 
-		scene_mgr_.PushScene(std::unique_ptr<Scene>(new BaseScene()));
-
-		Renderer2D::Init(width, height);
+		Renderer2D::Init();
 		default_font_ = std::make_shared<Font>("assets/fonts/WorkSans-Regular.ttf", 16);
 		Renderer2D::SetFont(default_font_);
-	}
 
-	Application::~Application()
-	{
-		Renderer2D::Shutdown();
-		glfwTerminate();
+		scene_mgr_.PushScene(std::unique_ptr<Scene>(new BaseScene()));
 	}
 
 	void Application::Run()
@@ -73,6 +73,8 @@ namespace Aegis {
 				DrawText(std::to_string(frame_time_sec_ * 1000), { 0, 0 }, { 1.0f, 1.0f, 1.0f, 1.0f });
 			}
 		}
+
+		Shutdown();
 	}
 	void Application::OnEvent(Event& event)
 	{

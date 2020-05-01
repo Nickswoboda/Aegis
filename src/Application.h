@@ -15,8 +15,10 @@ namespace Aegis {
 	class Application
 	{
 	public:
-		Application(int width, int height);
-		~Application();
+
+		static void Shutdown();
+
+		static void CreateWindow(const std::string& title, int width, int height); //add flags for resizable/moveable/decorated/etc
 
 		static void Run();
 		static void Quit() { running_ = false; }

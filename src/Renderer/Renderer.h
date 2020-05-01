@@ -15,7 +15,7 @@ namespace Aegis {
 	class Renderer2D
 	{
 	public:
-		static void Init(int width, int height);
+		static void Init();
 		static void Shutdown();
 
 		static void BeginScene(const glm::mat4& camera_projection);
