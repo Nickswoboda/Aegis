@@ -4,7 +4,7 @@
 #include "Renderer/Renderer.h"
 #include "Camera.h"
 
-#include <deque>
+#include <vector>
 #include <memory>
 
 namespace Aegis {
@@ -43,6 +43,6 @@ namespace Aegis {
 
 		void UpdateAllCameraProjections(float left, float right, float bottom, float top) { for (auto& scene : scenes_) { scene->camera_.SetProjection(left, right, bottom, top); }; }
 	private:
-		std::deque<std::unique_ptr<Scene>> scenes_;
+		std::vector<std::unique_ptr<Scene>> scenes_;
 	};
 }
