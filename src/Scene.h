@@ -4,7 +4,7 @@
 #include "Renderer/Renderer.h"
 #include "Camera.h"
 
-#include <stack>
+#include <deque>
 #include <memory>
 
 namespace Aegis {
@@ -36,11 +36,13 @@ namespace Aegis {
 	{
 	public:
 		SceneManager() {}
-		void PushScene(std::unique_ptr<Scene> scene) { scene->manager_ = this; scenes_.push(std::move(scene)); }
-		void PopScene() { if (scenes_.size() > 1) scenes_.pop();}
-		void ReplaceScene(std::unique_ptr<Scene> scene) { scenes_.pop(); PushScene(std::move(scene));}
-		std::unique_ptr<Scene>& CurrentScene() { return scenes_.top(); }
+		void PushScene(std::unique_ptr<Scene> scene) { scene->manager_ = this; scenes_.push_back(std::move(scene)); }
+		void PopScene() { if (scenes_.size() > 1) scenes_.pop_back();}
+		void ReplaceScene(std::unique_ptr<Scene> scene) { scenes_.pop_back(); PushScene(std::move(scene));}
+		std::unique_ptr<Scene>& CurrentScene() { return scenes_.back(); }
+
+		void UpdateAllCameraProjections(float left, float right, float bottom, float top) { for (auto& scene : scenes_) { scene->camera_.SetProjection(left, right, bottom, top); }; }
 	private:
-		std::stack<std::unique_ptr<Scene>> scenes_;
+		std::deque<std::unique_ptr<Scene>> scenes_;
 	};
 }
