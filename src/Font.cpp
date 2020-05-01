@@ -85,4 +85,14 @@ namespace Aegis {
 		return Texture(pixels, tex_width, tex_height);
 	}
 
+	int Font::GetStringPixelWidth(const std::string& string)
+	{
+		int width = 0;
+
+		for (const auto& c : string) {
+			width += glyphs_[c].advance;
+		}
+		return width;
+	}
+
 }

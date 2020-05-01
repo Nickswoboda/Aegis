@@ -108,6 +108,11 @@ namespace Aegis {
         glClearColor(r, g, b, a);
     }
 
+    Font& Renderer2D::GetFont()
+    {
+        return *default_font_;
+    }
+
     void RendererClear()
 	{
 		glClear(GL_COLOR_BUFFER_BIT);

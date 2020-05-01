@@ -20,10 +20,12 @@ namespace Aegis {
 		int advance;
 	};
 
-	class Font {
+	class Font 
+	{
 	public:
 		Font(const std::string& path, int size, int num_glyphs = 128);
 		Texture CreateTextureAtlas(const FT_Face& face);
+		int GetStringPixelWidth(const std::string& string);
 		std::vector<Glyph> glyphs_;
 		//used to align to top-left corner when rendering
 		int tallest_glyph_height_ = 0;

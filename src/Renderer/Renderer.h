@@ -22,8 +22,10 @@ namespace Aegis {
 		static void EndScene();
 
 		static void SetClearColor(float r, float g, float b, float a);
+		static Font& GetFont();
 		static void SetFont(std::shared_ptr<Font>& font);
 		static void SetProjection(const glm::mat4& projection);
+
 	};
 
 	void RendererClear();

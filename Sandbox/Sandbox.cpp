@@ -12,10 +12,12 @@ public:
 	{ 
 		button = new Aegis::Button({ 0, 0, 100, 100 });
 		button1 = new Aegis::Button({ 200, 0, 100, 100 });
+		text_ = "Test String";
+		text_width = Aegis::Renderer2D::GetFont().GetStringPixelWidth(text_);
 	}
 	void Update() override
 	{
-
+		
 	}
 	void Render(float delta_time) override
 	{
@@ -23,6 +25,10 @@ public:
 		Aegis::RendererClear();
 		button->Render();
 		button1->Render();
+
+		Aegis::DrawText(text_, { 0, 400 }, { 1.0f, 1.0f, 1.0f, 1.0f });
+		Aegis::DrawText("Same Line", { (float)text_width, 400 }, { 1.0f, 1.0f, 1.0f, 1.0f });
+
 		Aegis::Renderer2D::EndScene();
 	}
 
@@ -53,6 +59,8 @@ public:
 
 	Aegis::Button* button;
 	Aegis::Button* button1;
+	std::string text_;
+	int text_width = 0;
 };
 class Sandbox : public Aegis::Scene
 {
