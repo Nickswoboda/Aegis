@@ -1,5 +1,6 @@
 #include "Window.h"
 
+#include "Assert.h"
 #include <glad/glad.h>
 
 #include <iostream>
@@ -10,13 +11,12 @@ namespace Aegis {
 		:size_{width, height}
 	{
 		window_handle_ = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
-		if (window_handle_ == nullptr) {
-			std::cout << "Unable to create window";
-		}
+		
+		AE_ASSERT(window_handle_, "Unable to create window");
 		glfwMakeContextCurrent(window_handle_);
-		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)){
-			std::cout << "Unable to initialize GLAD";
-		}
+
+
+		AE_ASSERT(gladLoadGLLoader((GLADloadproc)glfwGetProcAddress), "Unable to initialize GLAD");
 
 		glfwSetWindowUserPointer(window_handle_, (void*)this);
 

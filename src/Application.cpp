@@ -30,10 +30,7 @@ namespace Aegis {
 
 	void Application::CreateWindow(const std::string& title, int width, int height)
 	{
-		if (!glfwInit()) {
-			std::cout << "Unable to initiate GLFW.\n";
-			return;
-		}
+		AE_ASSERT(glfwInit(), "Unable to initialize GLFW");
 
 		window_ = std::make_unique<Window>(title, width, height);
 		window_->SetEventCallbacks(std::bind(&Application::OnEvent, std::placeholders::_1));
