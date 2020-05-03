@@ -10,16 +10,25 @@
 #include <functional>
 namespace Aegis {
 
+	enum WindowFlag
+	{
+		WindowFlag_None =			0,
+		WindowFlag_Centered =		1 << 0, //Centers window on monitor on creation
+		WindowFlag_NonResizable =	1 << 1, //Disallow user from resizing monitor
+		WindowFlag_Undecorated =	1 << 2  //Do not show borders/close/maximize/minimize/etc
+	};
+
 	enum class ScreenMode
 	{
 		Fullscreen,
 		Windowed,
 		FullscreenWindow
 	};
+
 	class Window
 	{
 	public:
-		Window(const std::string& title, int width, int height);
+		Window(const std::string& title, int width, int height, int flags);
 		~Window();
 
 		GLFWwindow* GetWindowHandle() { return window_handle_; };
@@ -29,7 +38,7 @@ namespace Aegis {
 
 		void OnUpdate();
 
-		void CenterWindowOnScreen();
+		void CenterOnScreen();
 
 		void SetPos(int x, int y);
 		Vec2 GetPos();
@@ -44,6 +53,12 @@ namespace Aegis {
 		void SetResolution(int x, int y);
 		Vec2 GetResolution() { return resolution_; }
 
+		void SetResizable(bool resizable);
+		bool IsResizable();
+
+		void SetDecorated(bool decorated);
+		bool IsDecorated();
+		
 		Vec2 GetMousePos();
 		
 	private:

@@ -28,11 +28,11 @@ namespace Aegis {
 		glfwTerminate();
 	}
 
-	void Application::CreateWindow(const std::string& title, int width, int height)
+	void Application::CreateWindow(const std::string& title, int width, int height, int flags)
 	{
 		AE_ASSERT(glfwInit(), "Unable to initialize GLFW");
 
-		window_ = std::make_unique<Window>(title, width, height);
+		window_ = std::make_unique<Window>(title, width, height, flags);
 		window_->SetEventCallbacks(std::bind(&Application::OnEvent, std::placeholders::_1));
 
 		Renderer2D::Init();

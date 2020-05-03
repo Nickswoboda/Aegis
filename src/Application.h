@@ -18,7 +18,7 @@ namespace Aegis {
 
 		static void Shutdown();
 
-		static void CreateWindow(const std::string& title, int width, int height); //add flags for resizable/moveable/decorated/etc
+		static void CreateWindow(const std::string& title, int width, int height, int flags = WindowFlag_None); //add flags for resizable/moveable/decorated/etc
 
 		static void Run();
 		static void Quit() { running_ = false; }

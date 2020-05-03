@@ -7,7 +7,7 @@
 
 namespace Aegis {
 
-	Window::Window(const std::string& title, int width, int height)
+	Window::Window(const std::string& title, int width, int height, int flags)
 		:size_{width, height}
 	{
 		window_handle_ = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
@@ -23,7 +23,15 @@ namespace Aegis {
 		resolution_ = { (float)width, (float)height };
 		glViewport(0, 0, width, height);
 
-		CenterWindowOnScreen();
+		if (flags & WindowFlag_Centered) {
+			CenterOnScreen();
+		}
+		if (flags & WindowFlag_NonResizable){
+			glfwSetWindowAttrib(window_handle_, GLFW_RESIZABLE, GLFW_FALSE);
+		}
+		if (flags & WindowFlag_Undecorated) {
+			glfwSetWindowAttrib(window_handle_, GLFW_DECORATED, GLFW_FALSE);
+		}
 	}
 
 	Window::~Window()
@@ -109,7 +117,7 @@ namespace Aegis {
 		glfwPollEvents();
 	}
 
-	void Window::CenterWindowOnScreen()
+	void Window::CenterOnScreen()
 	{
 		const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
@@ -181,6 +189,26 @@ namespace Aegis {
 		resolution_ = Vec2(x, y);
 
 		mouse_pos_scale_ = resolution_ / size_;
+	}
+
+	void Window::SetResizable(bool resizable)
+	{
+		glfwSetWindowAttrib(window_handle_, GLFW_RESIZABLE, resizable);
+	}
+
+	bool Window::IsResizable()
+	{
+		return glfwGetWindowAttrib(window_handle_, GLFW_RESIZABLE);
+	}
+
+	void Window::SetDecorated(bool decorated)
+	{
+		glfwSetWindowAttrib(window_handle_, GLFW_DECORATED, decorated);
+	}
+
+	bool Window::IsDecorated()
+	{
+		return glfwGetWindowAttrib(window_handle_, GLFW_DECORATED);
 	}
 
 	Vec2 Window::GetMousePos()
