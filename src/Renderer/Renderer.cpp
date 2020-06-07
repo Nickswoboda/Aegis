@@ -203,7 +203,7 @@ namespace Aegis {
         Renderer2D::BeginScene(projection_);
         font_shader_->Bind();
 
-        auto& texture = default_font_->atlas_;
+        const auto& texture = default_font_->atlas_;
         float texture_index = 0.0f;
         for (uint32_t i = 1; i < data_.texture_slot_index_; ++i) {
             if (data_.texture_slots_[i] == texture.ID_) {
@@ -236,7 +236,7 @@ namespace Aegis {
     {
         DrawQuad(sprite.pos_, sprite.size_, sprite.texture_, sprite.color_, sprite.tex_coords_);
     }
-    void Renderer2D::SetFont(std::shared_ptr<Font>& font)
+    void Renderer2D::SetFont(const std::shared_ptr<Font>& font)
     {
         default_font_ = font;
     }

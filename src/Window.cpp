@@ -35,37 +35,37 @@ namespace Aegis {
 		callback_ = callback;
 
 		glfwSetWindowSizeCallback(window_handle_, [](GLFWwindow* window, int width, int height) {
-			Window& window_handle = *(Window*)glfwGetWindowUserPointer(window);
+			Window& window_handle = *static_cast<Window*>(glfwGetWindowUserPointer(window));
 			WindowResizeEvent event(width, height);
 			window_handle.callback_(event);
 		});
 
 		glfwSetWindowCloseCallback(window_handle_, [](GLFWwindow* window) {
-			Window& window_handle = *(Window*)glfwGetWindowUserPointer(window);
+			Window& window_handle = *static_cast<Window*>(glfwGetWindowUserPointer(window));
 			WindowCloseEvent event;
 			window_handle.callback_(event);
 		});
 
 		glfwSetKeyCallback(window_handle_, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
-			Window& window_handle = *(Window*)glfwGetWindowUserPointer(window);
+			Window& window_handle = *static_cast<Window*>(glfwGetWindowUserPointer(window));
 			KeyEvent event(key, scancode, action, mods);
 			window_handle.callback_(event);
 		});
 
 		glfwSetCursorPosCallback(window_handle_, [](GLFWwindow* window, double x_pos, double y_pos) {
-			Window& window_handle = *(Window*)glfwGetWindowUserPointer(window);
+			Window& window_handle = *static_cast<Window*>(glfwGetWindowUserPointer(window));
 			MouseMoveEvent event(x_pos, y_pos);
 			window_handle.callback_(event);
 		});
 
 		glfwSetMouseButtonCallback(window_handle_, [](GLFWwindow* window, int button, int action, int mods) {
-			Window& window_handle = *(Window*)glfwGetWindowUserPointer(window);
+			Window& window_handle = *static_cast<Window*>(glfwGetWindowUserPointer(window));
 			MouseClickEvent event(button, action, mods);
 			window_handle.callback_(event);
 		});
 
 		glfwSetScrollCallback(window_handle_, [](GLFWwindow* window, double xoffset, double yoffset) {
-			Window& window_handle = *(Window*)glfwGetWindowUserPointer(window);
+			Window& window_handle = *static_cast<Window*>(glfwGetWindowUserPointer(window));
 			MouseScrollEvent event(xoffset, yoffset);
 			window_handle.callback_(event);
 		});

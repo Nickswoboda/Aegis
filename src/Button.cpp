@@ -10,7 +10,7 @@ namespace Aegis {
 	{
 	}
 
-	Button::Button(Aegis::AABB rect, std::string text, std::shared_ptr<Aegis::Font> font)
+	Button::Button(AABB rect, const std::string& text, std::shared_ptr<Font> font)
 		: rect_(rect), text_(text), font_(font)
 	{
 	}
