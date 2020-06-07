@@ -1,5 +1,5 @@
 #include "Font.h"
-
+#include "Assert.h"
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
@@ -14,19 +14,13 @@ namespace Aegis {
 		FT_Face face;
 
 		int error = FT_Init_FreeType(&library);
-		if (error) {
-			std::cout << "Unable to initialize FreeType.\n";
-		}
+		AE_ASSERT(error == 0, "Unable to initialize FreeType.");
 
 		error = FT_New_Face(library, path.c_str(), 0, &face);
-		if (error) {
-			std::cout << "Unable to read font.\n";
-		}
+		AE_ASSERT(error == 0, "Unable to read font.");
 
 		error = FT_Set_Pixel_Sizes(face, size, size);
-		if (error) {
-			std::cout << "Unable to set pixel size.\n";
-		}
+		AE_ASSERT(error == 0, "Unable to set pixel size");
 
 		atlas_ = CreateTextureAtlas(face);
 

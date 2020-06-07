@@ -5,7 +5,7 @@
 #include "Renderer/Renderer.h"
 
 namespace Aegis {
-	Button::Button(Aegis::AABB rect)
+	Button::Button(AABB rect)
 		: rect_(rect)
 	{
 	}
@@ -32,11 +32,11 @@ namespace Aegis {
 
 	void Button::Render()
 	{
-		Aegis::DrawQuad(rect_.pos, rect_.size, color_);
+		DrawQuad(rect_.pos, rect_.size, color_);
 
 		if (!text_.empty()){
-		Aegis::Renderer2D::SetFont(font_);
-		Aegis::DrawText(text_, rect_.pos, { 1.0, 1.0f, 1.0f, 1.0f });
+		Renderer2D::SetFont(font_);
+		DrawText(text_, rect_.pos, { 1.0, 1.0f, 1.0f, 1.0f });
 		}
 	}
 }

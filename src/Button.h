@@ -8,6 +8,7 @@ namespace Aegis {
 	class Button
 	{
 	public:
+
 		explicit Button(AABB rect);
 		Button(AABB rect, const std::string& text, std::shared_ptr<Font> font);
 
@@ -15,8 +16,8 @@ namespace Aegis {
 		void Render();
 
 
-		Aegis::AABB rect_;
-		Aegis::Vec4 color_ = { 0.2, 0.4, 0.9, 1.0 };
+		AABB rect_;
+		Vec4 color_ = { 0.2, 0.4, 0.9, 1.0 };
 		std::string text_;
 		std::shared_ptr<Font> font_;
 		bool pressed_ = false;

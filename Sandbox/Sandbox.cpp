@@ -37,7 +37,7 @@ public:
 		auto key_event = dynamic_cast<Aegis::KeyEvent*>(&event);
 		if (key_event && key_event->action_ == AE_BUTTON_PRESS) {
 			if (key_event->key_ == AE_KEY_ENTER) {
-				Aegis::Application::GetWindow().CenterWindowOnScreen();
+				Aegis::Application::GetWindow().CenterOnScreen();
 			}
 			if (key_event->key_ == AE_KEY_A) {
 				Aegis::Application::GetWindow().SetSize(200, 200);
