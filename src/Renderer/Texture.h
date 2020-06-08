@@ -8,7 +8,7 @@ namespace Aegis {
 	public:
 		Texture();
 		~Texture();
-		Texture(const std::string& path);
+		explicit Texture(const std::string& path);
 		Texture(char* data, int width, int height);
 		void Bind();
 

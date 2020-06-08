@@ -9,7 +9,7 @@ namespace Aegis {
 	class Shader
 	{
 	public:
-		Shader(const std::string& file_path);
+		explicit Shader(const std::string& file_path);
 
 		void SetInt(const std::string& name, int value);
 		void SetIntVector(const std::string& name, int count, int* values);

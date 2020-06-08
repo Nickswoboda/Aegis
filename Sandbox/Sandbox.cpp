@@ -37,7 +37,7 @@ public:
 		auto key_event = dynamic_cast<Aegis::KeyEvent*>(&event);
 		if (key_event && key_event->action_ == AE_BUTTON_PRESS) {
 			if (key_event->key_ == AE_KEY_ENTER) {
-				Aegis::Application::GetWindow().CenterWindowOnScreen();
+				Aegis::Application::GetWindow().CenterOnScreen();
 			}
 			if (key_event->key_ == AE_KEY_A) {
 				Aegis::Application::GetWindow().SetSize(200, 200);
@@ -162,9 +162,9 @@ public:
 
 int main()
 {
-	Aegis::Application app(1280, 720);
-	app.ShowFrameTime(true);
-	app.PushScene(std::unique_ptr<Aegis::Scene>(new Sandbox));
-	app.PushScene(std::unique_ptr<Aegis::Scene>(new MenuScene));
-	app.Run();
+	Aegis::Application::CreateWindow("Sandbox", 1280, 720);
+	Aegis::Application::ShowFrameTime(true);
+	Aegis::Application::PushScene(std::unique_ptr<Aegis::Scene>(new Sandbox));
+	Aegis::Application::PushScene(std::unique_ptr<Aegis::Scene>(new MenuScene));
+	Aegis::Application::Run();
 }

@@ -4,6 +4,7 @@
 #include FT_FREETYPE_H
 
 #include <iostream>
+#include <numeric>
 
 namespace Aegis {
 	Font::Font(const std::string& path, int size, int num_glyphs)
