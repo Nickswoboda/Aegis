@@ -50,6 +50,7 @@ namespace Aegis {
 		void SetVsync(bool vsync);
 
 		void SetScreenMode(ScreenMode screen_mode);
+		inline ScreenMode GetScreenMode() { return screen_mode_; }
 		void SetResolution(int x, int y);
 		Vec2 GetResolution() { return resolution_; }
 

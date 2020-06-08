@@ -17,6 +17,7 @@ namespace Aegis {
 		void AddItem(const std::string& text, std::function<void()> callback);
 		bool IsPressed(int action);
 		void MoveSelectedToTop();
+		void SetCurrentIndex(int index);
 
 
 		Button* dropdown_button_ = nullptr;
@@ -24,7 +25,7 @@ namespace Aegis {
 
 		Vec2 pos_;
 		Vec2 size_;
-		int current_item_index = 0;
+		int current_item_index_ = 0;
 		std::string label_;
 		bool collapsed_ = true;
 		int button_pos_offset_;

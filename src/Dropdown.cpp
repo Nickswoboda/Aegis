@@ -28,7 +28,7 @@ namespace Aegis {
 		dropdown_button_->Render();
 
 		if (collapsed_ && !items_.empty()) {
-			items_[current_item_index].first->Render();
+			items_[current_item_index_].first->Render();
 		}
 		else {
 			for (auto item : items_) {
@@ -58,7 +58,7 @@ namespace Aegis {
 
 		for (int i = 0; i < items_.size(); ++i) {
 			if (items_[i].first->IsPressed(action)) {
-				current_item_index = i;
+				current_item_index_ = i;
 				items_[i].second();
 				collapsed_ = true;
 				MoveSelectedToTop();
@@ -71,15 +71,20 @@ namespace Aegis {
 
 	void Dropdown::MoveSelectedToTop()
 	{
-		items_[current_item_index].first->rect_ = { pos_.x + button_pos_offset_, pos_.y, size_.x, size_.y };
+		items_[current_item_index_].first->rect_ = { pos_.x + button_pos_offset_, pos_.y, size_.x, size_.y };
 
 		int num_item = 1;
 		for (int i = 0; i < items_.size(); ++i) {
-			if (i != current_item_index) {
+			if (i != current_item_index_) {
 				float y_pos = pos_.y + size_.y * num_item;
 				items_[i].first->rect_ = { pos_.x + button_pos_offset_, y_pos, size_.x, size_.y };
 				++num_item;
 			}
 		}
+	}
+	void Dropdown::SetCurrentIndex(int index)
+	{
+		current_item_index_ = index;
+		MoveSelectedToTop();
 	}
 }
