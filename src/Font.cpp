@@ -13,8 +13,6 @@ namespace Aegis {
 		FT_Library library;
 		FT_Face face;
 
-		
-
 		int error = FT_Init_FreeType(&library);
 		AE_ASSERT(error == 0, "Unable to initialize FreeType.");
 
@@ -33,6 +31,7 @@ namespace Aegis {
 	Texture Aegis::Font::CreateTextureAtlas(const FT_Face& face)
 	{
 		//src https ://gist.github.com/baines/b0f9e4be04ba4e6f56cab82eef5008ff
+		//adapted to use 4channels per pixel
 
 		int max_dim = (1 + (face->size->metrics.height >> 6))* ceilf(sqrtf(num_glyphs_));
 		int tex_width = 1;
