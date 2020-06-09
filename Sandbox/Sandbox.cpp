@@ -28,6 +28,7 @@ public:
 
 		Aegis::DrawText(text_, { 0, 400 }, { 1.0f, 1.0f, 1.0f, 1.0f });
 		Aegis::DrawText("Same Line", { (float)text_width, 400 }, { 1.0f, 1.0f, 1.0f, 1.0f });
+		Aegis::DrawQuad({ 100.0f, 100.0f }, { (float)Aegis::Renderer2D::GetFont().atlas_.width_, (float)Aegis::Renderer2D::GetFont().atlas_.height_ }, std::make_shared <Aegis::Texture>(Aegis::Renderer2D::GetFont().atlas_), { 1.0, 1.0f, 1.0f, 1.0f });
 
 		Aegis::Renderer2D::EndScene();
 	}

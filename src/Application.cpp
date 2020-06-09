@@ -66,8 +66,10 @@ namespace Aegis {
 			scene_mgr_.CurrentScene()->Render(accumulator_ / time_step_);
 
 			if (show_frame_time_) {
+				Renderer2D::BeginScene();
 				Renderer2D::SetFont(default_font_);
 				DrawText(std::to_string(frame_time_sec_ * 1000), { 0, 0 }, { 1.0f, 1.0f, 1.0f, 1.0f });
+				Renderer2D::EndScene();
 			}
 		}
 

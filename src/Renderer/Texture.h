@@ -9,7 +9,7 @@ namespace Aegis {
 		Texture();
 		~Texture();
 		explicit Texture(const std::string& path);
-		Texture(char* data, int width, int height);
+		Texture(unsigned char* data, int width, int height);
 		void Bind();
 
 		unsigned int ID_ = 0;

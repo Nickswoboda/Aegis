@@ -16,7 +16,6 @@ namespace Aegis {
 
     static const size_t max_textures = 32;
     static std::unique_ptr<Shader> shader_;
-    static std::unique_ptr<Shader> font_shader_;
     static std::unique_ptr<VertexArray> vertex_array_;
     static glm::mat4 projection_;
     static std::shared_ptr<Font> default_font_;
@@ -48,11 +47,6 @@ namespace Aegis {
             samplers[i] = i;
         }
 
-        font_shader_ = std::make_unique<Shader>("assets/shaders/FontShader.glsl");
-        font_shader_->Bind();
-        font_shader_->SetMat4("u_Projection", projection_);
-        font_shader_->SetIntVector("u_Textures", max_textures, samplers);
-
         shader_ = std::make_unique<Shader>("assets/shaders/Shader.glsl");
         shader_->Bind();
         shader_->SetMat4("u_Projection", projection_);
@@ -74,11 +68,13 @@ namespace Aegis {
         delete[] data_.quad_buffer_;
     }
 
+    void Renderer2D::BeginScene()
+    {
+        BeginScene(projection_);
+    }
     void Renderer2D::BeginScene(const glm::mat4& camera_projection)
 	{
         projection_ = camera_projection;
-        font_shader_->Bind();
-        font_shader_->SetMat4("u_Projection", projection_);
 
         shader_->Bind();
         shader_->SetMat4("u_Projection", projection_);
@@ -199,10 +195,6 @@ namespace Aegis {
     }
     void DrawText(const std::string& text, const Vec2& pos, const Vec4& color)
     {
-        Renderer2D::EndScene();
-        Renderer2D::BeginScene(projection_);
-        font_shader_->Bind();
-
         const auto& texture = default_font_->atlas_;
         float texture_index = 0.0f;
         for (uint32_t i = 1; i < data_.texture_slot_index_; ++i) {
@@ -227,10 +219,6 @@ namespace Aegis {
                 texture_index, color, { glyph.atlas_pos.x / texture.width_, glyph.atlas_pos.y / texture.height_, (glyph.atlas_pos.x + glyph.size.x) / texture.width_, (glyph.atlas_pos.y + glyph.size.y) / texture.height_ });
             pen_pos.x += glyph.advance;
         }
-
-        Renderer2D::EndScene();
-        shader_->Bind();
-        Renderer2D::BeginScene(projection_);
     }
     void RenderSprite(const Sprite& sprite)
     {
@@ -243,9 +231,6 @@ namespace Aegis {
     void Renderer2D::SetProjection(const glm::mat4& projection)
     {
         projection_ = projection;
-
-        font_shader_->Bind();
-        font_shader_->SetMat4("u_Projection", projection_);
 
         shader_->Bind();
         shader_->SetMat4("u_Projection", projection_);

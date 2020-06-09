@@ -13,6 +13,8 @@ namespace Aegis {
 		FT_Library library;
 		FT_Face face;
 
+		
+
 		int error = FT_Init_FreeType(&library);
 		AE_ASSERT(error == 0, "Unable to initialize FreeType.");
 
@@ -36,15 +38,16 @@ namespace Aegis {
 		int tex_width = 1;
 		while (tex_width < max_dim) tex_width <<= 1;
 		int tex_height = tex_width;
+		int tex_pitch = tex_width * 4;
 
-		char* pixels = (char*)calloc(tex_width * tex_height, 1);
+		unsigned char* pixels = new unsigned char[(size_t)tex_height * tex_pitch]();
 		int pen_x = 0, pen_y = 0;
 
 		for (int i = 0; i < num_glyphs_; ++i) {
 			FT_Load_Char(face, i, FT_LOAD_RENDER);
 			FT_Bitmap* bmp = &face->glyph->bitmap;
 
-			if (pen_x + bmp->width >= tex_width) {
+			if (pen_x + (bmp->width * 4) >= tex_width) {
 				pen_x = 0;
 				pen_y += ((face->size->metrics.height >> 6) + 1);
 			}
@@ -53,7 +56,10 @@ namespace Aegis {
 				for (int col = 0; col < bmp->width; ++col) {
 					int x = pen_x + col;
 					int y = pen_y + row;
-					pixels[y * tex_width + x] = bmp->buffer[row * bmp->pitch + col];
+					pixels[y * tex_pitch + x*4 + 0] = 225;
+					pixels[y * tex_pitch + x*4 + 1] = 225;
+					pixels[y * tex_pitch + x*4 + 2] = 225;
+					pixels[y * tex_pitch + x*4 + 3] = bmp->buffer[row * bmp->pitch + col];
 				}
 			}
 
@@ -74,7 +80,7 @@ namespace Aegis {
 				tallest_glyph_height_ = face->glyph->bitmap_top;
 			}
 
-			pen_x += bmp->width + 1;
+			pen_x += (bmp->pitch) + 1;
 		}
 
 		return Texture(pixels, tex_width, tex_height);

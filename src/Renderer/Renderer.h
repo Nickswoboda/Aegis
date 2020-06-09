@@ -18,6 +18,7 @@ namespace Aegis {
 		static void Init();
 		static void Shutdown();
 
+		static void BeginScene();
 		static void BeginScene(const glm::mat4& camera_projection);
 		static void EndScene();
 
