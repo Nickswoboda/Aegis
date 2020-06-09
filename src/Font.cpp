@@ -28,7 +28,7 @@ namespace Aegis {
 		FT_Done_FreeType(library);
 	}
 
-	Texture Aegis::Font::CreateTextureAtlas(const FT_Face& face)
+	std::shared_ptr<Texture> Aegis::Font::CreateTextureAtlas(const FT_Face& face)
 	{
 		//src https ://gist.github.com/baines/b0f9e4be04ba4e6f56cab82eef5008ff
 		//adapted to use 4channels per pixel
@@ -82,7 +82,7 @@ namespace Aegis {
 			pen_x += (bmp->pitch) + 1;
 		}
 
-		return Texture(pixels, tex_width, tex_height);
+		return std::make_shared<Texture>(pixels, tex_width, tex_height);
 	}
 
 	int Font::GetStringPixelWidth(const std::string& string)

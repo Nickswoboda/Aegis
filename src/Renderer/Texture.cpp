@@ -7,21 +7,6 @@
 
 #include <iostream>
 namespace Aegis {
-    Texture::Texture()
-    {
-        width_ = 1;
-        height_ = 1;
-        glCreateTextures(GL_TEXTURE_2D, 1, &ID_);
-
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-        uint32_t data = 0xffffffff;
-        glTextureStorage2D(ID_, 1, GL_RGBA8, 1, 1);
-        glTextureSubImage2D(ID_, 0, 0, 0, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &data);
-    }
 
     Texture::~Texture()
     {

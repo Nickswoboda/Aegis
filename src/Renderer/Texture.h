@@ -6,10 +6,10 @@ namespace Aegis {
 	class Texture
 	{
 	public:
-		Texture();
-		~Texture();
 		explicit Texture(const std::string& path);
 		Texture(unsigned char* data, int width, int height);
+
+		~Texture();
 		void Bind();
 
 		unsigned int ID_ = 0;

@@ -25,10 +25,11 @@ public:
 		Aegis::RendererClear();
 		button->Render();
 		button1->Render();
+		Aegis::DrawQuad({ 200, 200 }, { 100, 100 }, { 1.0, 0.0f, 1.0f, 1.0f });
 
 		Aegis::DrawText(text_, { 0, 400 }, { 1.0f, 1.0f, 1.0f, 1.0f });
 		Aegis::DrawText("Same Line", { (float)text_width, 400 }, { 1.0f, 1.0f, 1.0f, 1.0f });
-		Aegis::DrawQuad({ 100.0f, 100.0f }, { (float)Aegis::Renderer2D::GetFont().atlas_.width_, (float)Aegis::Renderer2D::GetFont().atlas_.height_ }, std::make_shared <Aegis::Texture>(Aegis::Renderer2D::GetFont().atlas_), { 1.0, 1.0f, 1.0f, 1.0f });
+		//Aegis::DrawQuad({ 100.0f, 100.0f }, { (float)Aegis::Renderer2D::GetFont().atlas_.width_, (float)Aegis::Renderer2D::GetFont().atlas_.height_ }, std::make_shared <Aegis::Texture>(Aegis::Renderer2D::GetFont().atlas_), { 1.0, 1.0f, 1.0f, 1.0f });
 
 		Aegis::Renderer2D::EndScene();
 	}
@@ -63,6 +64,8 @@ public:
 	std::string text_;
 	int text_width = 0;
 };
+
+
 class Sandbox : public Aegis::Scene
 {
 public:
@@ -136,13 +139,13 @@ public:
 	{
 		Aegis::Renderer2D::BeginScene(camera_.view_projection_matrix_);
 
-		Aegis::RenderSprite(*sprite_);
-		//or (int y = 0; y < 10; ++y) {
-		//	for (int x = 0; x < 10; ++x) {
-		//		Aegis::DrawQuad({ x * 26.0f, y * 26.0f }, { 25.0f, 25.0f }, { 0.3f, 0.6f, 0.9f, 1.0f });
-		//		Aegis::DrawQuad({ x * 2.0f, y * 2.0f }, { 1.0f, 1.0f }, smiley_);
-		//	}
-		//
+		//Aegis::RenderSprite(*sprite_);
+		for (int y = 100; y < 110; ++y) {
+			for (int x = 100; x < 110; ++x) {
+				Aegis::DrawQuad({ x * 26.0f, y * 26.0f }, { 25.0f, 25.0f }, { 0.3f, 0.6f, 0.9f, 1.0f });
+				//Aegis::DrawQuad({ x * 2.0f, y * 2.0f }, { 1.0f, 1.0f }, smiley_);
+			}
+		}
 		//egis::DrawText("ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890", { 240, 240 }, { 1.0f, 0.0f, 1.0f, 1.0f });
 		//egis::DrawText("FPS: " + std::to_string(Aegis::Application::GetFrameTime()), { 0.0f,0.0f }, { 1.0, 1.0, 1.0, 1.0f });
 		//

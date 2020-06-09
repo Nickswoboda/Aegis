@@ -52,7 +52,9 @@ namespace Aegis {
         shader_->SetMat4("u_Projection", projection_);
         shader_->SetIntVector("u_Textures", max_textures, samplers);
 
-        white_texture_ = std::make_unique<Texture>();
+        //1x1 square texture for colored quads.
+        unsigned char white_data[4] = { 225, 225, 225, 225 };
+        white_texture_ = std::make_unique<Texture>(white_data, 1, 1);
         vertex_array_ = std::make_unique<VertexArray>();
         data_.quad_buffer_ = new VertexArray::Vertex[vertex_array_->max_vertex_count_];
        
@@ -198,14 +200,14 @@ namespace Aegis {
         const auto& texture = default_font_->atlas_;
         float texture_index = 0.0f;
         for (uint32_t i = 1; i < data_.texture_slot_index_; ++i) {
-            if (data_.texture_slots_[i] == texture.ID_) {
+            if (data_.texture_slots_[i] == texture->ID_) {
                 texture_index = (float)i;
                 break;
             }
         }
         if (texture_index == 0.0f) {
             texture_index = (float)data_.texture_slot_index_;
-            data_.texture_slots_[data_.texture_slot_index_] = texture.ID_;
+            data_.texture_slots_[data_.texture_slot_index_] = texture->ID_;
             data_.texture_slot_index_++;
         }
 
@@ -216,7 +218,7 @@ namespace Aegis {
 
             auto glyph = default_font_->glyphs_[c];
             DrawQuad({ pen_pos.x + glyph.bearing.x, pen_pos.y - glyph.bearing.y }, { glyph.size.x, glyph.size.y },
-                texture_index, color, { glyph.atlas_pos.x / texture.width_, glyph.atlas_pos.y / texture.height_, (glyph.atlas_pos.x + glyph.size.x) / texture.width_, (glyph.atlas_pos.y + glyph.size.y) / texture.height_ });
+                texture_index, color, { glyph.atlas_pos.x / texture->width_, glyph.atlas_pos.y / texture->height_, (glyph.atlas_pos.x + glyph.size.x) / texture->width_, (glyph.atlas_pos.y + glyph.size.y) / texture->height_ });
             pen_pos.x += glyph.advance;
         }
     }
