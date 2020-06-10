@@ -12,7 +12,7 @@ namespace Aegis
 	public:
 		Sprite() {};
 		explicit Sprite(const std::shared_ptr<Texture>& texture)
-			: texture_(texture), size_(texture->width_, texture->height_),
+			: texture_(texture), size_(texture->size_),
 				tex_coords_(0.0f, 0.0f, 1.0f, 1.0f),
 				color_(1.0f, 1.0f, 1.0f, 1.0f)
 		{}

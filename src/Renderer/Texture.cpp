@@ -19,9 +19,8 @@ namespace Aegis {
     
         int width, height, channels;
         unsigned char* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
-    
-        width_ = width;
-        height_ = height;
+        
+        size_ = Vec2(width, height);
     
         GLint internal_format = 0, format = 0;
         if (channels == 3) {
@@ -48,7 +47,7 @@ namespace Aegis {
     }
 
     Texture::Texture(unsigned char* data, int width, int height)
-        :width_(width), height_(height)
+        :size_(width, height)
     {
         glCreateTextures(GL_TEXTURE_2D, 1, &ID_);
 
@@ -67,9 +66,9 @@ namespace Aegis {
     }
 
     SubTexture::SubTexture(const std::shared_ptr<Texture>& texture, Vec2 pos, Vec2 size)
-        :texture_(texture)
+        :texture_(texture), size_(size)
     {
-        tex_coords_ = { pos.x / texture->width_, pos.y / texture->height_, (pos.x + size.x) / texture->width_, (pos.y + size.y) / texture_->height_ };
+        tex_coords_ = { pos.x / texture->size_.x, pos.y / texture->size_.y, (pos.x + size.x) / texture->size_.x, (pos.y + size.y) / texture_->size_.y };
     }
 }
 
