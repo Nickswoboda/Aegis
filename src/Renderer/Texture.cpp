@@ -67,9 +67,9 @@ namespace Aegis {
     }
 
     SubTexture::SubTexture(const std::shared_ptr<Texture>& texture, Vec2 pos, Vec2 size)
-        :texture_(texture), pos_(pos), size_(size)
+        :texture_(texture)
     {
-        tex_coords_ = { pos.x / texture->width_, pos.y / texture->height_, size.x / texture->width_, size.y / texture_->height_ };
+        tex_coords_ = { pos.x / texture->width_, pos.y / texture->height_, (pos.x + size.x) / texture->width_, (pos.y + size.y) / texture_->height_ };
     }
 }
 

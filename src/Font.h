@@ -14,6 +14,7 @@ namespace Aegis {
 
 	struct Glyph
 	{
+		std::shared_ptr<SubTexture> sub_texture_;
 		Vec2 atlas_pos;
 		Vec2 size;
 		Vec2 bearing;
@@ -25,7 +26,9 @@ namespace Aegis {
 	public:
 		Font(const std::string& path, int size, int num_glyphs = 128);
 		std::shared_ptr<Texture> CreateTextureAtlas(const FT_Face& face);
+		void SetGlyphSubTextures();
 		int GetStringPixelWidth(const std::string& string);
+		
 		std::vector<Glyph> glyphs_;
 		//used to align to top-left corner when rendering
 		int tallest_glyph_height_ = 0;

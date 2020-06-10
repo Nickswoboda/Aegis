@@ -30,8 +30,6 @@ namespace Aegis {
 		
 	private:
 		std::shared_ptr<Texture> texture_;
-		Vec2 pos_;
-		Vec2 size_;
 		Vec4 tex_coords_;
 	};
 }

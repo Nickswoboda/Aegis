@@ -190,28 +190,13 @@ namespace Aegis {
     }
     void DrawText(const std::string& text, const Vec2& pos, const Vec4& color)
     {
-        const auto& texture = default_font_->atlas_;
-        float texture_index = 0.0f;
-        for (uint32_t i = 1; i < data_.texture_slot_index_; ++i) {
-            if (data_.texture_slots_[i] == texture->ID_) {
-                texture_index = (float)i;
-                break;
-            }
-        }
-        if (texture_index == 0.0f) {
-            texture_index = (float)data_.texture_slot_index_;
-            data_.texture_slots_[data_.texture_slot_index_] = texture->ID_;
-            data_.texture_slot_index_++;
-        }
-
         auto pen_pos = pos;
         pen_pos.y += default_font_->tallest_glyph_height_;
 
         for (const auto& c : text) {
 
             auto glyph = default_font_->glyphs_[c];
-            DrawQuad({ pen_pos.x + glyph.bearing.x, pen_pos.y - glyph.bearing.y }, { glyph.size.x, glyph.size.y },
-                texture_index, color, { glyph.atlas_pos.x / texture->width_, glyph.atlas_pos.y / texture->height_, (glyph.atlas_pos.x + glyph.size.x) / texture->width_, (glyph.atlas_pos.y + glyph.size.y) / texture->height_ });
+            DrawQuad({ pen_pos.x + glyph.bearing.x, pen_pos.y - glyph.bearing.y }, { glyph.size.x, glyph.size.y }, glyph.sub_texture_);
             pen_pos.x += glyph.advance;
         }
     }

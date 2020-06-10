@@ -23,6 +23,7 @@ namespace Aegis {
 		AE_ASSERT(error == 0, "Unable to set pixel size");
 
 		atlas_ = CreateTextureAtlas(face);
+		SetGlyphSubTextures();
 
 		FT_Done_Face(face);
 		FT_Done_FreeType(library);
@@ -83,6 +84,13 @@ namespace Aegis {
 		}
 
 		return std::make_shared<Texture>(pixels, tex_width, tex_height);
+	}
+
+	void Font::SetGlyphSubTextures()
+	{
+		for (auto& glyph : glyphs_) {
+			glyph.sub_texture_ = std::make_shared<SubTexture>(atlas_, glyph.atlas_pos, glyph.size);
+		}
 	}
 
 	int Font::GetStringPixelWidth(const std::string& string)
