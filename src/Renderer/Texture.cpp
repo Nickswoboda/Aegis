@@ -65,4 +65,11 @@ namespace Aegis {
     {
         glBindTextureUnit(0, ID_);
     }
+
+    SubTexture::SubTexture(const std::shared_ptr<Texture>& texture, Vec2 pos, Vec2 size)
+        :texture_(texture), pos_(pos), size_(size)
+    {
+        tex_coords_ = { pos.x / texture->width_, pos.y / texture->height_, size.x / texture->width_, size.y / texture_->height_ };
+    }
 }
+

@@ -144,19 +144,12 @@ namespace Aegis {
             data_.texture_slots_[data_.texture_slot_index_] = texture->ID_;
             data_.texture_slot_index_++;
         }
-        
-        Vec4 uv_coords;
-        if (tex_coords.w == 1.0f && tex_coords.z == 1.0f) {
-            uv_coords = tex_coords;
-        }
-        else {
-            uv_coords.x = tex_coords.x / texture->width_;
-            uv_coords.y = tex_coords.y / texture->height_;
-            uv_coords.z = tex_coords.z / texture->width_;
-            uv_coords.w = tex_coords.w / texture->height_;
-        }
 
-        DrawQuad(pos, size, texture_index, color, uv_coords);
+        DrawQuad(pos, size, texture_index, color, tex_coords);
+    }
+    void DrawQuad(const Vec2& pos, const Vec2& size, const std::shared_ptr<SubTexture>& sub_texture, const Vec4& color)
+    {
+        DrawQuad(pos, size, sub_texture->GetTexture(), color, sub_texture->GetTexCoords());
     }
     void DrawQuad(const Vec2& pos, const Vec2& size, const float texture_index, const Vec4& color, const Vec4& tex_coords)
     {
