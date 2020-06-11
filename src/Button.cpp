@@ -36,7 +36,7 @@ namespace Aegis {
 
 		if (!text_.empty()){
 		Renderer2D::SetFont(font_);
-		DrawText(text_, rect_.pos, { 1.0, 1.0f, 1.0f, 1.0f });
+		DrawDynamicText(text_, rect_.pos, { 1.0, 1.0f, 1.0f, 1.0f });
 		}
 	}
 }

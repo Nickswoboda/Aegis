@@ -5,6 +5,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 namespace Aegis {
 	class Texture
@@ -12,6 +13,7 @@ namespace Aegis {
 	public:
 		explicit Texture(const std::string& path);
 		Texture(unsigned char* data, int width, int height);
+		static std::shared_ptr<Texture> TextureFromText(const std::string& text, std::shared_ptr<Texture> atlas, int width, int height, int y_baseline);
 
 		~Texture();
 		void Bind();

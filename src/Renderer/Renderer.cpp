@@ -20,7 +20,7 @@ namespace Aegis {
     static glm::mat4 projection_;
     static std::shared_ptr<Font> default_font_;
     static std::unique_ptr<Texture> white_texture_;
-
+    static std::unordered_map<std::string, std::shared_ptr<Texture>> cached_text_;
     struct RenderData
     {
         uint32_t index_count_ = 0;
@@ -197,9 +197,33 @@ namespace Aegis {
 
         data_.index_count_ += 6;
     }
-    void DrawText(const std::string& text, const Vec2& pos, const Vec4& color)
+    void DrawStaticText(const std::string& text, const Vec2& pos, const Vec4& color)
     {
-        auto pen_pos = pos;
+        //if already cached
+        if (cached_text_.count(text)) {
+            DrawQuad(pos, cached_text_[text], color);
+        }
+        //create texture and cache
+        else{
+            int width = default_font_->GetStringPixelWidth(text);
+            int height = 0;
+            for (auto& c : text) {
+                auto glyph = default_font_->glyphs_[c];
+                if (glyph.size.y + (default_font_->tallest_glyph_height_ - glyph.bearing.y) > height) {
+                    //tallest glyph - bearing.y = the distance from top baseline
+                    height = glyph.size.y + (default_font_->tallest_glyph_height_ - glyph.bearing.y);
+                }
+            }
+            
+            auto texture = Texture::TextureFromText(text, default_font_->atlas_, width, height, default_font_->tallest_glyph_height_);
+            
+            DrawQuad(pos, texture, color);
+            cached_text_[text] = texture;
+        }
+    }
+    void DrawDynamicText(const std::string& text, const Vec2& pos, const Vec4& color)
+    {
+        Vec2 pen_pos = pos;
         pen_pos.y += default_font_->tallest_glyph_height_;
 
         for (const auto& c : text) {

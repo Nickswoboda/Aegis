@@ -24,7 +24,7 @@ namespace Aegis {
 
 	void Dropdown::Render()
 	{
-		DrawText(label_, pos_, { 1.0f, 1.0f, 1.0f, 1.0f });
+		DrawDynamicText(label_, pos_, { 1.0f, 1.0f, 1.0f, 1.0f });
 		dropdown_button_->Render();
 
 		if (collapsed_ && !items_.empty()) {
