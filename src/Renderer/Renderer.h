@@ -41,7 +41,7 @@ namespace Aegis {
 	void DrawQuad(const Vec2& pos, const Vec2& size, const float texture_index, const Vec4& color, const Vec4& tex_coords = { 0.0f, 0.0f, 1.0f, 1.0f });
 
 	void DrawStaticText(const std::string& text, const Vec2& pos, const Vec4& color);
-	void DrawDynamicText(const std::string& text, const Vec2& pos, const Vec4& color);
+	void DrawText(const std::string& text, const Vec2& pos, const Vec4& color);
 
 	void RenderSprite(const Sprite& sprite);
 }

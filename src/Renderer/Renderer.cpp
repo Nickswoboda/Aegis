@@ -221,7 +221,7 @@ namespace Aegis {
             cached_text_[text] = texture;
         }
     }
-    void DrawDynamicText(const std::string& text, const Vec2& pos, const Vec4& color)
+    void DrawText(const std::string& text, const Vec2& pos, const Vec4& color)
     {
         Vec2 pen_pos = pos;
         pen_pos.y += default_font_->tallest_glyph_height_;
