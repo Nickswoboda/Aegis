@@ -10,6 +10,9 @@ namespace Aegis {
 	Font::Font(const std::string& path, int size, int num_glyphs)
 		: num_glyphs_(num_glyphs)
 	{
+		font_name_ = path;
+		size_ = size;
+		
 		FT_Library library;
 		FT_Face face;
 

@@ -28,7 +28,9 @@ namespace Aegis {
 		std::shared_ptr<Texture> CreateTextureAtlas(const FT_Face& face);
 		void SetGlyphSubTextures();
 		int GetStringPixelWidth(const std::string& string);
-		
+
+		std::string font_name_;
+		int size_;
 		std::vector<Glyph> glyphs_;
 		//used to align to top-left corner when rendering
 		int tallest_glyph_height_ = 0;

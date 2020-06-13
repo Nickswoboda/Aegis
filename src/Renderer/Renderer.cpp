@@ -200,8 +200,9 @@ namespace Aegis {
     void DrawStaticText(const std::string& text, const Vec2& pos, const Vec4& color)
     {
         //if already cached
-        if (cached_text_.count(text)) {
-            DrawQuad(pos, cached_text_[text], color);
+	    std::string index = text + default_font_->font_name_ + std::to_string(default_font_->size_);
+        if (cached_text_.count(index)) {
+            DrawQuad(pos, cached_text_[index], color);
         }
         //create texture and cache
         else{
@@ -218,7 +219,7 @@ namespace Aegis {
             auto texture = Texture::TextureFromText(text, default_font_->atlas_, width, height, default_font_->tallest_glyph_height_);
             
             DrawQuad(pos, texture, color);
-            cached_text_[text] = texture;
+            cached_text_[index] = texture;
         }
     }
     void DrawText(const std::string& text, const Vec2& pos, const Vec4& color)
