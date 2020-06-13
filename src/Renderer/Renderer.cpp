@@ -21,6 +21,7 @@ namespace Aegis {
     static std::shared_ptr<Font> default_font_;
     static std::unique_ptr<Texture> white_texture_;
     static std::unordered_map<std::string, std::shared_ptr<Texture>> cached_text_;
+
     struct RenderData
     {
         uint32_t index_count_ = 0;
@@ -32,15 +33,12 @@ namespace Aegis {
         uint32_t texture_slot_index_ = 1;
     };
 
-
     static RenderData data_;
 
     void Renderer2D::Init()
     {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-        SetClearColor(0.0f, 0.0f, 0.7f, 1.0f);
 
         int samplers[max_textures];
         for (int i = 0; i < max_textures; ++i) {
@@ -55,10 +53,10 @@ namespace Aegis {
         //1x1 square texture for colored quads.
         unsigned char white_data[4] = { 225, 225, 225, 225 };
         white_texture_ = std::make_unique<Texture>(white_data, 1, 1);
+
         vertex_array_ = std::make_unique<VertexArray>();
         data_.quad_buffer_ = new VertexArray::Vertex[vertex_array_->max_vertex_count_];
        
-
         data_.texture_slots_[0] = white_texture_->ID_;
         for (size_t i = 1; i < max_textures; ++i) {
             data_.texture_slots_[i] = 0;
@@ -70,10 +68,6 @@ namespace Aegis {
         delete[] data_.quad_buffer_;
     }
 
-    void Renderer2D::BeginScene()
-    {
-        BeginScene(projection_);
-    }
     void Renderer2D::BeginScene(const glm::mat4& camera_projection)
 	{
         projection_ = camera_projection;
@@ -167,6 +161,7 @@ namespace Aegis {
             std::cout << "Must Call BeginScene() before drawing\n";
         }
         glm::mat4 transform = glm::translate(glm::mat4(1.0f), { pos.x, pos.y, 0.0f }) * glm::scale(glm::mat4(1.0), { size.x, size.y, 1.0 });
+
         glm::vec4 vertex1_pos = transform * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
         data_.quad_buffer_ptr_->position_ = { vertex1_pos.x, vertex1_pos.y, 0.0f };
         data_.quad_buffer_ptr_->color_ = color;
@@ -244,9 +239,7 @@ namespace Aegis {
     }
     void Renderer2D::SetProjection(const glm::mat4& projection)
     {
-        projection_ = projection;
-
-        shader_->Bind();
-        shader_->SetMat4("u_Projection", projection_);
+        EndScene();
+        BeginScene(projection);
     }
 }

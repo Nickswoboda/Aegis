@@ -8,6 +8,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 #include <chrono>
@@ -63,14 +64,15 @@ namespace Aegis {
 				accumulator_ -= time_step_;
 			}
 
+			Renderer2D::BeginScene(glm::ortho(0.0f, window_->GetResolution().x, window_->GetResolution().y, 0.0f));
 			scene_mgr_.CurrentScene()->Render(accumulator_ / time_step_);
 
 			if (show_frame_time_) {
-				Renderer2D::BeginScene();
+				Renderer2D::SetProjection(glm::ortho(0.0f, window_->GetResolution().x, window_->GetResolution().y, 0.0f));
 				Renderer2D::SetFont(default_font_);
 				DrawText(std::to_string(frame_time_sec_ * 1000), { 0, 0 }, { 1.0f, 1.0f, 1.0f, 1.0f });
-				Renderer2D::EndScene();
 			}
+			Renderer2D::EndScene();
 		}
 
 		Shutdown();

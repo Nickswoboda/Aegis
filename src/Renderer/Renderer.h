@@ -18,18 +18,19 @@ namespace Aegis {
 		static void Init();
 		static void Shutdown();
 
-		static void BeginScene();
 		static void BeginScene(const glm::mat4& camera_projection);
 		static void EndScene();
 
 		static void SetClearColor(float r, float g, float b, float a);
-		static Font& GetFont();
 		static void SetFont(const std::shared_ptr<Font>& font);
 		static void SetProjection(const glm::mat4& projection);
+
+		static Font& GetFont();
 
 	};
 
 	void RendererClear();
+
 	void DrawQuad(const Vec2& pos, const Vec2& size, const Vec4& color);
 
 	void DrawQuad(const Vec2& pos, const std::shared_ptr<Texture>& texture, const Vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f });
