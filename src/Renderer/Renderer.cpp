@@ -236,7 +236,7 @@ namespace Aegis {
     }
     void RenderSprite(const Sprite& sprite)
     {
-        DrawQuad(sprite.pos_, sprite.size_, sprite.texture_, sprite.color_, sprite.tex_coords_);
+        DrawQuad(sprite.pos_, sprite.texture_);
     }
     void Renderer2D::SetFont(const std::shared_ptr<Font>& font)
     {
