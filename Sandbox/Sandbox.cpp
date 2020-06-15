@@ -76,8 +76,6 @@ public:
 
 		fonts_.emplace_back(std::make_shared<Aegis::Font>("assets/fonts/Roboto-Regular.ttf", 16));
 		fonts_.emplace_back(std::make_shared<Aegis::Font>("assets/fonts/WorkSans-Regular.ttf", 16));
-
-		sprite_ = new Aegis::Sprite(container_);
 	}
 
 	void Update() override
@@ -128,10 +126,6 @@ public:
 		auto mouse_click = dynamic_cast<Aegis::MouseClickEvent*>(&event);
 		if (mouse_click && mouse_click->action_ == AE_BUTTON_PRESS) {
 			auto mouse_pos = Aegis::Application::GetWindow().GetMousePos();
-			Aegis::AABB sprite_rect(sprite_->pos_.x, sprite_->pos_.y, sprite_->size_.x, sprite_->size_.y);
-			if (Aegis::PointInAABB(mouse_pos, sprite_rect)) {
-				std::cout << "In Rect\n";
-			}
 		}
 	}
 
@@ -157,7 +151,6 @@ public:
 	std::shared_ptr<Aegis::Texture> container_;
 	std::vector<std::shared_ptr<Aegis::Font>> fonts_;
 	
-	Aegis::Sprite* sprite_;
 	int x_vel_ = 0;
 	int accel_ = 2;
 	int x_pos_ = 0;
