@@ -25,6 +25,7 @@ namespace Aegis {
 	{
 	public:
 		Font(const std::string& path, int size, int num_glyphs = 128);
+		Font(const std::string& name, const unsigned char* data, unsigned int data_size, int font_size, int num_glyphs = 128);  
 		std::shared_ptr<Texture> CreateTextureAtlas(const FT_Face& face);
 		void SetGlyphSubTextures();
 		int GetStringPixelWidth(const std::string& string);
@@ -37,4 +38,5 @@ namespace Aegis {
 		std::shared_ptr<Texture> atlas_;
 		int num_glyphs_ = 0;
 	};
+
 }

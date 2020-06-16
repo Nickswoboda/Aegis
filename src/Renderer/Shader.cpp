@@ -59,6 +59,10 @@ namespace Aegis{
         CompileShaders(vertex_shader, fragment_shader);
     }
 
+	Shader::Shader(const std::string& vertex_shader, const std::string& fragment_shader)
+	{
+			CompileShaders(vertex_shader, fragment_shader);
+	}
     void Shader::SetMat4(const std::string& name, const glm::mat4& value)
     {
         GLint location = glGetUniformLocation(ID_, name.c_str());

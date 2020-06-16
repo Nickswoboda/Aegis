@@ -45,7 +45,8 @@ namespace Aegis {
             samplers[i] = i;
         }
 
-        shader_ = std::make_unique<Shader>("assets/shaders/Shader.glsl");
+        //default shaders are hardcoded in Shader.h
+        shader_ = std::make_unique<Shader>(default_vertex_shader, default_fragment_shader);
         shader_->Bind();
         shader_->SetMat4("u_Projection", projection_);
         shader_->SetIntVector("u_Textures", max_textures, samplers);

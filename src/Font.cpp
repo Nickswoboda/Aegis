@@ -32,6 +32,30 @@ namespace Aegis {
 		FT_Done_FreeType(library);
 	}
 
+	Font::Font(const std::string& name, const unsigned char* data, unsigned int data_size, int font_size, int num_glyphs)
+	{
+		font_name_ = name;
+		size_ = font_size;
+		
+		FT_Library library;
+		FT_Face face;
+
+		int error = FT_Init_FreeType(&library);
+		AE_ASSERT(error == 0, "Unable to initialize FreeType.");
+
+		error = FT_New_Memory_Face(library, data, data_size, 0, &face);
+		AE_ASSERT(error == 0, "Unable to read font.");
+
+		error = FT_Set_Pixel_Sizes(face, font_size, font_size);
+		AE_ASSERT(error == 0, "Unable to set pixel size");
+
+		atlas_ = CreateTextureAtlas(face);
+		SetGlyphSubTextures();
+
+		FT_Done_Face(face);
+		FT_Done_FreeType(library);	
+	}
+
 	std::shared_ptr<Texture> Aegis::Font::CreateTextureAtlas(const FT_Face& face)
 	{
 		//src https ://gist.github.com/baines/b0f9e4be04ba4e6f56cab82eef5008ff
