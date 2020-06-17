@@ -33,6 +33,7 @@ namespace Aegis {
 	}
 
 	Font::Font(const std::string& name, const unsigned char* data, unsigned int data_size, int font_size, int num_glyphs)
+		:num_glyphs_(num_glyphs)
 	{
 		font_name_ = name;
 		size_ = font_size;
@@ -43,7 +44,7 @@ namespace Aegis {
 		int error = FT_Init_FreeType(&library);
 		AE_ASSERT(error == 0, "Unable to initialize FreeType.");
 
-		error = FT_New_Memory_Face(library, data, data_size, 0, &face);
+		error = FT_New_Memory_Face(library, (FT_Byte*)data, data_size, 0, &face);
 		AE_ASSERT(error == 0, "Unable to read font.");
 
 		error = FT_Set_Pixel_Sizes(face, font_size, font_size);

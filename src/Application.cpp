@@ -4,6 +4,7 @@
 #include "Font.h"
 #include "Timer.h"
 #include "Assert.h"
+#include "WorkSansFont.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -37,7 +38,7 @@ namespace Aegis {
 		window_->SetEventCallbacks(std::bind(&Application::OnEvent, std::placeholders::_1));
 
 		Renderer2D::Init();
-		default_font_ = std::make_shared<Font>("assets/fonts/WorkSans-Regular.ttf", 16);
+		default_font_ = std::make_shared<Font>("WorkSans", worksans_font_data, worksans_data_size, 16);
 		Renderer2D::SetFont(default_font_);
 
 		scene_mgr_.PushScene(std::unique_ptr<Scene>(new BaseScene()));
