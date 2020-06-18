@@ -93,6 +93,9 @@ namespace Aegis {
 
 		if (!event.handled_) {
 			scene_mgr_.CurrentScene()->OnEvent(event);
+			if (scene_mgr_.CurrentScene()->ui_layer_) {
+				scene_mgr_.CurrentScene()->ui_layer_->OnEvent(event);
+			}
 		}
 	}
 

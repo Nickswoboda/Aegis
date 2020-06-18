@@ -14,10 +14,10 @@ add_library (Aegis STATIC
 	"src/Renderer/VertexArray.cpp"
 	"dependencies/GLAD/src/glad.c"
 	"src/KeyCodes.h" "src/MouseCodes.h" "src/Timer.cpp" "src/Timer.h" "src/Camera.cpp" "src/Sprite.h" "src/Math/Vec4.cpp" "src/Math/Interpolation.cpp" "src/Math/Vec2.cpp" "src/Math/Vec3.cpp" "src/Math/AABB.cpp"
-	"src/Math/Color.h" "src/Button.cpp" "src/Scene.cpp" "src/Dropdown.cpp" "src/FontManager.h" )
+	"src/Math/Color.h" "src/UI/Button.cpp" "src/Scene.cpp" "src/UI/Dropdown.cpp" "src/FontManager.h"  "src/UI/UILayer.cpp")
 
 add_executable(Sandbox 
-	"Sandbox/Sandbox.cpp")
+	"Sandbox/Sandbox.cpp" "src/UI/UILayer.cpp")
 
 target_include_directories(Aegis
 PUBLIC

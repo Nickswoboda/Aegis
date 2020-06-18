@@ -3,6 +3,7 @@
 #include "Event.h"
 #include "Renderer/Renderer.h"
 #include "Camera.h"
+#include "UI/UILayer.h"
 
 #include <vector>
 #include <memory>
@@ -19,6 +20,7 @@ namespace Aegis {
 		virtual void OnEvent(Event& event) = 0;
 
 		SceneManager* manager_ = nullptr;
+		UILayer* ui_layer_ = nullptr;
 		Camera camera_;
 	};
 
