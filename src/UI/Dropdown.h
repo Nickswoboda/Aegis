@@ -17,11 +17,10 @@ namespace Aegis {
 		void OnEvent(Event& event) override;
 		void Render(float delta_time = 0.0f) override;
 		void AddItem(const std::string& text, std::function<void()> callback);
-		bool IsPressed(int action);
-		void MoveSelectedToTop();
+		void MoveSelectedToTop(int index);
 		void SetCurrentIndex(int index);
 
-		std::vector<Button> items_;
+		std::vector<Button*> items_;
 
 
 		Vec2 pos_;

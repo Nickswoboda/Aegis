@@ -18,6 +18,25 @@ namespace Aegis {
 
 	void Dropdown::OnEvent(Event& event)
 	{
+		auto click = dynamic_cast<MouseClickEvent*>(&event);
+		if (click){
+			if (collapsed_) {
+				if (items_[current_item_index_]->IsPressed(click->action_)) {
+					collapsed_ = false;
+				}
+				return;
+			}
+
+			for (int i = 0; i < items_.size(); ++i) {
+				if (items_[i]->IsPressed(click->action_)) {
+					items_[i]->callback_();
+					collapsed_ = true;
+					SetCurrentIndex(i);
+					return;
+				}
+			}
+
+		}
 	}
 
 	void Dropdown::Render(float delta_time)
@@ -25,11 +44,11 @@ namespace Aegis {
 		DrawText(label_, pos_, { 1.0f, 1.0f, 1.0f, 1.0f });
 
 		if (collapsed_ && !items_.empty()) {
-			items_[0].Render();
+			items_[current_item_index_]->Render();
 		}
 		else {
 			for (auto item : items_) {
-				item.Render();
+				item->Render();
 			}
 		}
 	}
@@ -39,48 +58,16 @@ namespace Aegis {
 		float y_pos = pos_.y + size_.y * items_.size();
 
 		Button* temp_button = new Button({ pos_.x + button_pos_offset_, y_pos, size_.x, size_.y }, text, FontManager::Instance().Load("assets/fonts/WorkSans-Regular.ttf", 32), callback);
-
+		items_.push_back(temp_button);
 	}
 
-	bool Dropdown::IsPressed(int action)
+	void Dropdown::MoveSelectedToTop(int index)
 	{
-		if (collapsed_) {
-			if (items_[0].IsPressed(action)) {
-				collapsed_ = false;
-				return true;
-			}
-			return false;
-		}
-
-		for (int i = 0; i < items_.size(); ++i) {
-			if (items_[i].IsPressed(action)) {
-				current_item_index_ = i;
-				items_[i].callback_();
-				collapsed_ = true;
-				MoveSelectedToTop();
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	void Dropdown::MoveSelectedToTop()
-	{
-		items_[current_item_index_].rect_ = { pos_.x + button_pos_offset_, pos_.y, size_.x, size_.y };
-
-		int num_item = 1;
-		for (int i = 0; i < items_.size(); ++i) {
-			if (i != current_item_index_) {
-				float y_pos = pos_.y + size_.y * num_item;
-				items_[i].rect_ = { pos_.x + button_pos_offset_, y_pos, size_.x, size_.y };
-				++num_item;
-			}
-		}
+		std::swap(items_[index]->rect_, items_[current_item_index_]->rect_);
 	}
 	void Dropdown::SetCurrentIndex(int index)
 	{
+		MoveSelectedToTop(index);
 		current_item_index_ = index;
-		MoveSelectedToTop();
 	}
 }

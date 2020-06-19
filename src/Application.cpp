@@ -67,6 +67,9 @@ namespace Aegis {
 
 			Renderer2D::BeginScene(glm::ortho(0.0f, window_->GetResolution().x, window_->GetResolution().y, 0.0f));
 			scene_mgr_.CurrentScene()->Render(accumulator_ / time_step_);
+			if (scene_mgr_.CurrentScene()->ui_layer_){
+				scene_mgr_.CurrentScene()->ui_layer_->Render(0.0f);
+			}
 
 			if (show_frame_time_) {
 				Renderer2D::SetProjection(glm::ortho(0.0f, window_->GetResolution().x, window_->GetResolution().y, 0.0f));
