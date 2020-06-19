@@ -38,12 +38,12 @@ namespace Aegis {
 	{
 	public:
 		SceneManager() {}
-		void PushScene(std::unique_ptr<Scene> scene) { scene->manager_ = this; scenes_.push_back(std::move(scene)); }
-		void PopScene() { if (scenes_.size() > 1) scenes_.pop_back();}
-		void ReplaceScene(std::unique_ptr<Scene> scene) { scenes_.pop_back(); PushScene(std::move(scene));}
-		std::unique_ptr<Scene>& CurrentScene() { return scenes_.back(); }
+		void PushScene(std::unique_ptr<Scene>& scene); 
+		void PopScene();
+		void ReplaceScene(std::unique_ptr<Scene>& scene);
+		std::unique_ptr<Scene>& CurrentScene();
 
-		void UpdateAllCameraProjections(float left, float right, float bottom, float top) { for (auto& scene : scenes_) { scene->camera_.SetProjection(left, right, bottom, top); }; }
+		void UpdateAllCameraProjections(float left, float right, float bottom, float top);
 	private:
 		std::vector<std::unique_ptr<Scene>> scenes_;
 	};
