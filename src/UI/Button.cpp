@@ -5,8 +5,8 @@
 #include "../Renderer/Renderer.h"
 
 namespace Aegis {
-	Button::Button(AABB rect, const std::string& text, std::shared_ptr<Font> font, std::function<void()> callback)
-		: rect_(rect), text_(text), font_(font), callback_(callback)
+	Button::Button(AABB rect, const std::string& text, std::function<void()> callback)
+		: rect_(rect), text_(text), callback_(callback)
 	{
 	}
 	

@@ -36,6 +36,8 @@ namespace Aegis {
 
 		static double GetFrameTime();
 		static void ShowFrameTime(bool show) {show_frame_time_ = show; }
+		
+		static std::shared_ptr<Font> GetFont() {return default_font_;}
 
 	private:
 		static std::unique_ptr<Window> window_;

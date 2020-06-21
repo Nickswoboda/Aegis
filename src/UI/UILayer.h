@@ -4,6 +4,7 @@
 #include "UIWidget.h"
 #include "Button.h"
 #include "Dropdown.h"
+
 #include <vector>
 
 namespace Aegis{
@@ -11,16 +12,18 @@ namespace Aegis{
 	{
 	public:
 
+		UILayer();
 		~UILayer();
 
 		virtual void OnUpdate() override;
 		virtual void OnEvent(Event& event) override;
 		virtual void Render(float delta_time) override;
-
-		Button* AddButton(AABB rect, const std::string& text, std::shared_ptr<Font> font, std::function<void()> callback);
+		
+		void SetFont(std::shared_ptr<Font>& font_);
+		Button* AddButton(AABB rect, const std::string& text, std::function<void()> callback);
 		Dropdown* AddDropdown(const std::string& label, AABB rect);
 		std::vector<UIWidget*> widgets_;
-
+		std::shared_ptr<Font> font_;
 	};
 }
 

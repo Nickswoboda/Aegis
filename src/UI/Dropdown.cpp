@@ -6,7 +6,6 @@
 namespace Aegis {
 	Dropdown::Dropdown(const std::string& label, Aegis::AABB rect)
 	{
-		button_pos_offset_ = FontManager::Instance().Load("assets/fonts/WorkSans-Regular.ttf", 32)->GetStringPixelWidth(label) + 15;
 		pos_ = rect.pos;
 		size_ = rect.size;
 		label_ = label;
@@ -57,7 +56,8 @@ namespace Aegis {
 	{
 		float y_pos = pos_.y + size_.y * items_.size();
 
-		Button* temp_button = new Button({ pos_.x + button_pos_offset_, y_pos, size_.x, size_.y }, text, FontManager::Instance().Load("assets/fonts/WorkSans-Regular.ttf", 32), callback);
+		Button* temp_button = new Button({ pos_.x + button_pos_offset_, y_pos, size_.x, size_.y }, text, callback);
+		temp_button->SetFont(font_);
 		items_.push_back(temp_button);
 	}
 

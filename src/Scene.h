@@ -38,9 +38,9 @@ namespace Aegis {
 	{
 	public:
 		SceneManager() {}
-		void PushScene(std::unique_ptr<Scene>& scene); 
+		void PushScene(std::unique_ptr<Scene> scene); 
 		void PopScene();
-		void ReplaceScene(std::unique_ptr<Scene>& scene);
+		void ReplaceScene(std::unique_ptr<Scene> scene);
 		std::unique_ptr<Scene>& CurrentScene();
 
 		void UpdateAllCameraProjections(float left, float right, float bottom, float top);

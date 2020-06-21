@@ -8,7 +8,7 @@ namespace Aegis{
 
 	}
 
-	void SceneManager::PushScene(std::unique_ptr<Scene>& scene)
+	void SceneManager::PushScene(std::unique_ptr<Scene> scene)
 	{
 		scene->manager_ = this;
 		scenes_.push_back(std::move(scene));
@@ -24,10 +24,10 @@ namespace Aegis{
 		}
 	}
 
-	void SceneManager::ReplaceScene(std::unique_ptr<Scene> &scene)
+	void SceneManager::ReplaceScene(std::unique_ptr<Scene> scene)
 	{
 		scenes_.pop_back();
-		PushScene(scene);
+		PushScene(std::move(scene));
 	}
 
 	std::unique_ptr<Scene>& SceneManager::CurrentScene()
