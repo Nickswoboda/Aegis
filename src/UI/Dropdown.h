@@ -11,7 +11,7 @@ namespace Aegis {
 	class Dropdown : public UIWidget
 	{
 	public:
-		Dropdown(const std::string& label, AABB rect);
+		Dropdown(const std::string& label, AABB rect = {0,0,0,0});
 		~Dropdown();
 
 		void OnEvent(Event& event) override;
@@ -22,9 +22,6 @@ namespace Aegis {
 
 		std::vector<Button*> items_;
 
-
-		Vec2 pos_;
-		Vec2 size_;
 		int current_item_index_ = 0;
 		std::string label_;
 		bool collapsed_ = true;

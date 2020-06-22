@@ -17,12 +17,12 @@ namespace Aegis {
     Texture::Texture(const std::string& path)
     {
         glCreateTextures(GL_TEXTURE_2D, 1, &ID_);
-    
+
         int width, height, channels;
         unsigned char* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
-        
+
         size_ = Vec2(width, height);
-    
+
         GLint internal_format = 0, format = 0;
         if (channels == 3) {
             internal_format = GL_RGB8;
@@ -35,15 +35,15 @@ namespace Aegis {
         else {
             std::cout << "Texture format not supported, unable to create texture.";
         }
-    
+
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    
+
         glTextureStorage2D(ID_, 1, internal_format, width, height);
         glTextureSubImage2D(ID_, 0, 0, 0, width, height, format, GL_UNSIGNED_BYTE, data);
-    
+
         stbi_image_free(data);
     }
 
@@ -70,22 +70,20 @@ namespace Aegis {
         glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, atlas_pixel_data);
 
         unsigned char* new_tex_pixel_data = new unsigned char[(size_t)(width * height * 4)]();
-	    int pen_x = 0;
-        int pen_y = 0;
-        for (const auto& c : text){
-		    auto glyph = Renderer2D::GetFont().glyphs_[c];
-            int glyph_x = pen_x + glyph.bearing.x * 4;
+		int pen_x = 0;
+        for (const auto& c : text) {
+			auto glyph = Renderer2D::GetFont().glyphs_[c];
             for (int row = 0; row < glyph.size.y; ++row) {
-		    	for (int col = 0; col < glyph.size.x * 4; ++col){
+				for (int col = 0; col < glyph.size.x * 4; ++col){
                     int x = pen_x + col + glyph.bearing.x * 4;;
                     int y = y_baseline + row - glyph.bearing.y;
                     new_tex_pixel_data[y * width * 4 + x] = atlas_pixel_data[ (int)(row + glyph.atlas_pos.y) * (int)atlas->size_.x * 4 + (col + (int)glyph.atlas_pos.x * 4)];
-		    	}
-		    }
-            pen_x += glyph.advance * 4;
-        }
-        //return std::make_shared<Texture>(atlas_pixel_data, atlas->size_.x, atlas->size_.y);
-        return std::make_shared<Texture>(new_tex_pixel_data, width, height);
+				}
+			}
+			pen_x += glyph.advance * 4;
+		}
+		//return std::make_shared<Texture>(atlas_pixel_data, atlas->size_.x, atlas->size_.y);
+		return std::make_shared<Texture>(new_tex_pixel_data, width, height);
     }
 
     void Texture::Bind()

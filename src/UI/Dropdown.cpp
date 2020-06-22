@@ -5,9 +5,8 @@
 
 namespace Aegis {
 	Dropdown::Dropdown(const std::string& label, Aegis::AABB rect)
+		:UIWidget(rect)
 	{
-		pos_ = rect.pos;
-		size_ = rect.size;
 		label_ = label;
 	}
 
@@ -40,7 +39,7 @@ namespace Aegis {
 
 	void Dropdown::Render(float delta_time)
 	{
-		DrawText(label_, pos_, { 1.0f, 1.0f, 1.0f, 1.0f });
+		DrawText(label_, rect_.pos, { 1.0f, 1.0f, 1.0f, 1.0f });
 
 		if (collapsed_ && !items_.empty()) {
 			items_[current_item_index_]->Render();
@@ -54,9 +53,9 @@ namespace Aegis {
 
 	void Dropdown::AddItem(const std::string& text, std::function<void()> callback)
 	{
-		float y_pos = pos_.y + size_.y * items_.size();
+		float y_pos = rect_.pos.y + rect_.size.y * items_.size();
 
-		Button* temp_button = new Button({ pos_.x + button_pos_offset_, y_pos, size_.x, size_.y }, text, callback);
+		Button* temp_button = new Button({ rect_.pos.x + button_pos_offset_, y_pos, rect_.size.x, rect_.size.y }, text, callback);
 		temp_button->SetFont(font_);
 		items_.push_back(temp_button);
 	}
