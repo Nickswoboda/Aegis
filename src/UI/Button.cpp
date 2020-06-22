@@ -46,6 +46,7 @@ namespace Aegis {
 		if (click) {
 			if (IsPressed(click->action_)) {
 				callback_();
+				event.handled_ = true;
 			}
 		}
 	}

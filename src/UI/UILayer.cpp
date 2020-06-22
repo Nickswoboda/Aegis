@@ -20,6 +20,9 @@ namespace Aegis {
 	{
 		for (auto& widget : widgets_) {
 			widget->OnEvent(event);
+			if (event.handled_){
+				return;
+			}
 		}
 	}
 	void UILayer::Render(float delta_time)

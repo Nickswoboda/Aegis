@@ -30,6 +30,7 @@ namespace Aegis {
 					items_[i]->callback_();
 					collapsed_ = true;
 					SetCurrentIndex(i);
+					event.handled_ = true;
 					return;
 				}
 			}
