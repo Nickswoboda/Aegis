@@ -18,7 +18,7 @@ namespace Aegis{
 		
 	}
 
-	void Container::AddWidget(UIWidget* widget)
+	void Container::AddWidget(Widget* widget)
 	{
 		widgets_.push_back(widget);
 		UpdateWidgets();
@@ -36,7 +36,7 @@ namespace Aegis{
 		}
 	}
 
-	void VContainer::AlignWidget(UIWidget* widget, Alignment alignment)
+	void VContainer::AlignWidget(Widget* widget, Alignment alignment)
 	{
 		switch (alignment){
 			case Alignment::Center:
@@ -77,7 +77,7 @@ namespace Aegis{
 		}
 	}
 
-	void HContainer::AlignWidget(UIWidget* widget, Alignment alignment)
+	void HContainer::AlignWidget(Widget* widget, Alignment alignment)
 	{
 		switch (alignment){
 			case Alignment::Center:

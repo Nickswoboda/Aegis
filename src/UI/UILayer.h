@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Layer.h"
-#include "UIWidget.h"
+#include "Widget.h"
 #include "Button.h"
 #include "Dropdown.h"
 
@@ -22,7 +22,7 @@ namespace Aegis{
 		void SetFont(std::shared_ptr<Font>& font_);
 		Button* AddButton(AABB rect, const std::string& text, std::function<void()> callback);
 		Dropdown* AddDropdown(const std::string& label, AABB rect);
-		std::vector<UIWidget*> widgets_;
+		std::vector<Widget*> widgets_;
 		std::shared_ptr<Font> font_;
 	};
 }

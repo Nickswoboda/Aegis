@@ -1,5 +1,5 @@
 #pragma once
-#include "UIWidget.h"
+#include "Widget.h"
 #include "../Event.h"
 #include "../Math/AABB.h"
 #include "../Math/Vec4.h"
@@ -7,7 +7,7 @@
 #include <functional>
 
 namespace Aegis {
-	class Button : public UIWidget
+	class Button : public Widget
 	{
 	public:
 		Button(const std::string& text, std::function<void()> callback);

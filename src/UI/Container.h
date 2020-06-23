@@ -1,6 +1,6 @@
 #pragma once
 
-#include "UIWidget.h"
+#include "Widget.h"
 #include "../Math/Vec4.h"
 
 namespace Aegis{
@@ -17,13 +17,13 @@ namespace Aegis{
 		};
 		Container(AABB rect_, int padding, Alignment alignment);
 		virtual ~Container(){} 
-		void AddWidget(UIWidget* widget);
+		void AddWidget(Widget* widget);
 		virtual void UpdateWidgets() = 0;
-		virtual void AlignWidget(UIWidget* widget, Alignment alignment) = 0;
+		virtual void AlignWidget(Widget* widget, Alignment alignment) = 0;
 		void Render();
 
 
-		std::vector<UIWidget*> widgets_;
+		std::vector<Widget*> widgets_;
 		AABB rect_;
 		int padding_;
 		Alignment alignment_;
@@ -37,7 +37,7 @@ namespace Aegis{
 		~VContainer() {}
 
 		virtual void UpdateWidgets() override;
-		virtual void AlignWidget(UIWidget* widget, Alignment alignment) override;
+		virtual void AlignWidget(Widget* widget, Alignment alignment) override;
 
 	};
 
@@ -49,7 +49,7 @@ namespace Aegis{
 		~HContainer() {}
 
 		virtual void UpdateWidgets() override;
-		virtual void AlignWidget(UIWidget* widget, Alignment alignment) override;
+		virtual void AlignWidget(Widget* widget, Alignment alignment) override;
 
 	};
 }

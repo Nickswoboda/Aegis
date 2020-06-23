@@ -5,7 +5,7 @@
 
 namespace Aegis {
 	Dropdown::Dropdown(const std::string& label, Aegis::AABB rect)
-		:UIWidget(rect)
+		:Widget(rect)
 	{
 		label_ = label;
 	}

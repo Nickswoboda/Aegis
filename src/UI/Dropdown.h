@@ -8,7 +8,7 @@
 #include <queue>
 
 namespace Aegis {
-	class Dropdown : public UIWidget
+	class Dropdown : public Widget
 	{
 	public:
 		Dropdown(const std::string& label, AABB rect = {0,0,0,0});

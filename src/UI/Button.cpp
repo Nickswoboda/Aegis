@@ -6,11 +6,11 @@
 
 namespace Aegis {
 	Button::Button(const std::string& text, std::function<void()> callback)
-		: UIWidget(), text_(text), callback_(callback)
+		: Widget(), text_(text), callback_(callback)
 	{
 	}
 	Button::Button(AABB rect, const std::string& text, std::function<void()> callback)
-		: UIWidget(rect), text_(text), callback_(callback)
+		: Widget(rect), text_(text), callback_(callback)
 	{
 	}
 	

@@ -8,12 +8,12 @@
 
 namespace Aegis {
 
-	class UIWidget
+	class Widget
 	{
 	public:
-		UIWidget(AABB rect = {0.0, 0.0, 0.0, 0.0})
+		Widget(AABB rect = {0.0, 0.0, 0.0, 0.0})
 			:rect_(rect) {}
-		virtual ~UIWidget(){};
+		virtual ~Widget(){};
 		virtual void OnEvent(Event& event) = 0;
 		virtual void Render(float delta_time) = 0;
 
