@@ -27,7 +27,10 @@ namespace Aegis {
 	}
 	void UILayer::Render(float delta_time)
 	{
-		for (auto& widget : widgets_) {
+		for (const auto& container : containers_){
+			container->Render();
+		}
+		for (const auto& widget : widgets_) {
 			widget->Render(delta_time);
 		}
 
@@ -49,6 +52,13 @@ namespace Aegis {
 		widgets_.push_back(dropdown);
 
 		return dropdown;
+	}
+
+	Container* UILayer::AddContainer(AABB rect, Container::Orientation orientation, int padding, Container::Alignment alignment)
+	{
+		Container* container = new Container(rect, orientation, padding, alignment);
+		containers_.push_back(container);
+		return container;
 	}
 
 	void UILayer::SetFont(std::shared_ptr<Font>& font)

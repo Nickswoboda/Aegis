@@ -4,6 +4,7 @@
 #include "Widget.h"
 #include "Button.h"
 #include "Dropdown.h"
+#include "Container.h"
 
 #include <vector>
 
@@ -22,6 +23,9 @@ namespace Aegis{
 		void SetFont(std::shared_ptr<Font>& font_);
 		Button* AddButton(AABB rect, const std::string& text, std::function<void()> callback);
 		Dropdown* AddDropdown(const std::string& label, AABB rect);
+		Container* AddContainer(AABB rect, Container::Orientation orientation, int padding, Container::Alignment alignment);
+
+		std::vector<Container*> containers_;
 		std::vector<Widget*> widgets_;
 		std::shared_ptr<Font> font_;
 	};

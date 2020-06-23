@@ -7,6 +7,12 @@ namespace Aegis{
 	class Container
 	{
 	public:
+		enum Orientation
+		{
+			Horizontal,
+			Vertical
+		};
+
 		enum Alignment
 		{
 			Top,
@@ -15,42 +21,20 @@ namespace Aegis{
 			Right,
 			Center
 		};
-		Container(AABB rect_, int padding, Alignment alignment);
-		virtual ~Container(){} 
+		Container(AABB rect_, Orientation orientation, int padding, Alignment alignment);
+		~Container(){} 
 		void AddWidget(Widget* widget);
-		virtual void UpdateWidgets() = 0;
-		virtual void AlignWidget(Widget* widget, Alignment alignment) = 0;
+		void UpdateWidgets();
+		void AlignWidget(Widget* widget, Alignment alignment);
 		void Render();
 
 
 		std::vector<Widget*> widgets_;
+		Vec4 bg_color_;
 		AABB rect_;
 		int padding_;
 		Alignment alignment_;
-		Vec4 bg_color_;
-	};
-
-	class VContainer : public Container
-	{
-	public:
-		VContainer(AABB rect, int padding, Alignment alignment);
-		~VContainer() {}
-
-		virtual void UpdateWidgets() override;
-		virtual void AlignWidget(Widget* widget, Alignment alignment) override;
-
-	};
-
-	class HContainer : public Container
-	{
-	public:
-
-		HContainer(AABB rect, int padding, Alignment alignment);
-		~HContainer() {}
-
-		virtual void UpdateWidgets() override;
-		virtual void AlignWidget(Widget* widget, Alignment alignment) override;
-
+		Orientation orientation_;
 	};
 }
 
