@@ -13,4 +13,17 @@ namespace Aegis {
 		return (point.x > aabb.pos.x && point.x < aabb.pos.x + aabb.size.x &&
 			point.y > aabb.pos.y && point.y < aabb.pos.y + aabb.size.y);
 	}
+
+	void CenterAABBVertically(AABB& src, const AABB& dest)
+	{
+		int height_diff = dest.size.y - src.size.y;
+		src.pos.y = dest.pos.y + (height_diff / 2);
+	}
+
+	void CenterAABBHorizontally(AABB& src, const AABB& dest)
+	{
+		int width_diff = dest.size.x - src.size.x;
+		src.pos.x = dest.pos.x + (width_diff / 2);
+	}
 }
+

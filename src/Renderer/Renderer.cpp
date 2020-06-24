@@ -202,17 +202,7 @@ namespace Aegis {
         }
         //create texture and cache
         else{
-            int width = default_font_->GetStringPixelWidth(text);
-            int height = 0;
-            for (auto& c : text) {
-                auto glyph = default_font_->glyphs_[c];
-                if (glyph.size.y + (default_font_->tallest_glyph_height_ - glyph.bearing.y) > height) {
-                    //tallest glyph - bearing.y = the distance from top baseline
-                    height = glyph.size.y + (default_font_->tallest_glyph_height_ - glyph.bearing.y);
-                }
-            }
-            
-            auto texture = Texture::TextureFromText(text, default_font_->atlas_, width, height, default_font_->tallest_glyph_height_);
+            auto texture = Texture::TextureFromText(text, default_font_);
             
             DrawQuad(pos, texture, color);
             cached_text_[index] = texture;
@@ -232,7 +222,7 @@ namespace Aegis {
     }
     void RenderSprite(const Sprite& sprite)
     {
-        DrawQuad(sprite.pos_, sprite.texture_);
+        DrawQuad(sprite.rect_.pos, sprite.texture_);
     }
     void Renderer2D::SetFont(const std::shared_ptr<Font>& font)
     {
