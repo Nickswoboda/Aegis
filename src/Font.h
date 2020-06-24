@@ -28,7 +28,7 @@ namespace Aegis {
 		Font(const std::string& name, const unsigned char* data, unsigned int data_size, int font_size, int num_glyphs = 128);  
 		std::shared_ptr<Texture> CreateTextureAtlas(const FT_Face& face);
 		void SetGlyphSubTextures();
-		int GetStringPixelWidth(const std::string& string);
+		Vec2 GetStringPixelSize(const std::string& string);
 
 		std::string font_name_;
 		int size_;

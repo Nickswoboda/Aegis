@@ -62,28 +62,30 @@ namespace Aegis {
     }
 
     //used for static text caching. combines all glyph textures into one big texture
-    std::shared_ptr<Texture> Texture::TextureFromText(const std::string& text, std::shared_ptr<Texture> atlas, int width, int height, int y_baseline)
+    std::shared_ptr<Texture> Texture::TextureFromText(const std::string& text, std::shared_ptr<Font> font)
     {
         //get atlas_pixel_data
+		auto atlas = font->atlas_;
         unsigned char* atlas_pixel_data = new unsigned char[(size_t)(atlas->size_.x * atlas->size_.y * 4)]();
         glBindTexture(GL_TEXTURE_2D, atlas->ID_);
         glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, atlas_pixel_data);
 
-        unsigned char* new_tex_pixel_data = new unsigned char[(size_t)(width * height * 4)]();
+		Vec2 tex_size = font->GetStringPixelSize(text);
+        unsigned char* new_tex_pixel_data = new unsigned char[(size_t)( tex_size.x * tex_size.y * 4)]();
 		int pen_x = 0;
         for (const auto& c : text) {
-			auto glyph = Renderer2D::GetFont().glyphs_[c];
+			auto glyph = font->glyphs_[c];
             for (int row = 0; row < glyph.size.y; ++row) {
 				for (int col = 0; col < glyph.size.x * 4; ++col){
                     int x = pen_x + col + glyph.bearing.x * 4;;
-                    int y = y_baseline + row - glyph.bearing.y;
-                    new_tex_pixel_data[y * width * 4 + x] = atlas_pixel_data[ (int)(row + glyph.atlas_pos.y) * (int)atlas->size_.x * 4 + (col + (int)glyph.atlas_pos.x * 4)];
+                    int y = font->tallest_glyph_height_ + row - glyph.bearing.y;
+                    new_tex_pixel_data[y * (int)tex_size.x * 4 + x] = atlas_pixel_data[ (int)(row + glyph.atlas_pos.y) * (int)atlas->size_.x * 4 + (col + (int)glyph.atlas_pos.x * 4)];
 				}
 			}
 			pen_x += glyph.advance * 4;
 		}
 		//return std::make_shared<Texture>(atlas_pixel_data, atlas->size_.x, atlas->size_.y);
-		return std::make_shared<Texture>(new_tex_pixel_data, width, height);
+		return std::make_shared<Texture>(new_tex_pixel_data, tex_size.x, tex_size.y);
     }
 
     void Texture::Bind()

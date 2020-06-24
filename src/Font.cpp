@@ -121,14 +121,19 @@ namespace Aegis {
 		}
 	}
 
-	int Font::GetStringPixelWidth(const std::string& string)
+	Vec2 Font::GetStringPixelSize(const std::string& string)
 	{
 		int width = 0;
+		int height = 0;
 
 		for (const auto& c : string) {
-			width += glyphs_[c].advance;
+			auto glyph = glyphs_[c];
+			width += glyph.advance;
+			if (glyph.size.y + (tallest_glyph_height_ - glyph.bearing.y) > height) {
+				//tallest glyph - bearing.y = the distance from top baseline
+				height = glyph.size.y + (tallest_glyph_height_ - glyph.bearing.y);
+			}
 		}
-		return width;
+		return Vec2(width, height);
 	}
-
 }
