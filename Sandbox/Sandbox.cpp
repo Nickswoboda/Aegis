@@ -10,10 +10,6 @@ class MenuScene : public Aegis::Scene
 public:
 	MenuScene()
 	{ 
-		button = new Aegis::Button({ 0, 0, 100, 100 });
-		button1 = new Aegis::Button({ 200, 0, 100, 100 });
-		text_ = "Test String";
-		text_width = Aegis::Renderer2D::GetFont().GetStringPixelWidth(text_);
 	}
 	void Update() override
 	{
@@ -23,8 +19,7 @@ public:
 	{
 		Aegis::Renderer2D::BeginScene(camera_.view_projection_matrix_);
 		Aegis::RendererClear();
-		button->Render();
-		button1->Render();
+
 		Aegis::DrawQuad({ 200, 200 }, { 100, 100 }, { 1.0, 0.0f, 1.0f, 1.0f });
 
 		Aegis::DrawText(text_, { 0, 400 }, { 1.0f, 1.0f, 1.0f, 1.0f });
@@ -49,18 +44,9 @@ public:
 			}
 		}
 		auto mouse_event = dynamic_cast<Aegis::MouseClickEvent*>(&event);
-		if (mouse_event) {
-			if (button->IsPressed(mouse_event->action_)) {
-				Aegis::Application::GetWindow().SetScreenMode(Aegis::ScreenMode::Fullscreen);
-			}
-			if (button1->IsPressed(mouse_event->action_)) {
-				Aegis::Application::GetWindow().SetScreenMode(Aegis::ScreenMode::Windowed);
-			}
-		}
+
 	}
 
-	Aegis::Button* button;
-	Aegis::Button* button1;
 	std::string text_;
 	int text_width = 0;
 };
