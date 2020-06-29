@@ -7,6 +7,8 @@ namespace Aegis {
 	Dropdown::Dropdown(const std::string& label, Aegis::AABB rect)
 		:Widget(rect)
 	{
+		button_pos_offset_ = Renderer2D::GetFont().GetStringPixelSize(label).x + 15;
+		expand_button_ = new Button(rect, "", [&](){ToggleExpanded();});
 		label_ = label;
 	}
 
@@ -16,33 +18,25 @@ namespace Aegis {
 
 	void Dropdown::OnEvent(Event& event)
 	{
-		auto click = dynamic_cast<MouseClickEvent*>(&event);
-		if (click){
-			if (collapsed_) {
-				if (items_[current_item_index_]->IsPressed(click->action_)) {
-					collapsed_ = false;
-				}
-				return;
-			}
-
+		expand_button_->OnEvent(event);
+		if (expanded_){
 			for (int i = 0; i < items_.size(); ++i) {
-				if (items_[i]->IsPressed(click->action_)) {
-					items_[i]->callback_();
-					collapsed_ = true;
+				items_[i]->OnEvent(event);
+				if (items_[i]->pressed_){
+					expanded_ = false;
 					SetCurrentIndex(i);
 					event.handled_ = true;
 					return;
 				}
 			}
-
 		}
 	}
 
 	void Dropdown::Render(float delta_time)
 	{
 		DrawText(label_, rect_.pos, { 1.0f, 1.0f, 1.0f, 1.0f });
-
-		if (collapsed_ && !items_.empty()) {
+		expand_button_->Render();
+		if (!expanded_ && !items_.empty()) {
 			items_[current_item_index_]->Render();
 		}
 		else {
@@ -69,5 +63,26 @@ namespace Aegis {
 	{
 		MoveSelectedToTop(index);
 		current_item_index_ = index;
+	}
+
+	void Dropdown::ToggleExpanded()
+	{
+		if (expanded_){
+			expanded_ = false;
+		}
+		else{
+			expanded_ = true;
+		}
+	}
+
+	void Dropdown::SetFont(std::shared_ptr<Font>& font)
+	{
+		font_ = font;
+		button_pos_offset_ = font->GetStringPixelSize(label_).x + 15;
+		//must change button pos based off of new label size
+		expand_button_->rect_.pos.x += button_pos_offset_;
+		for (auto& button : items_){
+			button->rect_.size.x = rect_.size.x + button_pos_offset_;
+		}
 	}
 }

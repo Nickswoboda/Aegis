@@ -17,7 +17,7 @@ namespace Aegis {
 		virtual void OnEvent(Event& event) = 0;
 		virtual void Render(float delta_time) = 0;
 
-		void SetFont(std::shared_ptr<Font>& font) {font_ = font;}
+		virtual void SetFont(std::shared_ptr<Font>& font) {font_ = font;}
 
 		std::shared_ptr<Font> font_;
 		AABB rect_;

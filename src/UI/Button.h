@@ -30,6 +30,7 @@ namespace Aegis {
 		std::array<std::shared_ptr<Texture>, NumStates> textures_;
 		std::string text_;
 		bool hovered_ = false;
+		bool pressed_ = false;
 		std::function<void()> callback_;
 		State state_ = State::Normal;
 	};

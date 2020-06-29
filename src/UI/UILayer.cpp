@@ -48,7 +48,6 @@ namespace Aegis {
 	{
 		Dropdown* dropdown = new Dropdown(label, rect);
 		dropdown->SetFont(font_);
-		dropdown->button_pos_offset_ = font_->GetStringPixelSize(label).x + 15;
 		widgets_.push_back(dropdown);
 
 		return dropdown;

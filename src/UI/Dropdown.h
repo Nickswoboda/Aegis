@@ -19,12 +19,14 @@ namespace Aegis {
 		void AddItem(const std::string& text, std::function<void()> callback);
 		void MoveSelectedToTop(int index);
 		void SetCurrentIndex(int index);
-
+		void ToggleExpanded();
+		void SetFont(std::shared_ptr<Font>& font) override;
+		Button* expand_button_;
 		std::vector<Button*> items_;
 
 		int current_item_index_ = 0;
 		std::string label_;
-		bool collapsed_ = true;
+		bool expanded_ = false;
 		int button_pos_offset_;
 	};
 }

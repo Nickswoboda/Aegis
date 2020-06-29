@@ -17,7 +17,7 @@ namespace Aegis {
 	bool Button::IsPressed(int action)
 	{
 		//button must be pressed and released while hovering in ordering for it to be considered to be pressed
-		if (action == AE_BUTTON_PRESS) {
+		if (action == AE_BUTTON_PRESS && state_ == State::Hovered) {
 			state_ = State::Pressed;
 		}
 		else if (action == AE_BUTTON_RELEASE && hovered_ && state_ == State::Pressed) {
@@ -37,7 +37,9 @@ namespace Aegis {
 		}
 
 		if (!text_.empty()){
-			Renderer2D::SetFont(font_);
+			if (font_){
+				Renderer2D::SetFont(font_);
+			}
 			DrawText(text_, rect_.pos, { 1.0, 1.0f, 1.0f, 1.0f });
 		}
 	}
@@ -46,7 +48,9 @@ namespace Aegis {
 	{
 		auto mouse_movement = dynamic_cast<MouseMoveEvent*>(&event);
 		if (mouse_movement){
-			if (PointInAABB(Vec2(mouse_movement->x_pos_, mouse_movement->y_pos_), rect_)) {
+			//have to use Window GetMousePos because it takes resolution into account unlike the mouse_pos
+			//maybe take mouse_move event take into account resolution?
+			if (PointInAABB(Application::GetWindow().GetMousePos(), rect_)) {
 				hovered_ = true;
 				if (state_ != State::Pressed){
 					state_ = State::Hovered;
@@ -66,8 +70,11 @@ namespace Aegis {
 			if (IsPressed(click->action_)) {
 				callback_();
 				event.handled_ = true;
+				pressed_ = true;
+				return;
 			}
 		}
+		pressed_ = false;
 	}
 
 	void Button::SetStateTexture(State state, std::shared_ptr<Texture> texture)
