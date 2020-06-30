@@ -35,7 +35,9 @@ namespace Aegis {
 		if (textures_[state_]){
 			DrawQuad(rect_.pos, rect_.size, textures_[state_]);
 		}
-
+		else{
+			DrawQuad(rect_.pos, rect_.size, {0.2f, 0.2f, 0.8f, 1.0f});
+		}
 		if (!text_.empty()){
 			if (font_){
 				Renderer2D::SetFont(font_);
