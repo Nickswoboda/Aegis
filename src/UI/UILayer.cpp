@@ -64,4 +64,13 @@ namespace Aegis {
 	{
 		font_ = font;
 	}
+
+	Checkbox* UILayer::AddCheckbox(const std::string& label, AABB box, std::function<void(bool)> callback)
+	{
+		Checkbox* checkbox = new Checkbox(label, box, callback);
+		checkbox->SetFont(font_);
+		widgets_.push_back(checkbox);
+		
+		return checkbox;
+	}
 }
