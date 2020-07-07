@@ -73,6 +73,6 @@ namespace Aegis {
 		std::function<void(Event&)> callback_;
 		GLFWwindow* window_handle_;
 		ScreenMode screen_mode_ = ScreenMode::Windowed;
-		bool vsync_ = true;
+		bool vsync_ = false;
 	};
 }
