@@ -24,10 +24,20 @@ namespace Aegis{
 
 	void Checkbox::Render(float delta_time)
 	{
-		DrawText(label_, rect_.pos);
+		Renderer2D::SetFont(font_);
 		button_->Render(delta_time);
+		if (checked_) {
+			DrawText("CHECKED", rect_.pos);
+		}
+		DrawText(label_, {rect_.pos.x - label_offset_, rect_.pos.y});
 		
 	}
 
 
+	void Checkbox::SetFont(std::shared_ptr<Font>& font)
+	{
+		font_ = font;
+
+		label_offset_ = font_->GetStringPixelSize(label_).x + 20;
+	}
 }
