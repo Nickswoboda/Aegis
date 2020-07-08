@@ -20,7 +20,7 @@ namespace Aegis {
 		AE_ASSERT(error == 0, "Unable to initialize FreeType.");
 
 		error = FT_New_Face(library, path.c_str(), 0, &face);
-		AE_ASSERT(error == 0, "Unable to read font.");
+		AE_ASSERT(error == 0, "Unable to read font: " + path);
 
 		error = FT_Set_Pixel_Sizes(face, size, size);
 		AE_ASSERT(error == 0, "Unable to set pixel size");
