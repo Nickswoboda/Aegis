@@ -26,8 +26,8 @@ namespace Aegis{
 	{
 		Renderer2D::SetFont(font_);
 		button_->Render(delta_time);
-		if (checked_) {
-			DrawText("CHECKED", rect_.pos);
+		if (textures_[checked_]){
+			DrawQuad(rect_.pos, rect_.size, textures_[checked_]);
 		}
 		DrawText(label_, {rect_.pos.x - label_offset_, rect_.pos.y});
 		
@@ -39,5 +39,12 @@ namespace Aegis{
 		font_ = font;
 
 		label_offset_ = font_->GetStringPixelSize(label_).x + 20;
+	}
+
+	void Checkbox::SetTexture(bool checked, std::shared_ptr<Texture>& texture)
+	{
+		if (texture){
+			textures_[checked] = texture;
+		}
 	}
 }
