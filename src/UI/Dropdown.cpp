@@ -7,7 +7,7 @@ namespace Aegis {
 	Dropdown::Dropdown(const std::string& label, Aegis::AABB rect)
 		:Widget(rect)
 	{
-		button_pos_offset_ = Renderer2D::GetFont().GetStringPixelSize(label).x + 15;
+		label_offset_ = Renderer2D::GetFont().GetStringPixelSize(label).x + 15;
 		expand_button_ = new Button(rect, "", [&](){ToggleExpanded();});
 		label_ = label;
 	}
@@ -35,7 +35,7 @@ namespace Aegis {
 	void Dropdown::Render(float delta_time)
 	{
 		Renderer2D::SetFont(font_);
-		DrawText(label_, rect_.pos, { 1.0f, 1.0f, 1.0f, 1.0f });
+		DrawText(label_, {rect_.pos.x - label_offset_, rect_.pos.y}, { 1.0f, 1.0f, 1.0f, 1.0f });
 		expand_button_->Render();
 		if (!expanded_ && !items_.empty()) {
 			items_[current_item_index_]->Render();
@@ -51,7 +51,7 @@ namespace Aegis {
 	{
 		float y_pos = rect_.pos.y + rect_.size.y * items_.size();
 
-		Button* temp_button = new Button({ rect_.pos.x + button_pos_offset_, y_pos, rect_.size.x, rect_.size.y }, text, callback);
+		Button* temp_button = new Button({ rect_.pos.x, y_pos, rect_.size.x, rect_.size.y }, text, callback);
 		temp_button->SetFont(font_);
 		items_.push_back(temp_button);
 	}
@@ -79,11 +79,6 @@ namespace Aegis {
 	void Dropdown::SetFont(std::shared_ptr<Font>& font)
 	{
 		font_ = font;
-		button_pos_offset_ = font->GetStringPixelSize(label_).x + 15;
-		//must change button pos based off of new label size
-		expand_button_->rect_.pos.x += button_pos_offset_;
-		for (auto& button : items_){
-			button->rect_.size.x = rect_.size.x + button_pos_offset_;
-		}
+		label_offset_ = font->GetStringPixelSize(label_).x + 15;
 	}
 }

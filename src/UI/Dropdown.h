@@ -27,6 +27,6 @@ namespace Aegis {
 		int current_item_index_ = 0;
 		std::string label_;
 		bool expanded_ = false;
-		int button_pos_offset_;
+		int label_offset_ = 0;
 	};
 }
