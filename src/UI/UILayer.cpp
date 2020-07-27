@@ -35,23 +35,6 @@ namespace Aegis {
 		}
 
 	}
-	Button* UILayer::AddButton(AABB rect, const std::string& text, std::function<void()> callback)
-	{
-		Button* button = new Button(rect, text, callback);
-		button->SetFont(font_);
-		widgets_.push_back(button);
-
-		return button;
-	}
-
-	Dropdown* UILayer::AddDropdown(const std::string& label, AABB rect)
-	{
-		Dropdown* dropdown = new Dropdown(label, rect);
-		dropdown->SetFont(font_);
-		widgets_.push_back(dropdown);
-
-		return dropdown;
-	}
 
 	Container* UILayer::AddContainer(AABB rect, Container::Orientation orientation, int padding, Container::Alignment alignment)
 	{
@@ -65,12 +48,4 @@ namespace Aegis {
 		font_ = font;
 	}
 
-	Checkbox* UILayer::AddCheckbox(const std::string& label, AABB box, std::function<void(bool)> callback)
-	{
-		Checkbox* checkbox = new Checkbox(label, box, callback);
-		checkbox->SetFont(font_);
-		widgets_.push_back(checkbox);
-		
-		return checkbox;
-	}
 }
