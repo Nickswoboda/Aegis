@@ -24,6 +24,7 @@ namespace Aegis {
 	class Font 
 	{
 	public:
+		static std::shared_ptr<Font> Create(const std::string& path, int size, int num_glyphs = 128);
 		Font(const std::string& path, int size, int num_glyphs = 128);
 		Font(const std::string& name, const unsigned char* data, unsigned int data_size, int font_size, int num_glyphs = 128);  
 		std::shared_ptr<Texture> CreateTextureAtlas(const FT_Face& face);
@@ -37,6 +38,8 @@ namespace Aegis {
 		int tallest_glyph_height_ = 0;
 		std::shared_ptr<Texture> atlas_;
 		int num_glyphs_ = 0;
+		Font(FT_Library& library, FT_Face& face, const std::string& path, int size, int num_glyphs = 128);
+
 	};
 
 }

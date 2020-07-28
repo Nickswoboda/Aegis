@@ -1,5 +1,7 @@
 #include "Font.h"
 #include "Assert.h"
+#include "Application.h"
+
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
@@ -7,12 +9,45 @@
 #include <numeric>
 
 namespace Aegis {
-	Font::Font(const std::string& path, int size, int num_glyphs)
-		: num_glyphs_(num_glyphs)
+	std::shared_ptr<Font> Font::Create(const std::string& path, int size, int num_glyphs)
 	{
-		font_name_ = path;
-		size_ = size;
+		FT_Library library;
+		FT_Face face;
+
+		int error = FT_Init_FreeType(&library);
+		if (!error){
+			error = FT_New_Face(library, path.c_str(), 0, &face);
+		}
+		if (!error){
+			error = FT_Set_Pixel_Sizes(face, size, size);
+		}
+		//if the font font can not be loaded for whatever reason, send default font instead of crashing program. Only crash if both fonts are not working
+		if (error){
+			if (Application::GetFont()){
+				std::cout << "Unable to create font " << path << ". Initializing with default hardcoded font\n";
+				return Application::GetFont();
+			}
+			
+			AE_ASSERT(false, "Unable to create font " + path + " and unable to initialize hardcoded font\n"); 
+		}
+
+		return std::make_shared<Font>(library, face, path, size, num_glyphs); 
+
 		
+	}
+	Font::Font(FT_Library& library, FT_Face& face, const std::string& path, int size, int num_glyphs)
+		: font_name_(path), size_(size), num_glyphs_(num_glyphs)
+	{
+		atlas_ = CreateTextureAtlas(face);
+		SetGlyphSubTextures();
+
+		FT_Done_Face(face);
+		FT_Done_FreeType(library);
+	}
+
+	Font::Font(const std::string& path, int size, int num_glyphs)
+		: font_name_(path), size_(size), num_glyphs_(num_glyphs)
+	{
 		FT_Library library;
 		FT_Face face;
 
@@ -20,7 +55,7 @@ namespace Aegis {
 		AE_ASSERT(error == 0, "Unable to initialize FreeType.");
 
 		error = FT_New_Face(library, path.c_str(), 0, &face);
-		AE_ASSERT(error == 0, "Unable to read font: " + path);
+		AE_ASSERT(error == 0, "Unable to read font.");
 
 		error = FT_Set_Pixel_Sizes(face, size, size);
 		AE_ASSERT(error == 0, "Unable to set pixel size");
