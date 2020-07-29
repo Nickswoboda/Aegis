@@ -15,8 +15,9 @@ namespace Aegis {
 	{
 	public:
 		explicit Texture(const std::string& path);
-		Texture(unsigned char* data, int width, int height);
+		Texture(unsigned char* data, int width, int height, int channels);
 		static std::shared_ptr<Texture> TextureFromText(const std::string& text, std::shared_ptr<Font> font);
+		static std::shared_ptr<Texture> Create(const std::string& path);
 
 		~Texture();
 		void Bind();

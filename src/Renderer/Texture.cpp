@@ -14,6 +14,28 @@ namespace Aegis {
         //glDeleteTextures(1, &ID_);
     }
 
+	std::shared_ptr<Texture> Texture::Create(const std::string& path)
+	{
+        int width, height, channels;
+        unsigned char* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
+
+		if (data == nullptr || channels < 3 || channels > 4){
+			width = 50;
+			height = 50;
+			channels = 4;
+			data = new unsigned char [(size_t)50 * 50 * 4]();
+			for (int i = 0; i < height; ++i){
+				for (int j = 0; j < width; ++j ){
+					data[i * (width * channels) + j*4] = 255;
+					data[i * (width * channels) + j*4 + 1] = 0;
+					data[i * (width * channels) + j*4 + 2] = 225;
+					data[i *(width * channels) + j*4 + 3] = 225;
+				}
+			}
+		}
+		return std::make_shared<Texture>(data, width, height, channels); 
+	}
+
     Texture::Texture(const std::string& path)
     {
         glCreateTextures(GL_TEXTURE_2D, 1, &ID_);
@@ -47,18 +69,27 @@ namespace Aegis {
         stbi_image_free(data);
     }
 
-    Texture::Texture(unsigned char* data, int width, int height)
+    Texture::Texture(unsigned char* data, int width, int height, int channels)
         :size_(width, height)
     {
         glCreateTextures(GL_TEXTURE_2D, 1, &ID_);
+		GLint internal_format = 0, format = 0;
+        if (channels == 3) {
+            internal_format = GL_RGB8;
+            format = GL_RGB;
+        }
+        else if (channels == 4) {
+            internal_format = GL_RGBA8;
+            format = GL_RGBA;
+        }
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-        glTextureStorage2D(ID_, 1, GL_RGBA8, width, height);
-        glTextureSubImage2D(ID_, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        glTextureStorage2D(ID_, 1, internal_format, width, height);
+        glTextureSubImage2D(ID_, 0, 0, 0, width, height, format, GL_UNSIGNED_BYTE, data);
     }
 
     //used for static text caching. combines all glyph textures into one big texture
@@ -85,7 +116,7 @@ namespace Aegis {
 			pen_x += glyph.advance * 4;
 		}
 		//return std::make_shared<Texture>(atlas_pixel_data, atlas->size_.x, atlas->size_.y);
-		return std::make_shared<Texture>(new_tex_pixel_data, tex_size.x, tex_size.y);
+		return std::make_shared<Texture>(new_tex_pixel_data, tex_size.x, tex_size.y, 4);
     }
 
     void Texture::Bind()
