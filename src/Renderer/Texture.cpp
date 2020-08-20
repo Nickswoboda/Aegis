@@ -33,7 +33,9 @@ namespace Aegis {
 				}
 			}
 		}
-		return std::make_shared<Texture>(data, width, height, channels); 
+		auto texture = std::make_shared<Texture>(data, width, height, channels);
+		stbi_image_free(data);
+		return texture;
 	}
 
     Texture::Texture(const std::string& path)
@@ -90,6 +92,7 @@ namespace Aegis {
 
         glTextureStorage2D(ID_, 1, internal_format, width, height);
         glTextureSubImage2D(ID_, 0, 0, 0, width, height, format, GL_UNSIGNED_BYTE, data);
+
     }
 
     //used for static text caching. combines all glyph textures into one big texture
@@ -116,7 +119,10 @@ namespace Aegis {
 			pen_x += glyph.advance * 4;
 		}
 		//return std::make_shared<Texture>(atlas_pixel_data, atlas->size_.x, atlas->size_.y);
-		return std::make_shared<Texture>(new_tex_pixel_data, tex_size.x, tex_size.y, 4);
+		auto texture = std::make_shared<Texture>(new_tex_pixel_data, tex_size.x, tex_size.y, 4);
+		delete[] atlas_pixel_data;
+		delete[] new_tex_pixel_data;
+		return texture;
     }
 
     void Texture::Bind()
