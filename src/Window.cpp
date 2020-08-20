@@ -36,6 +36,7 @@ namespace Aegis {
 
 	Window::~Window()
 	{
+		glfwDestroyWindow(window_handle_);
 	}
 
 	void Window::SetEventCallbacks(std::function<void(Event&)> callback)
