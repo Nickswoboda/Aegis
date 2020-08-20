@@ -10,16 +10,13 @@ namespace Aegis{
 
 	void SceneManager::PushScene(std::unique_ptr<Scene> scene)
 	{
-		scene->manager_ = this;
+		scene->manager_ = std::unique_ptr<SceneManager>(this);
 		scenes_.push_back(std::move(scene));
 	}
 
 	void SceneManager::PopScene()
 	{
 		if (scenes_.size() > 1){
-			if (scenes_.back()->ui_layer_){
-				delete scenes_.back()->ui_layer_;
-			}
 			scenes_.pop_back();
 		}
 	}

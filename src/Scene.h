@@ -19,8 +19,8 @@ namespace Aegis {
 		virtual void Render(float delta_time) = 0;
 		virtual void OnEvent(Event& event) = 0;
 
-		SceneManager* manager_ = nullptr;
-		UILayer* ui_layer_ = nullptr;
+		std::unique_ptr<SceneManager> manager_;
+		std::unique_ptr<UILayer> ui_layer_;
 		Camera camera_;
 	};
 
