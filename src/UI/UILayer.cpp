@@ -12,6 +12,9 @@ namespace Aegis {
 		for (auto& widget : widgets_){
 			delete widget;
 		}
+		for (auto& container : containers_){
+			delete container;
+		}
 	}
 	void UILayer::OnUpdate()
 	{

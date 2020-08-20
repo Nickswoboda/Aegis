@@ -14,6 +14,10 @@ namespace Aegis {
 
 	Dropdown::~Dropdown()
 	{
+		delete expand_button_;
+		for (auto& button : items_){
+			delete button;
+		}
 	}
 
 	void Dropdown::OnEvent(Event& event)

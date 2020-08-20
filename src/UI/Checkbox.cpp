@@ -16,6 +16,11 @@ namespace Aegis{
 
 			callback_(checked_);});
 	}
+	Checkbox::~Checkbox()
+	{
+		delete button_;
+	}
+
 
 	void Checkbox::OnEvent(Event& event)
 	{
