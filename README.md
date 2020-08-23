@@ -2,6 +2,7 @@
 
 Aegis is a 2D game development library designed with ease of use in mind.
 
+**NOTE: Aegis is still in the early stages of development.**
 ## Features
 ### Current
 - Texture rendering
