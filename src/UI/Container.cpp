@@ -3,7 +3,7 @@
 
 namespace Aegis{
 	Container::Container(AABB rect, Orientation orientation, int padding, Alignment alignment)
-		:rect_(rect), orientation_(orientation), padding_(padding), alignment_(alignment), bg_color_({0.0f, 0.0f, 1.0f, 0.4f})
+		:rect_(rect), orientation_(orientation), padding_(padding), alignment_(alignment), bg_color_({0.0f, 0.0f, 1.0f, 0.0f})
 	{
 	}
 
