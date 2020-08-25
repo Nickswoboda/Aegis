@@ -18,7 +18,9 @@ namespace Aegis {
 	{
         int width, height, channels;
         unsigned char* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
-
+		if (data == nullptr){
+			std::cout << "Unable to load texture:" << path << "\n";
+		}
 		if (data == nullptr || channels < 3 || channels > 4){
 			width = 50;
 			height = 50;
