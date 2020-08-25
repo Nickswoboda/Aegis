@@ -15,7 +15,6 @@ namespace Aegis{
 	public:
 
 		UILayer();
-		~UILayer();
 
 		virtual void OnUpdate() override;
 		virtual void OnEvent(Event& event) override;
@@ -24,16 +23,17 @@ namespace Aegis{
 		void SetFont(std::shared_ptr<Font>& font_);
 
 		template<typename T>
-		T* AddWidget(T* widget)
+		std::shared_ptr<T> AddWidget(T* widget)
 		{
+			auto ref = std::shared_ptr<T>(widget);
 			widget->SetFont(font_);
-			widgets_.push_back(widget);
-			return widget;
+			widgets_.push_back(ref);
+			return ref;
 		}
-		Container* AddContainer(AABB rect, Container::Orientation orientation, int padding, Container::Alignment alignment);
+		std::shared_ptr<Container> AddContainer(AABB rect, Container::Orientation orientation, int padding, Container::Alignment alignment);
 
-		std::vector<Container*> containers_;
-		std::vector<Widget*> widgets_;
+		std::vector<std::shared_ptr<Container>> containers_;
+		std::vector<std::shared_ptr<Widget>> widgets_;
 		std::shared_ptr<Font> font_;
 	};
 }

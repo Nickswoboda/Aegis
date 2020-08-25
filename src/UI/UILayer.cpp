@@ -7,15 +7,6 @@ namespace Aegis {
 	{
 		font_ = Application::GetFont();
 	}
-	UILayer::~UILayer()
-	{
-		for (auto& widget : widgets_){
-			delete widget;
-		}
-		for (auto& container : containers_){
-			delete container;
-		}
-	}
 	void UILayer::OnUpdate()
 	{
 	}
@@ -39,9 +30,9 @@ namespace Aegis {
 
 	}
 
-	Container* UILayer::AddContainer(AABB rect, Container::Orientation orientation, int padding, Container::Alignment alignment)
+	std::shared_ptr<Container> UILayer::AddContainer(AABB rect, Container::Orientation orientation, int padding, Container::Alignment alignment)
 	{
-		Container* container = new Container(rect, orientation, padding, alignment);
+		auto container = std::make_shared<Container>(rect, orientation, padding, alignment);
 		containers_.push_back(container);
 		return container;
 	}

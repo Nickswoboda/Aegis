@@ -12,7 +12,7 @@ namespace Aegis{
 		DrawQuad(rect_.pos, rect_.size, bg_color_);
 	}
 
-	void Container::AddWidget(Widget* widget)
+	void Container::AddWidget(std::shared_ptr<Widget> widget)
 	{
 		widgets_.push_back(widget);
 		UpdateWidgets();
@@ -42,7 +42,7 @@ namespace Aegis{
 		}
 	}
 
-	void Container::AlignWidget(Widget* widget, Alignment alignment)
+	void Container::AlignWidget(std::shared_ptr<Widget> widget, Alignment alignment)
 	{
 		if (orientation_ == Orientation::Vertical){
 			switch (alignment){

@@ -23,13 +23,13 @@ namespace Aegis{
 		};
 		Container(AABB rect_, Orientation orientation, int padding, Alignment alignment);
 		~Container(){} 
-		void AddWidget(Widget* widget);
+		void AddWidget(std::shared_ptr<Widget> widget);
 		void UpdateWidgets();
-		void AlignWidget(Widget* widget, Alignment alignment);
+		void AlignWidget(std::shared_ptr<Widget> widget, Alignment alignment);
 		void Render();
 
 
-		std::vector<Widget*> widgets_;
+		std::vector<std::shared_ptr<Widget>> widgets_;
 		Vec4 bg_color_;
 		AABB rect_;
 		int padding_;
