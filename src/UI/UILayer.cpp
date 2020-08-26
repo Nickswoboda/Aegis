@@ -1,6 +1,7 @@
 #include "UILayer.h"
 #include "../Application.h"
 
+#include "glm/gtc/matrix_transform.hpp"
 namespace Aegis {
 
 	UILayer::UILayer()
@@ -21,6 +22,7 @@ namespace Aegis {
 	}
 	void UILayer::Render(float delta_time)
 	{
+		Renderer2D::SetProjection(glm::ortho(0.0f, Application::GetWindow().GetResolution().x, Application::GetWindow().GetResolution().y, 0.0f));
 		for (const auto& container : containers_){
 			container->Render();
 		}
