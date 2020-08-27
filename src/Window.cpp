@@ -219,4 +219,9 @@ namespace Aegis {
 
 		return Vec2(x, y) * mouse_pos_scale_;
 	}
+	
+	bool Window::IsMousePressed()
+	{
+		return (glfwGetMouseButton(window_handle_, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS);
+	}
 }

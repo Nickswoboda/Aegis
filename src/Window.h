@@ -61,7 +61,8 @@ namespace Aegis {
 		bool IsDecorated();
 		
 		Vec2 GetMousePos();
-		
+		bool IsMousePressed();
+
 	private:
 		//ratio between resolution and window size. Useful for buttons that change size due to resolution changes
 		Vec2 pos_;
