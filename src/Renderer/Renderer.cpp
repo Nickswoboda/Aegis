@@ -216,7 +216,7 @@ namespace Aegis {
         for (const auto& c : text) {
 
             auto glyph = default_font_->glyphs_[c];
-            DrawQuad({ pen_pos.x + glyph.bearing.x, pen_pos.y - glyph.bearing.y }, glyph.sub_texture_);
+            DrawQuad({ pen_pos.x + glyph.bearing.x, pen_pos.y - glyph.bearing.y }, glyph.sub_texture_, color);
             pen_pos.x += glyph.advance;
         }
     }
