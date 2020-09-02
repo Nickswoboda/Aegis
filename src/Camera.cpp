@@ -15,7 +15,9 @@ namespace Aegis
 	}
 	void Camera::RecalculateViewMatrix()
 	{
-		glm::mat4 transform = glm::translate(glm::mat4(1.0), position_);
+		//have to convert to vec3 for matrix transformation
+		glm::vec3 pos = {position_.x, position_.y, 0};
+		glm::mat4 transform = glm::translate(glm::mat4(1.0), pos);
 
 		view_matrix_ = glm::inverse(transform);
 

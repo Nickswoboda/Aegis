@@ -106,7 +106,7 @@ public:
 				manager_->ReplaceScene(std::unique_ptr<Aegis::Scene>(new MenuScene));
 			}
 
-			camera_.SetPosition({ x, 0, 0 });
+			camera_.SetPosition({ (float)x, 0});
 		}
 
 		auto mouse_click = dynamic_cast<Aegis::MouseClickEvent*>(&event);
