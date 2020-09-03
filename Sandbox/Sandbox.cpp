@@ -57,8 +57,8 @@ class Sandbox : public Aegis::Scene
 public:
 	Sandbox()
 	{
-		smiley_ = Aegis::TextureManager::Instance().Load("assets/textures/smiley.png");
-		container_ = Aegis::TextureManager::Instance().Load("assets/textures/container.jpg");
+		smiley_ = Aegis::TextureManager::Load("assets/textures/smiley.png");
+		container_ = Aegis::TextureManager::Load("assets/textures/container.jpg");
 
 		fonts_.emplace_back(std::make_shared<Aegis::Font>("assets/fonts/Roboto-Regular.ttf", 16));
 		fonts_.emplace_back(std::make_shared<Aegis::Font>("assets/fonts/WorkSans-Regular.ttf", 16));
