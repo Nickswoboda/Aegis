@@ -24,3 +24,4 @@
 #include "UI/UILayer.h"
 #include "UI/Container.h"
 #include "UI/Checkbox.h"
+#include "UI/Text.h"
