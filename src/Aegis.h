@@ -25,3 +25,4 @@
 #include "UI/Container.h"
 #include "UI/Checkbox.h"
 #include "UI/Text.h"
+#include "UI/TextureWidget.h"
