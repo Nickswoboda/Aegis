@@ -16,27 +16,20 @@ namespace Aegis {
 	public:
 		explicit Texture(const std::string& path);
 		Texture(unsigned char* data, int width, int height, int channels);
+
 		static std::shared_ptr<Texture> TextureFromText(const std::string& text, std::shared_ptr<Font> font);
 		static std::shared_ptr<Texture> Create(const std::string& path);
+		static std::shared_ptr<Texture> SubTexture(const std::shared_ptr<Texture>& texture, Vec2 pos_on_tex, Vec2 size);
 
 		~Texture();
 		void Bind();
 
+		Vec4 tex_coords_ = {0.0f, 0.0f, 1.0f, 1.0f};
+		Vec2 size_;
 		unsigned int ID_ = 0;
-		Vec2 size_;
-	};
 
-	class SubTexture 
-	{
-	public:
-		SubTexture(const std::shared_ptr<Texture>& texture, Vec2 pos_on_tex, Vec2 size);
-		const std::shared_ptr<Texture> GetTexture() const { return texture_; }
-		const Vec4& GetTexCoords() const { return tex_coords_; }
-		Vec2 GetSize() const { return size_; }
-		
 	private:
-		std::shared_ptr<Texture> texture_;
-		Vec4 tex_coords_;
-		Vec2 size_;
+		//blank texture object used for subtextures
+		Texture() {};
 	};
 }

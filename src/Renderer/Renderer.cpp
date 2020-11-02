@@ -125,7 +125,7 @@ namespace Aegis {
         DrawQuad(pos, texture->size_, texture,  color);
     }
 
-    void DrawQuad(const Vec2& pos, const Vec2& size, const std::shared_ptr<Texture>& texture, const Vec4& color, const Vec4& tex_coords)
+    void DrawQuad(const Vec2& pos, const Vec2& size, const std::shared_ptr<Texture>& texture, const Vec4& color)
     {
         if (data_.index_count_ >= vertex_array_->max_index_count_ || data_.texture_slot_index_ > 31) {
             Renderer2D::EndScene();
@@ -145,16 +145,9 @@ namespace Aegis {
             data_.texture_slot_index_++;
         }
 
-        DrawQuad(pos, size, texture_index, color, tex_coords);
+        DrawQuad(pos, size, texture_index, color, texture->tex_coords_);
     }
-    void DrawQuad(const Vec2& pos, const std::shared_ptr<SubTexture>& sub_texture, const Vec4& color)
-    {
-        DrawQuad(pos, sub_texture->GetSize(), sub_texture, color);
-    }
-    void DrawQuad(const Vec2& pos, const Vec2& size, const std::shared_ptr<SubTexture>& sub_texture, const Vec4& color)
-    {
-        DrawQuad(pos, size, sub_texture->GetTexture(), color, sub_texture->GetTexCoords());
-    }
+
     void DrawQuad(const Vec2& pos, const Vec2& size, const float texture_index, const Vec4& color, const Vec4& tex_coords)
     {
 
@@ -216,7 +209,7 @@ namespace Aegis {
         for (const auto& c : text) {
 
             auto glyph = default_font_->glyphs_[c];
-            DrawQuad({ pen_pos.x + glyph.bearing.x, pen_pos.y - glyph.bearing.y }, glyph.sub_texture_, color);
+            DrawQuad({ pen_pos.x + glyph.bearing.x, pen_pos.y - glyph.bearing.y }, glyph.texture_, color);
             pen_pos.x += glyph.advance;
         }
     }

@@ -73,6 +73,16 @@ namespace Aegis {
         stbi_image_free(data);
     }
 
+	std::shared_ptr<Texture> Texture::SubTexture(const std::shared_ptr<Texture>& texture, Vec2 pos_on_tex, Vec2 size)
+	{
+		std::shared_ptr<Texture> temp(new Texture);
+		temp->ID_ = texture->ID_; 
+		temp->size_ = size;
+        temp->tex_coords_ = { pos_on_tex.x / texture->size_.x, pos_on_tex.y / texture->size_.y, (pos_on_tex.x + size.x) / texture->size_.x, (pos_on_tex.y + size.y) / texture->size_.y };
+
+		return temp;
+	}
+
     Texture::Texture(unsigned char* data, int width, int height, int channels)
         :size_(width, height)
     {
@@ -130,12 +140,6 @@ namespace Aegis {
     void Texture::Bind()
     {
         glBindTextureUnit(0, ID_);
-    }
-
-    SubTexture::SubTexture(const std::shared_ptr<Texture>& texture, Vec2 pos, Vec2 size)
-        :texture_(texture), size_(size)
-    {
-        tex_coords_ = { pos.x / texture->size_.x, pos.y / texture->size_.y, (pos.x + size.x) / texture->size_.x, (pos.y + size.y) / texture_->size_.y };
     }
 }
 
