@@ -24,5 +24,5 @@
 #include "UI/UILayer.h"
 #include "UI/Container.h"
 #include "UI/Checkbox.h"
-#include "UI/Text.h"
+#include "UI/Label.h"
 #include "UI/TextureWidget.h"
