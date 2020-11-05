@@ -22,11 +22,11 @@ namespace Aegis{
 		
 		void SetFont(std::shared_ptr<Font>& font_);
 
-		template<typename T>
-		std::shared_ptr<T> AddWidget(T* widget)
+		template<typename T, typename... Args>
+		std::shared_ptr<T> AddWidget(Args&&... args)
 		{
-			auto ref = std::shared_ptr<T>(widget);
-			widget->SetFont(font_);
+			auto ref = std::shared_ptr<T>(new T(std::forward<Args>(args)...));
+			ref->SetFont(font_);
 			widgets_.push_back(ref);
 			return ref;
 		}
