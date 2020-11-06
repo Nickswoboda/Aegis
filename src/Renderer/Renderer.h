@@ -31,15 +31,15 @@ namespace Aegis {
 
 	void RendererClear();
 
-	void DrawQuad(const Vec2& pos, const Vec2& size, const Vec4& color);
+	void DrawQuad(const Vec2& pos, const Vec2& size, const Vec4& color = {1.0f, 1.0f, 1.0f, 1.0f}, const float z_idx = 0);
 
-	void DrawQuad(const Vec2& pos, const std::shared_ptr<Texture>& texture, const Vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f });
-	void DrawQuad(const Vec2& pos, const Vec2& size, const std::shared_ptr<Texture>& texture, const Vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f });
+	void DrawQuad(const Vec2& pos, const std::shared_ptr<Texture>& texture, const float z_idx = 0, const Vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f });
+	void DrawQuad(const Vec2& pos, const Vec2& size, const std::shared_ptr<Texture>& texture, const float z_idx = 0, const Vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f });
 
-	void DrawQuad(const Vec2& pos, const Vec2& size, const float texture_index, const Vec4& color, const Vec4& tex_coords = { 0.0f, 0.0f, 1.0f, 1.0f });
+	void DrawQuad(const Vec2& pos, const Vec2& size, const float texture_index, const Vec4& color, const float z_idx = 0, const Vec4& tex_coords = { 0.0f, 0.0f, 1.0f, 1.0f });
 
-	void DrawStaticText(const std::string& text, const Vec2& pos, const Vec4& color = {1.0f, 1.0f, 1.0f, 1.0f});
-	void DrawText(const std::string& text, const Vec2& pos, const Vec4& color = {1.0f, 1.0f, 1.0f, 1.0f});
+	void DrawStaticText(const std::string& text, const Vec2& pos, const Vec4& color = {1.0f, 1.0f, 1.0f, 1.0f}, const float z_idx = 0);
+	void DrawText(const std::string& text, const Vec2& pos, const Vec4& color = {1.0f, 1.0f, 1.0f, 1.0f}, const float z_idx = 0);
 
 	void RenderSprite(const Sprite& sprite);
 }

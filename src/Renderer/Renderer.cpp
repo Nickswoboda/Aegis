@@ -39,6 +39,9 @@ namespace Aegis {
     {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_DEPTH_TEST);
+		glDepthFunc(GL_LEQUAL);
+		glClearDepth(1.0f);
 
         int samplers[max_textures];
         for (int i = 0; i < max_textures; ++i) {
@@ -107,25 +110,25 @@ namespace Aegis {
 
     void RendererClear()
 	{
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
-    void DrawQuad(const Vec2& pos, const Vec2& size, const Vec4& color)
+    void DrawQuad(const Vec2& pos, const Vec2& size, const Vec4& color, const float z_idx)
 	{
         if (data_.index_count_ >= vertex_array_->max_index_count_) {
             Renderer2D::EndScene();
             Renderer2D::BeginScene(projection_);
         } 
 
-        DrawQuad(pos, size, 0, color);
+        DrawQuad(pos, size, 0, color, z_idx);
 	}
 
-    void DrawQuad(const Vec2& pos, const std::shared_ptr<Texture>& texture, const Vec4& color)
+    void DrawQuad(const Vec2& pos, const std::shared_ptr<Texture>& texture, const float z_idx, const Vec4& color)
     {
-        DrawQuad(pos, texture->size_, texture,  color);
+        DrawQuad(pos, texture->size_, texture, z_idx, color);
     }
 
-    void DrawQuad(const Vec2& pos, const Vec2& size, const std::shared_ptr<Texture>& texture, const Vec4& color)
+    void DrawQuad(const Vec2& pos, const Vec2& size, const std::shared_ptr<Texture>& texture, const float z_idx, const Vec4& color)
     {
         if (data_.index_count_ >= vertex_array_->max_index_count_ || data_.texture_slot_index_ > 31) {
             Renderer2D::EndScene();
@@ -145,40 +148,40 @@ namespace Aegis {
             data_.texture_slot_index_++;
         }
 
-        DrawQuad(pos, size, texture_index, color, texture->tex_coords_);
+        DrawQuad(pos, size, texture_index, color, z_idx, texture->tex_coords_);
     }
 
-    void DrawQuad(const Vec2& pos, const Vec2& size, const float texture_index, const Vec4& color, const Vec4& tex_coords)
+    void DrawQuad(const Vec2& pos, const Vec2& size, const float texture_index, const Vec4& color, const float z_idx, const Vec4& tex_coords)
     {
 
         if (data_.quad_buffer_ptr_ == nullptr) {
             std::cout << "Must Call BeginScene() before drawing\n";
         }
-        glm::mat4 transform = glm::translate(glm::mat4(1.0f), { pos.x, pos.y, 0.0f }) * glm::scale(glm::mat4(1.0), { size.x, size.y, 1.0 });
+        glm::mat4 transform = glm::translate(glm::mat4(1.0f), { pos.x, pos.y, z_idx }) * glm::scale(glm::mat4(1.0), { size.x, size.y, 1.0 });
 
         glm::vec4 vertex1_pos = transform * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-        data_.quad_buffer_ptr_->position_ = { vertex1_pos.x, vertex1_pos.y, 0.0f };
+        data_.quad_buffer_ptr_->position_ = { vertex1_pos.x, vertex1_pos.y, vertex1_pos.z };
         data_.quad_buffer_ptr_->color_ = color;
         data_.quad_buffer_ptr_->tex_coords_ = { tex_coords.x, tex_coords.y };
         data_.quad_buffer_ptr_->texture_ID_ = texture_index;
         data_.quad_buffer_ptr_++;
 
         glm::vec4 vertex2_pos = transform * glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
-        data_.quad_buffer_ptr_->position_ = { vertex2_pos.x, vertex2_pos.y, 0.0f };
+        data_.quad_buffer_ptr_->position_ = { vertex2_pos.x, vertex2_pos.y, vertex2_pos.z };
         data_.quad_buffer_ptr_->color_ = color;
         data_.quad_buffer_ptr_->tex_coords_ = { tex_coords.z, tex_coords.y };
         data_.quad_buffer_ptr_->texture_ID_ = texture_index;
         data_.quad_buffer_ptr_++;
 
         glm::vec4 vertex3_pos = transform * glm::vec4(1.0f, 1.0f, 0.0f, 1.0f);
-        data_.quad_buffer_ptr_->position_ = { vertex3_pos.x, vertex3_pos.y, 0.0f };
+        data_.quad_buffer_ptr_->position_ = { vertex3_pos.x, vertex3_pos.y, vertex3_pos.z };
         data_.quad_buffer_ptr_->color_ = color;
         data_.quad_buffer_ptr_->tex_coords_ = { tex_coords.z, tex_coords.w };
         data_.quad_buffer_ptr_->texture_ID_ = texture_index;
         data_.quad_buffer_ptr_++;
 
         glm::vec4 vertex4_pos = transform * glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
-        data_.quad_buffer_ptr_->position_ = { vertex4_pos.x, vertex4_pos.y, 0.0f };
+        data_.quad_buffer_ptr_->position_ = { vertex4_pos.x, vertex4_pos.y, vertex4_pos.z };
         data_.quad_buffer_ptr_->color_ = color;
         data_.quad_buffer_ptr_->tex_coords_ = { tex_coords.x, tex_coords.w };
         data_.quad_buffer_ptr_->texture_ID_ = texture_index;
@@ -186,22 +189,22 @@ namespace Aegis {
 
         data_.index_count_ += 6;
     }
-    void DrawStaticText(const std::string& text, const Vec2& pos, const Vec4& color)
+    void DrawStaticText(const std::string& text, const Vec2& pos, const Vec4& color, const float z_idx)
     {
         //if already cached
 	    std::string index = text + default_font_->font_name_ + std::to_string(default_font_->size_);
         if (cached_text_.count(index)) {
-            DrawQuad(pos, cached_text_[index], color);
+            DrawQuad(pos, cached_text_[index], z_idx, color);
         }
         //create texture and cache
         else{
             auto texture = Texture::TextureFromText(text, default_font_);
             
-            DrawQuad(pos, texture, color);
+            DrawQuad(pos, texture, z_idx, color);
             cached_text_[index] = texture;
         }
     }
-    void DrawText(const std::string& text, const Vec2& pos, const Vec4& color)
+    void DrawText(const std::string& text, const Vec2& pos, const Vec4& color, const float z_idx)
     {
         Vec2 pen_pos = pos;
         pen_pos.y += default_font_->tallest_glyph_height_;
@@ -209,7 +212,7 @@ namespace Aegis {
         for (const auto& c : text) {
 
             auto glyph = default_font_->glyphs_[c];
-            DrawQuad({ pen_pos.x + glyph.bearing.x, pen_pos.y - glyph.bearing.y }, glyph.texture_, color);
+            DrawQuad({ pen_pos.x + glyph.bearing.x, pen_pos.y - glyph.bearing.y }, glyph.texture_, z_idx, color);
             pen_pos.x += glyph.advance;
         }
     }
