@@ -21,5 +21,6 @@ namespace Aegis {
 
 		std::shared_ptr<Font> font_;
 		AABB rect_;
+		float z_idx_ = 0.0f;
 	};
 }

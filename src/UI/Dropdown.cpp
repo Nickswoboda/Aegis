@@ -72,11 +72,10 @@ namespace Aegis {
 
 	void Dropdown::ToggleExpanded()
 	{
-		if (expanded_){
-			expanded_ = false;
-		}
-		else{
-			expanded_ = true;
+		expanded_ = !expanded_;
+		
+		for (auto& item : items_) {
+			item->z_idx_ = expanded_ ? 1.0f : 0.0f;
 		}
 	}
 
