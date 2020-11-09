@@ -175,13 +175,9 @@ namespace Aegis {
 
 	void Window::SetVsync(bool vsync)
 	{
-		if (vsync && !IsVsync()) {
-			glfwSwapInterval(1);
-			vsync_ = true;
-		}
-		else if (!vsync && IsVsync()) {
-			glfwSwapInterval(0);
-			vsync_ = false;
+		if (vsync != IsVsync()){
+			vsync_ = vsync;
+			glfwSwapInterval(vsync);
 		}
 	}
 

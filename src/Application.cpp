@@ -65,8 +65,10 @@ namespace Aegis {
 				accumulator_ -= time_step_;
 			}
 
+			RendererClear();
 			Renderer2D::BeginScene(glm::ortho(0.0f, window_->GetResolution().x, window_->GetResolution().y, 0.0f));
 			scene_mgr_.CurrentScene()->Render(accumulator_ / time_step_);
+
 			if (scene_mgr_.CurrentScene()->ui_layer_){
 				scene_mgr_.CurrentScene()->ui_layer_->Render(0.0f);
 			}
@@ -74,7 +76,7 @@ namespace Aegis {
 			if (show_frame_time_) {
 				Renderer2D::SetProjection(glm::ortho(0.0f, window_->GetResolution().x, window_->GetResolution().y, 0.0f));
 				Renderer2D::SetFont(default_font_);
-				DrawText(std::to_string(frame_time_sec_ * 1000), { 0, 0 }, { 1.0f, 1.0f, 1.0f, 1.0f });
+				DrawText(std::to_string(frame_time_sec_ * 1000), { 0, 0 });
 			}
 			Renderer2D::EndScene();
 		}
