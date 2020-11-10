@@ -22,6 +22,9 @@ namespace Aegis {
 		Button(const std::string& text, std::function<void()> callback);
 		Button(AABB rect, const std::string& text, std::function<void()> callback);
 
+		void SetCallback(std::function<void()> callback);
+		void SetDoubleClickCallback(std::function<void()> callback);
+
 		bool IsPressed(int action);
 		void OnEvent(Event& event) override;
 		void Render(float delta_time = 0.0f) override;
@@ -32,6 +35,7 @@ namespace Aegis {
 		bool hovered_ = false;
 		bool pressed_ = false;
 		std::function<void()> callback_;
+		std::function<void()> dbl_click_callback_;
 		State state_ = State::Normal;
 	};
 }

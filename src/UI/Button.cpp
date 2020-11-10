@@ -13,7 +13,7 @@ namespace Aegis {
 		: Widget(rect), text_(text), callback_(callback)
 	{
 	}
-	
+
 	bool Button::IsPressed(int action)
 	{
 		//button must be pressed and released while hovering in ordering for it to be considered to be pressed
@@ -69,6 +69,12 @@ namespace Aegis {
 		}
 		auto click = dynamic_cast<MouseClickEvent*>(&event);
 		if (click) {
+			if (click->action_ == AE_MOUSE_DOUBLE_PRESS && PointInAABB(Application::GetWindow().GetMousePos(), rect_)){
+				dbl_click_callback_();	
+				event.handled_ = true;
+				pressed_ = true;
+				return;
+			}
 			if (IsPressed(click->action_)) {
 				callback_();
 				event.handled_ = true;

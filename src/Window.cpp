@@ -1,9 +1,12 @@
 #include "Window.h"
 
 #include "Assert.h"
+#include "MouseCodes.h"
+
 #include <glad/glad.h>
 
 #include <iostream>
+#include <chrono>
 
 namespace Aegis {
 
@@ -71,6 +74,21 @@ namespace Aegis {
 			Window& window_handle = *static_cast<Window*>(glfwGetWindowUserPointer(window));
 			MouseClickEvent event(button, action, mods);
 			window_handle.callback_(event);
+
+			//send additional event if double click
+			if (action == GLFW_RELEASE){
+				static auto before = std::chrono::system_clock::now();
+				auto now = std::chrono::system_clock::now();
+				double elapsed = std::chrono::duration<double, std::milli>(now - before).count();
+				before = now;
+
+				if (elapsed > 10 && elapsed < 200){
+					event.handled_ = false;
+					event.action_ = AE_MOUSE_DOUBLE_PRESS;
+					window_handle.callback_(event);
+				}
+			}
+			
 		});
 
 		glfwSetScrollCallback(window_handle_, [](GLFWwindow* window, double xoffset, double yoffset) {
