@@ -17,6 +17,5 @@ namespace Aegis{
 		Vec4 color_;
 		Vec2 pos_;
 		Vec2 size_;
-		bool visible_ = true;
 	};
 }

@@ -27,7 +27,9 @@ namespace Aegis {
 			container->Render();
 		}
 		for (const auto& widget : widgets_) {
-			widget->Render(delta_time);
+			if (widget->visible_){
+				widget->Render(delta_time);
+			}
 		}
 
 	}
