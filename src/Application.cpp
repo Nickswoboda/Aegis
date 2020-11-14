@@ -2,7 +2,6 @@
 
 #include "Renderer/Renderer.h"
 #include "Font.h"
-#include "Timer.h"
 #include "Assert.h"
 #include "WorkSansFont.h"
 
@@ -46,14 +45,13 @@ namespace Aegis {
 
 	void Application::Run()
 	{
-		Timer timer;
-		timer.Start();
 		double accumulator_ = 0.0;
-		while (running_) {
+		std::chrono::steady_clock::time_point start_time_ = std::chrono::high_resolution_clock::now();
 
-			timer.Update();
-			frame_time_sec_ = timer.GetElapsedInSeconds();
-			timer.Reset();
+		while (running_) {
+			std::chrono::steady_clock::time_point end_time_ = std::chrono::high_resolution_clock::now();
+			frame_time_sec_ = std::chrono::duration<double>(end_time_ - start_time_).count();
+			start_time_ = end_time_;
 
 			accumulator_ += frame_time_sec_;
 

@@ -7,17 +7,16 @@ namespace Aegis
 	class Timer
 	{
 	public:
-		void Start();
+		void Start(double duration);
 		void Update();
-		void Reset();
 		void Pause();
 		void Stop();
-		double GetElapsedInSeconds();
-		double GetElapsedInMilliseconds();
+		double GetRemainingInSeconds();
+		double GetRemainingInMilliseconds();
 
 		std::chrono::steady_clock::time_point start_time_;
 		std::chrono::steady_clock::time_point end_time_;
-		double elapsed_time_ = 0.0;
+		double time_remaining_ = 0.0;
 		bool paused_ = false;
 		bool stopped_ = true;
 

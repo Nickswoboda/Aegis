@@ -2,7 +2,8 @@
 
 namespace Aegis
 {
-	void Timer::Start()
+	//duration in milliseconds
+	void Timer::Start(double duration)
 	{
 		if (stopped_) {
 			start_time_ = std::chrono::high_resolution_clock::now();
@@ -11,18 +12,18 @@ namespace Aegis
 		else {
 			paused_ = false;
 		}
+		time_remaining_ = duration;
 	}
 	void Timer::Update()
 	{
 		if (!paused_ && !stopped_) {
 			end_time_ = std::chrono::high_resolution_clock::now();
-			elapsed_time_ = std::chrono::duration<double, std::milli>(end_time_ - start_time_).count();
+			time_remaining_ -= std::chrono::duration<double, std::milli>(end_time_ - start_time_).count();
+			start_time_ = end_time_;
 		}
-	}
-	void Timer::Reset()
-	{
-		start_time_ = end_time_;
-		elapsed_time_ = 0.0;
+		if (time_remaining_ <= 0){
+			Stop();
+		}
 	}
 	void Timer::Pause()
 	{
@@ -35,12 +36,12 @@ namespace Aegis
 		stopped_ = true;
 		paused_ = false;
 	}
-	double Timer::GetElapsedInSeconds()
+	double Timer::GetRemainingInSeconds()
 	{
-		return elapsed_time_ * .001;
+		return time_remaining_ * .001;
 	}
-	double Timer::GetElapsedInMilliseconds()
+	double Timer::GetRemainingInMilliseconds()
 	{
-		return elapsed_time_;
+		return time_remaining_;
 	}
 }
