@@ -26,3 +26,4 @@
 #include "UI/Checkbox.h"
 #include "UI/Label.h"
 #include "UI/TextureWidget.h"
+#include "UI/Dialog.h"

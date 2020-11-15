@@ -12,6 +12,7 @@ add_library (Aegis STATIC
 	"src/Renderer/Texture.cpp"
 	"src/Renderer/Shader.cpp"
 	"src/Renderer/VertexArray.cpp"
+	"src/UI/Dialog.cpp"
 	"dependencies/GLAD/src/glad.c"
 	"src/KeyCodes.h" "src/MouseCodes.h" "src/Timer.cpp" "src/Timer.h" "src/Camera.cpp" "src/Sprite.h" "src/Math/Vec4.cpp" "src/Math/Interpolation.cpp" "src/Math/Vec2.cpp" "src/Math/Vec3.cpp" "src/Math/AABB.cpp"
 	"src/Math/Color.h" "src/UI/Button.cpp" "src/Scene.cpp" "src/UI/Dropdown.cpp" "src/FontManager.h"  "src/UI/UILayer.cpp" "src/UI/Container.cpp" "src/UI/Checkbox.cpp"
