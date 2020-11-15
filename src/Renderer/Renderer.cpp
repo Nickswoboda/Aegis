@@ -55,7 +55,7 @@ namespace Aegis {
         shader_->SetIntVector("u_Textures", max_textures, samplers);
 
         //1x1 square texture for colored quads.
-        unsigned char white_data[4] = { 225, 225, 225, 225 };
+        unsigned char white_data[4] = { 255, 255, 255, 255 };
         white_texture_ = std::make_unique<Texture>(white_data, 1, 1, 4);
 
         vertex_array_ = std::make_unique<VertexArray>();
