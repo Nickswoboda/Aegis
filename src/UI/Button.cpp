@@ -69,7 +69,7 @@ namespace Aegis {
 		}
 		auto click = dynamic_cast<MouseClickEvent*>(&event);
 		if (click) {
-			if (click->action_ == AE_MOUSE_DOUBLE_PRESS && PointInAABB(Application::GetWindow().GetMousePos(), rect_)){
+			if (dbl_click_callback_ && click->action_ == AE_MOUSE_DOUBLE_PRESS && PointInAABB(Application::GetWindow().GetMousePos(), rect_)){
 				dbl_click_callback_();	
 				event.handled_ = true;
 				pressed_ = true;
