@@ -15,6 +15,15 @@ public:
 		dialog_->SetAcceptedCallback([](){std::cout << "Accepted";});
 		dialog_->SetRejectedCallback([](){std::cout << "Rejected";});
 
+		auto dropdown = ui_layer_->AddWidget<Aegis::Dropdown>("Dropdown 1:", Aegis::AABB(20, 20, 300, 20));
+		dropdown->AddItem("1", []() {std::cout << 1 << "\n"; });
+		dropdown->AddItem("2", []() {std::cout << 2 << "\n"; });
+		dropdown->AddItem("3", []() {std::cout << 3 << "\n"; });
+
+		auto dropdown2 = ui_layer_->AddWidget<Aegis::Dropdown>("Dropdown 2:", Aegis::AABB(20, 50, 300, 20));
+		dropdown2->AddItem("1", []() {std::cout << 1 << "\n"; });
+		dropdown2->AddItem("2", []() {std::cout << 2 << "\n"; });
+
 
 	}
 

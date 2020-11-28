@@ -2,35 +2,35 @@
 
 #include "../Renderer/Renderer.h"
 #include "../FontManager.h"
+#include "../Application.h"
+#include "../MouseCodes.h"
 
 namespace Aegis {
 	Dropdown::Dropdown(const std::string& label, Aegis::AABB rect)
 		:Widget(rect)
 	{
 		label_offset_ = Renderer2D::GetFont().GetStringPixelSize(label).x + 15;
-		expand_button_ = new Button(rect, "", [&](){ToggleExpanded();});
 		label_ = label;
-	}
-
-	Dropdown::~Dropdown()
-	{
-		delete expand_button_;
-		for (auto& button : items_){
-			delete button;
-		}
 	}
 
 	void Dropdown::OnEvent(Event& event)
 	{
-		expand_button_->OnEvent(event);
-		if (expanded_){
-			for (int i = 0; i < items_.size(); ++i) {
-				items_[i]->OnEvent(event);
-				if (items_[i]->pressed_){
-					expanded_ = false;
-					SetCurrentIndex(i);
-					event.handled_ = true;
-					return;
+		auto click = dynamic_cast<MouseClickEvent*>(&event);
+
+		if (click && click->action_ == AE_BUTTON_PRESS){
+			Vec2 mouse_pos = Application::GetWindow().GetMousePos();
+			if (PointInAABB(mouse_pos, rect_)){
+				ToggleExpanded();
+			}
+			else if (expanded_){
+				for (auto& item : items_) {
+					if (PointInAABB(mouse_pos, item.rect_)){
+						MoveToTop(item.id_);
+						callbacks_[item.id_]();
+						event.handled_ = true;
+						expanded_ = false;
+						return;
+					}
 				}
 			}
 		}
@@ -40,43 +40,40 @@ namespace Aegis {
 	{
 		Renderer2D::SetFont(font_);
 		DrawText(label_, {rect_.pos.x - label_offset_, rect_.pos.y}, { 1.0f, 1.0f, 1.0f, 1.0f });
-		expand_button_->Render();
+
 		if (!expanded_ && !items_.empty()) {
-			items_[current_item_index_]->Render();
+			auto curr_item = items_[current_item_index_];
+			DrawQuad(curr_item.rect_.pos, curr_item.rect_.size, {0.2f, 0.2f, 1.0f, 1.0f});
+			DrawStaticText(curr_item.text_, curr_item.rect_.pos);
 		}
 		else {
 			for (auto item : items_) {
-				item->Render();
+				DrawQuad(item.rect_.pos, item.rect_.size, {0.2f, 0.2f, 1.0f, 1.0f}, 1.0f);
+				DrawStaticText(item.text_, item.rect_.pos, {1.0f, 1.0f, 1.0f, 1.0f}, 1.0f);
 			}
 		}
 	}
 
 	void Dropdown::AddItem(const std::string& text, std::function<void()> callback)
 	{
-		float y_pos = rect_.pos.y + rect_.size.y * items_.size();
+		auto new_rect = rect_;
+		new_rect.pos.y = rect_.pos.y + rect_.size.y * items_.size();
 
-		Button* temp_button = new Button({ rect_.pos.x, y_pos, rect_.size.x, rect_.size.y }, text, callback);
-		temp_button->SetFont(font_);
-		items_.push_back(temp_button);
+		Item item = { new_rect, text, items_.size() };
+
+		items_.push_back(item);
+		callbacks_.push_back(callback);
 	}
 
-	void Dropdown::MoveSelectedToTop(int index)
+	void Dropdown::MoveToTop(int id)
 	{
-		std::swap(items_[index]->rect_, items_[current_item_index_]->rect_);
-	}
-	void Dropdown::SetCurrentIndex(int index)
-	{
-		MoveSelectedToTop(index);
-		current_item_index_ = index;
+		std::swap(items_[id].rect_, items_[current_item_index_].rect_);
+		current_item_index_ = id;
 	}
 
 	void Dropdown::ToggleExpanded()
 	{
 		expanded_ = !expanded_;
-		
-		for (auto& item : items_) {
-			item->z_idx_ = expanded_ ? 1.0f : 0.0f;
-		}
 	}
 
 	void Dropdown::SetFont(std::shared_ptr<Font>& font)

@@ -11,19 +11,25 @@ namespace Aegis {
 	class Dropdown : public Widget
 	{
 	public:
+
+		struct Item
+		{
+			AABB rect_;
+			std::string text_;
+			int id_;
+		};
+
 		Dropdown(const std::string& label, AABB rect = {0,0,0,0});
-		~Dropdown();
 
 		void OnEvent(Event& event) override;
 		void Render(float delta_time = 0.0f) override;
 		void AddItem(const std::string& text, std::function<void()> callback);
-		void MoveSelectedToTop(int index);
-		void SetCurrentIndex(int index);
+		void MoveToTop(int id);
 		void ToggleExpanded();
 		void SetFont(std::shared_ptr<Font>& font) override;
-		Button* expand_button_;
-		std::vector<Button*> items_;
 
+		std::vector<Item> items_;
+		std::vector<std::function<void()>> callbacks_;
 		int current_item_index_ = 0;
 		std::string label_;
 		bool expanded_ = false;
