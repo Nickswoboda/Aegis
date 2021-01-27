@@ -1,5 +1,6 @@
 .clangd/
-compile_commands.json
 .vs/
-out/
 .ccls-cache/
+out/
+
+compile_commands.json
