@@ -27,3 +27,6 @@
 #include "UI/Label.h"
 #include "UI/TextureWidget.h"
 #include "UI/Dialog.h"
+
+#include "Audio/AudioPlayer.h"
+#include "Audio/SoundEffect.h"

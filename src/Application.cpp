@@ -4,6 +4,7 @@
 #include "Font.h"
 #include "Assert.h"
 #include "WorkSansFont.h"
+#include "Audio/AudioPlayer.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -31,6 +32,8 @@ namespace Aegis {
 
 	void Application::CreateWindow(const std::string& title, int width, int height, int flags)
 	{
+		static AudioPlayer player;
+		player.Init();
 		AE_ASSERT(glfwInit(), "Unable to initialize GLFW");
 
 		window_ = std::make_unique<Window>(title, width, height, flags);
