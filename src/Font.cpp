@@ -146,7 +146,7 @@ namespace Aegis {
 			pen_x += (bmp->pitch) + 1;
 		}
 
-		return std::make_shared<Texture>(pixels, tex_width, tex_height, 4);
+		return Texture::Create(pixels, tex_width, tex_height, 4);
 	}
 
 	void Font::SetGlyphSubTextures()

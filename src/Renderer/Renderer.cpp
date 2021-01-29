@@ -19,7 +19,7 @@ namespace Aegis {
     static std::unique_ptr<VertexArray> vertex_array_;
     static glm::mat4 projection_;
     static std::shared_ptr<Font> default_font_;
-    static std::unique_ptr<Texture> white_texture_;
+    static std::shared_ptr<Texture> white_texture_;
     static std::unordered_map<std::string, std::shared_ptr<Texture>> cached_text_;
 
     struct RenderData
@@ -56,7 +56,7 @@ namespace Aegis {
 
         //1x1 square texture for colored quads.
         unsigned char white_data[4] = { 255, 255, 255, 255 };
-        white_texture_ = std::make_unique<Texture>(white_data, 1, 1, 4);
+        white_texture_ = Texture::Create(white_data, 1, 1, 4);
 
         vertex_array_ = std::make_unique<VertexArray>();
         data_.quad_buffer_ = new VertexArray::Vertex[vertex_array_->max_vertex_count_];
