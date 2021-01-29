@@ -46,7 +46,7 @@ namespace Aegis{
 		label_offset_ = font_->GetStringPixelSize(label_).x + 20;
 	}
 
-	void Checkbox::SetTexture(bool checked, std::shared_ptr<Texture>& texture)
+	void Checkbox::SetTexture(bool checked, std::shared_ptr<Texture> texture)
 	{
 		if (texture){
 			textures_[checked] = texture;
