@@ -14,9 +14,9 @@ namespace Aegis {
 	class Event
 	{
 	public:
-		bool handled_ = false;
-
+		virtual ~Event() = default;
 		virtual EventType GetEventType() = 0;
+		bool handled_ = false;
 	};
 
 	class WindowResizeEvent : public Event

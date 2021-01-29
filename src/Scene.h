@@ -15,7 +15,7 @@ namespace Aegis {
 	{
 	public:
 		Scene();
-		virtual ~Scene() {};
+		virtual ~Scene() = default;
 		virtual void Update() = 0;
 		virtual void Render(float delta_time) = 0;
 		virtual void OnEvent(Event& event) = 0;
@@ -28,8 +28,6 @@ namespace Aegis {
 	class BaseScene : public Scene
 	{
 	public:
-		BaseScene() {}
-
 		virtual void Update() override {}
 		virtual void Render(float delta_time) override { Aegis::RendererClear(); }
 		virtual void OnEvent(Event& event) override {}
@@ -38,7 +36,6 @@ namespace Aegis {
 	class SceneManager
 	{
 	public:
-		SceneManager() {}
 		void PushScene(std::unique_ptr<Scene> scene); 
 		void PopScene();
 		void ReplaceScene(std::unique_ptr<Scene> scene);

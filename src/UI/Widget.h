@@ -13,7 +13,7 @@ namespace Aegis {
 	public:
 		Widget(AABB rect = {0.0, 0.0, 0.0, 0.0})
 			:rect_(rect) {}
-		virtual ~Widget(){};
+		virtual ~Widget() = default;
 		virtual void OnEvent(Event& event) = 0;
 		virtual void Render(float delta_time) = 0;
 

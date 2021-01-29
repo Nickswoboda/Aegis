@@ -21,8 +21,9 @@ namespace Aegis{
 			Right,
 			Center
 		};
+
 		Container(AABB rect_, Orientation orientation, int padding, Alignment alignment);
-		~Container(){} 
+
 		void AddWidget(std::shared_ptr<Widget> widget);
 		void UpdateWidgets();
 		void AlignWidget(std::shared_ptr<Widget> widget, Alignment alignment);

@@ -12,8 +12,8 @@ public:
 	{
 		ui_layer_ = std::make_unique<Aegis::UILayer>();
 		auto dialog_ = ui_layer_->AddWidget<Aegis::Dialog>("You Lose. Try Again?", Aegis::Vec2(300, 300), Aegis::Vec2(400, 400));
-		dialog_->SetAcceptedCallback([&]() {cymbal_sound_->Stop(); });
-		dialog_->SetRejectedCallback([&](){ cymbal_sound_->Play(); });
+		dialog_->SetAcceptedCallback([&]() {});
+		dialog_->SetRejectedCallback([&](){});
 
 		auto dropdown = ui_layer_->AddWidget<Aegis::Dropdown>("Dropdown 1:", Aegis::AABB(20, 20, 300, 20));
 		dropdown->AddItem("1", []() {std::cout << 1 << "\n"; });
@@ -25,7 +25,6 @@ public:
 		dropdown2->AddItem("2", []() {std::cout << 2 << "\n"; });
 
 		cymbal_sound_ = new Aegis::SoundEffect("assets/audio/bgm.ogg");
-		cymbal_sound_->Play();
 
 	}
 

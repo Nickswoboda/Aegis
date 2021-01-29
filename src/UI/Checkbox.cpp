@@ -6,7 +6,7 @@ namespace Aegis{
 	Checkbox::Checkbox(const std::string& label, AABB box, std::function<void(bool)> callback)
 		:Widget(box), label_(label), callback_(callback)
 	{
-		button_ = new Button(box, "", [&](){
+		button_ = std::make_unique<Button>(box, "", [&](){
 			if (checked_){
 				checked_ = false;
 			}
@@ -16,11 +16,6 @@ namespace Aegis{
 
 			callback_(checked_);});
 	}
-	Checkbox::~Checkbox()
-	{
-		delete button_;
-	}
-
 
 	void Checkbox::OnEvent(Event& event)
 	{
