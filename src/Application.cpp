@@ -32,8 +32,7 @@ namespace Aegis {
 
 	void Application::CreateWindow(const std::string& title, int width, int height, int flags)
 	{
-		static AudioPlayer player;
-		player.Init();
+		AudioPlayer::Init();
 		AE_ASSERT(glfwInit(), "Unable to initialize GLFW");
 
 		window_ = std::make_unique<Window>(title, width, height, flags);

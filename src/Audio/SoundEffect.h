@@ -11,11 +11,10 @@ namespace Aegis{
 		SoundEffect(const std::string& file_path);
 		~SoundEffect();
 
-		void Play();
 		void Stop();
 		bool IsPlaying();
 
-		ALuint buffer_ = 0;
-		ALuint source_ = 0;
+		ALuint buffer_id_ = 0;
+		ALuint source_id_ = 0;
 	};
 }

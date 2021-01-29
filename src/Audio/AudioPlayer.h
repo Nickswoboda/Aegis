@@ -11,10 +11,13 @@ namespace Aegis
 	public:
 		~AudioPlayer();
 
-		void Init();
+		static void Init();
+		static void SetVolume(unsigned int volume);
+		static void Play(unsigned int id, unsigned int volume = 100);
 
-		ALCdevice* device_;
-		ALCcontext* context_;
+	public:
+		static ALCdevice* device_;
+		static ALCcontext* context_;
 	};
 
 }

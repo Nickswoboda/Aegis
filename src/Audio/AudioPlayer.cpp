@@ -7,9 +7,14 @@
 #include <stb_vorbis.h>
 
 #include <iostream>
+#include <vector>
 
 namespace Aegis {
 
+	ALCdevice* AudioPlayer::device_ = nullptr;
+	ALCcontext* AudioPlayer::context_ = nullptr;
+
+	static std::vector<int> currently_playing_;
 	void AudioPlayer::Init()
 	{
 		device_ = alcOpenDevice(nullptr);
@@ -34,5 +39,26 @@ namespace Aegis {
 		alcMakeContextCurrent(nullptr);
 		alcDestroyContext(context_);
 		alcCloseDevice(device_);
+	}
+
+	void AudioPlayer::Play(unsigned int id, unsigned int volume)
+	{
+		volume = volume < 0 ? 0 : (volume > 100 ? 100 : volume);
+		if (volume != 100){
+			alSourcef(id, AL_GAIN, (volume/100.0f));
+		}
+		alSourcePlay(id);
+
+		currently_playing_.push_back(id);
+	}
+
+	void AudioPlayer::SetVolume(unsigned int volume)
+	{
+		//clamp to between 0 and 100
+		volume = volume < 0 ? 0 : (volume > 100 ? 100 : volume);
+		
+		for (auto& sound : currently_playing_){
+			alSourcef(sound, AL_GAIN, (volume / 100.0f));
+		}
 	}
 }
