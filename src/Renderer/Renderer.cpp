@@ -198,7 +198,7 @@ namespace Aegis {
         }
         //create texture and cache
         else{
-            auto texture = Texture::TextureFromText(text, default_font_);
+            auto texture = Texture::CreateFromText(text, default_font_);
             
             DrawQuad(pos, texture, z_idx, color);
             cached_text_[index] = texture;

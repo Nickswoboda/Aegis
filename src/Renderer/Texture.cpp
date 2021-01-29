@@ -85,7 +85,7 @@ namespace Aegis {
     }
 
     //used for static text caching. combines all glyph textures into one big texture
-    std::shared_ptr<Texture> Texture::TextureFromText(const std::string& text, std::shared_ptr<Font> font)
+    std::shared_ptr<Texture> Texture::CreateFromText(const std::string& text, std::shared_ptr<Font> font)
     {
         //get atlas_pixel_data
 		auto atlas = font->atlas_;
