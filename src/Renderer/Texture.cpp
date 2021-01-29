@@ -11,7 +11,7 @@ namespace Aegis {
 
     Texture::~Texture()
     {
-        glDeleteTextures(1, &ID_);
+        //glDeleteTextures(1, &ID_);
     }
 
 	std::shared_ptr<Texture> Texture::Create(const std::string& path)
