@@ -152,7 +152,7 @@ namespace Aegis {
 	void Font::SetGlyphSubTextures()
 	{
 		for (auto& glyph : glyphs_) {
-			glyph.texture_ = Texture::SubTexture(atlas_, glyph.atlas_pos, glyph.size);
+			glyph.texture_ = SubTexture::Create(atlas_, glyph.atlas_pos, glyph.size);
 		}
 	}
 

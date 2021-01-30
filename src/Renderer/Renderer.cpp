@@ -115,12 +115,7 @@ namespace Aegis {
 
     void DrawQuad(const Vec2& pos, const Vec2& size, const Vec4& color, const float z_idx)
 	{
-        if (data_.index_count_ >= vertex_array_->max_index_count_) {
-            Renderer2D::EndScene();
-            Renderer2D::BeginScene(projection_);
-        } 
-
-        DrawQuad(pos, size, 0, color, z_idx);
+        DrawQuad(pos, size, white_texture_->ID_, color, z_idx);
 	}
 
     void DrawQuad(const Vec2& pos, const std::shared_ptr<Texture>& texture, const float z_idx, const Vec4& color)
@@ -130,6 +125,21 @@ namespace Aegis {
 
     void DrawQuad(const Vec2& pos, const Vec2& size, const std::shared_ptr<Texture>& texture, const float z_idx, const Vec4& color)
     {
+        DrawQuad(pos, size, texture->ID_, color, z_idx, texture->tex_coords_);
+    }
+
+    void DrawQuad(const Vec2& pos, const std::shared_ptr<SubTexture>& subtexture, const float z_idx, const Vec4& color)
+    {
+        DrawQuad(pos, subtexture->size_, subtexture, z_idx, color);
+    }
+
+    void DrawQuad(const Vec2& pos, const Vec2& size, const std::shared_ptr<SubTexture>& subtexture, const float z_idx, const Vec4& color)
+    {
+        DrawQuad(pos, size, subtexture->texture_->ID_, color, z_idx, subtexture->tex_coords_);
+	}
+
+    void DrawQuad(const Vec2& pos, const Vec2& size, unsigned int texture_id, const Vec4& color, const float z_idx, const Vec4& tex_coords)
+    {
         if (data_.index_count_ >= vertex_array_->max_index_count_ || data_.texture_slot_index_ > 31) {
             Renderer2D::EndScene();
             Renderer2D::BeginScene(projection_);
@@ -137,22 +147,16 @@ namespace Aegis {
 
         float texture_index = 0.0f;
         for (uint32_t i = 1; i < data_.texture_slot_index_; ++i) {
-            if (data_.texture_slots_[i] == texture->ID_) {
+            if (data_.texture_slots_[i] == texture_id) {
                 texture_index = (float)i;
                 break;
             }
         }
         if (texture_index == 0.0f) {
             texture_index = (float)data_.texture_slot_index_;
-            data_.texture_slots_[data_.texture_slot_index_] = texture->ID_;
+            data_.texture_slots_[data_.texture_slot_index_] = texture_id;
             data_.texture_slot_index_++;
         }
-
-        DrawQuad(pos, size, texture_index, color, z_idx, texture->tex_coords_);
-    }
-
-    void DrawQuad(const Vec2& pos, const Vec2& size, const float texture_index, const Vec4& color, const float z_idx, const Vec4& tex_coords)
-    {
 
         if (data_.quad_buffer_ptr_ == nullptr) {
             std::cout << "Must Call BeginScene() before drawing\n";

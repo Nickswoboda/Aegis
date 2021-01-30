@@ -14,7 +14,7 @@ namespace Aegis {
 
 	struct Glyph
 	{
-		std::shared_ptr<Texture> texture_;
+		std::shared_ptr<SubTexture> texture_;
 		Vec2 atlas_pos;
 		Vec2 size;
 		Vec2 bearing;

@@ -10,7 +10,7 @@
 namespace Aegis {
 
 	class Font;
-	
+
 	class Texture
 	{
 	public:
@@ -18,19 +18,27 @@ namespace Aegis {
 		static std::shared_ptr<Texture> Create(unsigned char* data, int width, int height, int channels);
 
 		static std::shared_ptr<Texture> CreateFromText(const std::string& text, std::shared_ptr<Font> font);
-		static std::shared_ptr<Texture> SubTexture(const std::shared_ptr<Texture>& texture, Vec2 pos_on_tex, Vec2 size);
 
 		~Texture();
 		void Bind();
 
-		Vec4 tex_coords_ = {0.0f, 0.0f, 1.0f, 1.0f};
+		Vec4 tex_coords_ = { 0.0f, 0.0f, 1.0f, 1.0f };
 		Vec2 size_;
 		unsigned int ID_ = 0;
 
-		//blank texture object used for subtextures
 	private:
 		Texture(unsigned char* data, int width, int height, int channels);
-		Texture() = default;
 		static std::shared_ptr<Texture> GetPlaceholderTexture();
+	};
+
+	class SubTexture
+	{
+	public:
+		SubTexture(std::shared_ptr<Texture> texture, Vec2 pos_on_tex, Vec2 size);
+		static std::shared_ptr<SubTexture> Create(std::shared_ptr<Texture> texture, Vec2 pos_on_tex, Vec2 size);
+
+		Vec4 tex_coords_;
+		Vec2 size_;
+		std::shared_ptr<Texture> texture_;
 	};
 }

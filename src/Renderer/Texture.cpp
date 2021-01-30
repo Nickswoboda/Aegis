@@ -51,16 +51,6 @@ namespace Aegis {
 		return std::shared_ptr<Texture>(new Texture(data, width, height, channels));
 	}
 
-	std::shared_ptr<Texture> Texture::SubTexture(const std::shared_ptr<Texture>& texture, Vec2 pos_on_tex, Vec2 size)
-	{
-		std::shared_ptr<Texture> temp(new Texture());
-		temp->ID_ = texture->ID_; 
-		temp->size_ = size;
-        temp->tex_coords_ = { pos_on_tex.x / texture->size_.x, pos_on_tex.y / texture->size_.y, (pos_on_tex.x + size.x) / texture->size_.x, (pos_on_tex.y + size.y) / texture->size_.y };
-
-		return temp;
-	}
-
     Texture::Texture(unsigned char* data, int width, int height, int channels)
         :size_(width, height)
     {
@@ -118,5 +108,15 @@ namespace Aegis {
     {
         glBindTextureUnit(0, ID_);
     }
+	SubTexture::SubTexture(std::shared_ptr<Texture> texture, Vec2 pos_on_tex, Vec2 size)
+		: size_(size), texture_(texture)
+	{
+		tex_coords_ = { pos_on_tex.x / texture->size_.x, pos_on_tex.y / texture->size_.y, (pos_on_tex.x + size.x) / texture->size_.x, (pos_on_tex.y + size.y) / texture->size_.y };
+	}
+
+	std::shared_ptr<SubTexture> SubTexture::Create(std::shared_ptr<Texture> texture, Vec2 pos_on_tex, Vec2 size)
+	{
+		return std::make_shared<SubTexture>(texture, pos_on_tex, size);
+	}
 }
 
