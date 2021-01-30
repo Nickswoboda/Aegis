@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../Object.h"
 #include "../Event.h"
 #include "../Font.h"
 #include "../Math/AABB.h"
@@ -8,11 +9,11 @@
 
 namespace Aegis {
 
-	class Widget
+	class Widget : public Object
 	{
 	public:
 		Widget(AABB rect = {0.0, 0.0, 0.0, 0.0})
-			:rect_(rect) {}
+			:Object(), rect_(rect) {}
 		virtual ~Widget() = default;
 		virtual void OnEvent(Event& event) = 0;
 		virtual void Render() = 0;

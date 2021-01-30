@@ -12,6 +12,7 @@ add_library (Aegis STATIC
 	"src/Renderer/Texture.cpp"
 	"src/Renderer/Shader.cpp"
 	"src/Renderer/VertexArray.cpp"
+	"src/Object.cpp"
 	"src/UI/Dialog.cpp"
 	"dependencies/GLAD/src/glad.c"
 	"dependencies/stb_vorbis/stb_vorbis.c"

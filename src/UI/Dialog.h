@@ -15,9 +15,6 @@ namespace Aegis{
 		void OnEvent(Event& event) override;
 		void Render() override;
 
-		void SetAcceptedCallback(std::function<void()> callback);
-		void SetRejectedCallback(std::function<void()> callback);
-		
 		std::unique_ptr<Button> accept_button_;
 		std::unique_ptr<Button> reject_button_;
 		std::unique_ptr<Label> text_;

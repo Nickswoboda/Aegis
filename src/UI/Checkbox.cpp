@@ -3,18 +3,14 @@
 #include "../Renderer/Renderer.h"
 
 namespace Aegis{
-	Checkbox::Checkbox(const std::string& label, AABB box, std::function<void(bool)> callback)
-		:Widget(box), label_(label), callback_(callback)
+	Checkbox::Checkbox(const std::string& label, AABB box)
+		:Widget(box), label_(label)
 	{
-		button_ = std::make_unique<Button>(box, "", [&](){
-			if (checked_){
-				checked_ = false;
-			}
-			else{
-				checked_ = true;
-			}
+		AddSignal("checked");
+		AddSignal("unchecked");
 
-			callback_(checked_);});
+		button_ = std::make_unique<Button>(box, "");
+		button_->ConnectSignal("pressed", [&]() { checked_ = !checked_; Emit(checked_ ? "checked" : "unchecked");});
 	}
 
 	void Checkbox::OnEvent(Event& event)
@@ -32,7 +28,6 @@ namespace Aegis{
 			DrawQuad(rect_.pos, rect_.size, color, z_idx_);
 		}
 		DrawText(label_, {rect_.pos.x - label_offset_, rect_.pos.y});
-		
 	}
 
 

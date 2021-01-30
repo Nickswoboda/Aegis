@@ -5,13 +5,17 @@
 #include "../Renderer/Renderer.h"
 
 namespace Aegis {
-	Button::Button(const std::string& text, std::function<void()> callback)
-		: Widget(), text_(text), callback_(callback)
+	Button::Button(const std::string& label)
+		: Widget(), text_(label)
 	{
+		AddSignal("pressed");
+		AddSignal("double pressed");
 	}
-	Button::Button(AABB rect, const std::string& text, std::function<void()> callback)
-		: Widget(rect), text_(text), callback_(callback)
+	Button::Button(AABB rect, const std::string& label)
+		: Widget(rect), text_(label)
 	{
+		AddSignal("pressed");
+		AddSignal("double pressed");
 	}
 
 	bool Button::IsPressed(int action)
@@ -69,14 +73,14 @@ namespace Aegis {
 		}
 		auto click = dynamic_cast<MouseClickEvent*>(&event);
 		if (click) {
-			if (dbl_click_callback_ && click->action_ == AE_MOUSE_DOUBLE_PRESS && PointInAABB(Application::GetWindow().GetMousePos(), rect_)){
-				dbl_click_callback_();	
+			if (click->action_ == AE_MOUSE_DOUBLE_PRESS && PointInAABB(Application::GetWindow().GetMousePos(), rect_)){
+				Emit("double pressed");
 				event.handled_ = true;
 				pressed_ = true;
 				return;
 			}
 			if (IsPressed(click->action_)) {
-				callback_();
+				Emit("pressed");
 				event.handled_ = true;
 				pressed_ = true;
 				return;
