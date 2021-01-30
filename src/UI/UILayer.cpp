@@ -43,7 +43,7 @@ namespace Aegis {
 		return container;
 	}
 
-	void UILayer::SetFont(std::shared_ptr<Font>& font)
+	void UILayer::SetFont(std::shared_ptr<Font> font)
 	{
 		font_ = font;
 	}

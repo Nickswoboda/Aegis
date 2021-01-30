@@ -76,7 +76,7 @@ namespace Aegis {
 		expanded_ = !expanded_;
 	}
 
-	void Dropdown::SetFont(std::shared_ptr<Font>& font)
+	void Dropdown::SetFont(std::shared_ptr<Font> font)
 	{
 		font_ = font;
 		label_offset_ = font->GetStringPixelSize(label_).x + 15;

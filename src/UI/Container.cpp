@@ -26,7 +26,7 @@ namespace Aegis{
 			for (auto& widget : widgets_){
 				widget->rect_.pos.y = pen_y;
 
-				AlignWidget(widget, alignment_);
+				AlignWidget(*widget, alignment_);
 				pen_y += widget->rect_.size.y + padding_;
 			}
 		}
@@ -36,31 +36,31 @@ namespace Aegis{
 			for (auto& widget : widgets_){
 				widget->rect_.pos.x = pen_x;
 
-				AlignWidget(widget, alignment_);
+				AlignWidget(*widget, alignment_);
 				pen_x += widget->rect_.size.x + padding_;
 			}
 		}
 	}
 
-	void Container::AlignWidget(std::shared_ptr<Widget> widget, Alignment alignment)
+	void Container::AlignWidget(Widget& widget, Alignment alignment)
 	{
 		if (orientation_ == Orientation::Vertical){
 			switch (alignment){
 				case Alignment::Center:
 				{
-					int width_diff = rect_.size.x - widget->rect_.size.x;
-					widget->rect_.pos.x = rect_.pos.x + (width_diff / 2);
+					int width_diff = rect_.size.x - widget.rect_.size.x;
+					widget.rect_.pos.x = rect_.pos.x + (width_diff / 2);
 					break;
 				}
 				case Alignment::Left: 
 				{
-					widget->rect_.pos.x = rect_.pos.x;
+					widget.rect_.pos.x = rect_.pos.x;
 					break;
 				}
 				case Alignment::Right:
 				{
 					int right_edge = rect_.pos.x + rect_.size.x;
-					widget->rect_.pos.x = right_edge - widget->rect_.size.x;
+					widget.rect_.pos.x = right_edge - widget.rect_.size.x;
 					break;
 				}
 			}
@@ -69,19 +69,19 @@ namespace Aegis{
 			switch (alignment){
 				case Alignment::Center:
 				{
-					int height_diff = rect_.size.y - widget->rect_.size.y;
-					widget->rect_.pos.y = rect_.pos.y + (height_diff / 2);
+					int height_diff = rect_.size.y - widget.rect_.size.y;
+					widget.rect_.pos.y = rect_.pos.y + (height_diff / 2);
 					break;
 				}
 				case Alignment::Top: 
 				{
-					widget->rect_.pos.y = rect_.pos.y;
+					widget.rect_.pos.y = rect_.pos.y;
 					break;
 				}
 				case Alignment::Bottom:
 				{
 					int bottom_edge = rect_.pos.y + rect_.size.y;
-					widget->rect_.pos.y = bottom_edge - widget->rect_.size.y;
+					widget.rect_.pos.y = bottom_edge - widget.rect_.size.y;
 					break;
 				}
 			}

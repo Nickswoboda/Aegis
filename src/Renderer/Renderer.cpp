@@ -118,24 +118,24 @@ namespace Aegis {
         DrawQuad(pos, size, white_texture_->ID_, color, z_idx);
 	}
 
-    void DrawQuad(const Vec2& pos, const std::shared_ptr<Texture>& texture, const float z_idx, const Vec4& color)
+    void DrawQuad(const Vec2& pos, const Texture& texture, const float z_idx, const Vec4& color)
     {
-        DrawQuad(pos, texture->size_, texture, z_idx, color);
+        DrawQuad(pos, texture.size_, texture, z_idx, color);
     }
 
-    void DrawQuad(const Vec2& pos, const Vec2& size, const std::shared_ptr<Texture>& texture, const float z_idx, const Vec4& color)
+    void DrawQuad(const Vec2& pos, const Vec2& size, const Texture& texture, const float z_idx, const Vec4& color)
     {
-        DrawQuad(pos, size, texture->ID_, color, z_idx, { 0.0f, 0.0f, 1.0f, 1.0f });
+        DrawQuad(pos, size, texture.ID_, color, z_idx, { 0.0f, 0.0f, 1.0f, 1.0f });
     }
 
-    void DrawQuad(const Vec2& pos, const std::shared_ptr<SubTexture>& subtexture, const float z_idx, const Vec4& color)
+    void DrawQuad(const Vec2& pos, const SubTexture& subtexture, const float z_idx, const Vec4& color)
     {
-        DrawQuad(pos, subtexture->size_, subtexture, z_idx, color);
+        DrawQuad(pos, subtexture.size_, subtexture, z_idx, color);
     }
 
-    void DrawQuad(const Vec2& pos, const Vec2& size, const std::shared_ptr<SubTexture>& subtexture, const float z_idx, const Vec4& color)
+    void DrawQuad(const Vec2& pos, const Vec2& size, const SubTexture& subtexture, const float z_idx, const Vec4& color)
     {
-        DrawQuad(pos, size, subtexture->texture_->ID_, color, z_idx, subtexture->tex_coords_);
+        DrawQuad(pos, size, subtexture.texture_->ID_, color, z_idx, subtexture.tex_coords_);
 	}
 
     void DrawQuad(const Vec2& pos, const Vec2& size, unsigned int texture_id, const Vec4& color, const float z_idx, const Vec4& tex_coords)
@@ -198,13 +198,13 @@ namespace Aegis {
         //if already cached
 	    std::string index = text + default_font_->font_name_ + std::to_string(default_font_->size_);
         if (cached_text_.count(index)) {
-            DrawQuad(pos, cached_text_[index], z_idx, color);
+            DrawQuad(pos, *cached_text_[index], z_idx, color);
         }
         //create texture and cache
         else{
-            auto texture = Texture::CreateFromText(text, default_font_);
+            auto texture = Texture::CreateFromText(text, *default_font_);
             
-            DrawQuad(pos, texture, z_idx, color);
+            DrawQuad(pos, *texture, z_idx, color);
             cached_text_[index] = texture;
         }
     }
@@ -216,15 +216,15 @@ namespace Aegis {
         for (const auto& c : text) {
 
             auto glyph = default_font_->glyphs_[c];
-            DrawQuad({ pen_pos.x + glyph.bearing.x, pen_pos.y - glyph.bearing.y }, glyph.texture_, z_idx, color);
+            DrawQuad({ pen_pos.x + glyph.bearing.x, pen_pos.y - glyph.bearing.y }, *glyph.texture_, z_idx, color);
             pen_pos.x += glyph.advance;
         }
     }
     void RenderSprite(const Sprite& sprite)
     {
-        DrawQuad(sprite.rect_.pos, sprite.texture_);
+        DrawQuad(sprite.rect_.pos, *sprite.texture_);
     }
-    void Renderer2D::SetFont(const std::shared_ptr<Font>& font)
+    void Renderer2D::SetFont(std::shared_ptr<Font> font)
     {
         default_font_ = font;
     }

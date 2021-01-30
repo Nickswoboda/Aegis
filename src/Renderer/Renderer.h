@@ -22,7 +22,7 @@ namespace Aegis {
 		static void EndScene();
 
 		static void SetClearColor(float r, float g, float b, float a);
-		static void SetFont(const std::shared_ptr<Font>& font);
+		static void SetFont(const std::shared_ptr<Font> font);
 		static void SetProjection(const glm::mat4& projection);
 
 		static Font& GetFont();
@@ -33,11 +33,11 @@ namespace Aegis {
 
 	void DrawQuad(const Vec2& pos, const Vec2& size, const Vec4& color = {1.0f, 1.0f, 1.0f, 1.0f}, const float z_idx = 0);
 
-	void DrawQuad(const Vec2& pos, const std::shared_ptr<Texture>& texture, const float z_idx = 0, const Vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f });
-	void DrawQuad(const Vec2& pos, const Vec2& size, const std::shared_ptr<Texture>& texture, const float z_idx = 0, const Vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f });
+	void DrawQuad(const Vec2& pos, const Texture& texture, const float z_idx = 0, const Vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f });
+	void DrawQuad(const Vec2& pos, const Vec2& size, const Texture& texture, const float z_idx = 0, const Vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f });
 
-	void DrawQuad(const Vec2& pos, const std::shared_ptr<SubTexture>& subtexture, const float z_idx = 0, const Vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f });
-	void DrawQuad(const Vec2& pos, const Vec2& size, const std::shared_ptr<SubTexture>& subtexture, const float z_idx = 0, const Vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f });
+	void DrawQuad(const Vec2& pos, const SubTexture& subtexture, const float z_idx = 0, const Vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f });
+	void DrawQuad(const Vec2& pos, const Vec2& size, const SubTexture& subtexture, const float z_idx = 0, const Vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f });
 
 	void DrawQuad(const Vec2& pos, const Vec2& size, unsigned int texture_id, const Vec4& color, const float z_idx = 0, const Vec4& tex_coords = { 0.0f, 0.0f, 1.0f, 1.0f });
 

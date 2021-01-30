@@ -13,7 +13,7 @@ namespace Aegis{
 	{
 		if (visible_){
 			if (texture_){
-				DrawQuad(pos_, size_, texture_);
+				DrawQuad(pos_, size_, *texture_);
 			}
 			else{
 				DrawQuad(pos_, size_, color_);

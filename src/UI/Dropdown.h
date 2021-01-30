@@ -26,7 +26,7 @@ namespace Aegis {
 		void AddItem(const std::string& text, std::function<void()> callback);
 		void MoveToTop(int id);
 		void ToggleExpanded();
-		void SetFont(std::shared_ptr<Font>& font) override;
+		void SetFont(std::shared_ptr<Font> font) override;
 
 		std::vector<Item> items_;
 		std::vector<std::function<void()>> callbacks_;

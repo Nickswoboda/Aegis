@@ -20,7 +20,7 @@ namespace Aegis{
 		virtual void OnEvent(Event& event) override;
 		virtual void Render(float delta_time) override;
 		
-		void SetFont(std::shared_ptr<Font>& font_);
+		void SetFont(std::shared_ptr<Font> font_);
 
 		template<typename T, typename... Args>
 		std::shared_ptr<T> AddWidget(Args&&... args)

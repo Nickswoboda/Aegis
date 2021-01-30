@@ -156,7 +156,7 @@ namespace Aegis {
 		}
 	}
 
-	Vec2 Font::GetStringPixelSize(const std::string& string)
+	Vec2 Font::GetStringPixelSize(const std::string& string) const
 	{
 		int width = 0;
 		int height = 0;

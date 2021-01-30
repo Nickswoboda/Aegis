@@ -26,7 +26,7 @@ namespace Aegis{
 
 		void AddWidget(std::shared_ptr<Widget> widget);
 		void UpdateWidgets();
-		void AlignWidget(std::shared_ptr<Widget> widget, Alignment alignment);
+		void AlignWidget(Widget& widget, Alignment alignment);
 		void Render();
 
 
