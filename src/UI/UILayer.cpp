@@ -22,7 +22,7 @@ namespace Aegis {
 			}
 		}
 	}
-	void UILayer::Render(float delta_time)
+	void UILayer::Render(float dt)
 	{
 		Renderer2D::SetProjection(glm::ortho(0.0f, Application::GetWindow().GetResolution().x, Application::GetWindow().GetResolution().y, 0.0f));
 		for (const auto& container : containers_){
@@ -30,7 +30,7 @@ namespace Aegis {
 		}
 		for (const auto& widget : widgets_) {
 			if (widget->visible_){
-				widget->Render(delta_time);
+				widget->Render();
 			}
 		}
 

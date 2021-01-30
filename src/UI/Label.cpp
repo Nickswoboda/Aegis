@@ -9,7 +9,7 @@ namespace Aegis{
 	{
 	};
 
-	void Label::Render(float delta_time)
+	void Label::Render()
 	{
 		Renderer2D::SetFont(font_);
 		DrawText(text_, pos_, color_);

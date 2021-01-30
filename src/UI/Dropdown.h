@@ -22,7 +22,7 @@ namespace Aegis {
 		Dropdown(const std::string& label, AABB rect = {0,0,0,0});
 
 		void OnEvent(Event& event) override;
-		void Render(float delta_time = 0.0f) override;
+		void Render() override;
 		void AddItem(const std::string& text, std::function<void()> callback);
 		void MoveToTop(int id);
 		void ToggleExpanded();

@@ -29,7 +29,7 @@ namespace Aegis{
 		reject_button_->OnEvent(event);
 	}
 
-	void Dialog::Render(float delta_time)
+	void Dialog::Render()
 	{
 		DrawQuad(pos_, size_, { 0.309f, 0.517f, 0.811f, 1.0f});
 		text_->Render();

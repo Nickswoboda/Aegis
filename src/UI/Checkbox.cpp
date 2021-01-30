@@ -22,7 +22,7 @@ namespace Aegis{
 		button_->OnEvent(event);
 	}
 
-	void Checkbox::Render(float delta_time)
+	void Checkbox::Render()
 	{
 		Renderer2D::SetFont(font_);
 		if (textures_[checked_]){

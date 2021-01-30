@@ -15,7 +15,7 @@ namespace Aegis {
 			:rect_(rect) {}
 		virtual ~Widget() = default;
 		virtual void OnEvent(Event& event) = 0;
-		virtual void Render(float delta_time) = 0;
+		virtual void Render() = 0;
 
 		virtual void SetFont(std::shared_ptr<Font>& font) {font_ = font;}
 

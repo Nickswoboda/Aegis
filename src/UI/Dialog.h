@@ -13,7 +13,7 @@ namespace Aegis{
 		Dialog(const std::string& text, Vec2 pos_, Vec2 size_);
 		
 		void OnEvent(Event& event) override;
-		void Render(float delta_time = 0.0f) override;
+		void Render() override;
 
 		void SetAcceptedCallback(std::function<void()> callback);
 		void SetRejectedCallback(std::function<void()> callback);

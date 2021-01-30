@@ -36,7 +36,7 @@ namespace Aegis {
 		}
 	}
 
-	void Dropdown::Render(float delta_time)
+	void Dropdown::Render()
 	{
 		Renderer2D::SetFont(font_);
 		DrawText(label_, {rect_.pos.x - label_offset_, rect_.pos.y}, { 1.0f, 1.0f, 1.0f, 1.0f });

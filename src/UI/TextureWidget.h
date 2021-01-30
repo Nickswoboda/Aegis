@@ -11,7 +11,7 @@ namespace Aegis{
 		TextureWidget(const Vec4& color, const Vec2 pos, const Vec2 size);
 
 		void OnEvent(Event& event) override {};
-		void Render(float delta_time) override;
+		void Render() override;
 
 		std::shared_ptr<Texture> texture_;
 		Vec4 color_;

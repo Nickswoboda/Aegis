@@ -9,7 +9,7 @@ namespace Aegis{
 	TextureWidget::TextureWidget(const Vec4& color, const Vec2 pos, const Vec2 size)
 		: color_(color), pos_(pos), size_(size) {};
 
-	void TextureWidget::Render(float delta_time)
+	void TextureWidget::Render()
 	{
 		if (visible_){
 			if (texture_){
