@@ -22,7 +22,6 @@ namespace Aegis {
 		~Texture();
 		void Bind();
 
-		Vec4 tex_coords_ = { 0.0f, 0.0f, 1.0f, 1.0f };
 		Vec2 size_;
 		unsigned int ID_ = 0;
 

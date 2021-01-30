@@ -125,7 +125,7 @@ namespace Aegis {
 
     void DrawQuad(const Vec2& pos, const Vec2& size, const std::shared_ptr<Texture>& texture, const float z_idx, const Vec4& color)
     {
-        DrawQuad(pos, size, texture->ID_, color, z_idx, texture->tex_coords_);
+        DrawQuad(pos, size, texture->ID_, color, z_idx, { 0.0f, 0.0f, 1.0f, 1.0f });
     }
 
     void DrawQuad(const Vec2& pos, const std::shared_ptr<SubTexture>& subtexture, const float z_idx, const Vec4& color)
