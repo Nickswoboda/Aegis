@@ -5,17 +5,13 @@
 #include "../Renderer/Renderer.h"
 
 namespace Aegis {
-	Button::Button(const std::string& label)
-		: Widget(), text_(label)
-	{
-		AddSignal("pressed");
-		AddSignal("double pressed");
-	}
 	Button::Button(AABB rect, const std::string& label)
 		: Widget(rect), text_(label)
 	{
 		AddSignal("pressed");
 		AddSignal("double pressed");
+		AddSignal("entered");
+		AddSignal("exited");
 	}
 
 	bool Button::IsPressed(int action)
@@ -57,12 +53,18 @@ namespace Aegis {
 			//have to use Window GetMousePos because it takes resolution into account unlike the mouse_pos
 			//maybe take mouse_move event take into account resolution?
 			if (PointInAABB(Application::GetWindow().GetMousePos(), rect_)) {
+				if (state_ == State::Normal) {
+					Emit("entered");
+				}
 				hovered_ = true;
 				if (state_ != State::Pressed){
 					state_ = State::Hovered;
 				}
 			}
 			else{
+				if (state_ != State::Normal) {
+					Emit("exited");
+				}
 				hovered_ = false;
 				if (state_ == State::Hovered){
 					state_ = State::Normal;
@@ -76,17 +78,12 @@ namespace Aegis {
 			if (click->action_ == AE_MOUSE_DOUBLE_PRESS && PointInAABB(Application::GetWindow().GetMousePos(), rect_)){
 				Emit("double pressed");
 				event.handled_ = true;
-				pressed_ = true;
-				return;
 			}
-			if (IsPressed(click->action_)) {
+			else if (IsPressed(click->action_)) {
 				Emit("pressed");
 				event.handled_ = true;
-				pressed_ = true;
-				return;
 			}
 		}
-		pressed_ = false;
 	}
 
 	void Button::SetStateTexture(State state, std::shared_ptr<Texture> texture)

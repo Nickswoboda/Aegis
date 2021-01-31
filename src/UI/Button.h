@@ -19,7 +19,6 @@ namespace Aegis {
 			Hovered,
 			NumStates
 		};
-		Button(const std::string& label);
 		Button(AABB rect, const std::string& label);
 
 		bool IsPressed(int action);
@@ -30,7 +29,6 @@ namespace Aegis {
 		std::array<std::shared_ptr<Texture>, NumStates> textures_;
 		std::string text_;
 		bool hovered_ = false;
-		bool pressed_ = false;
 		State state_ = State::Normal;
 	};
 }
