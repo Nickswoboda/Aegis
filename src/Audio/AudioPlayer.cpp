@@ -14,7 +14,8 @@ namespace Aegis {
 	ALCdevice* AudioPlayer::device_ = nullptr;
 	ALCcontext* AudioPlayer::context_ = nullptr;
 
-	static std::vector<int> currently_playing_;
+	static std::vector<const SoundEffect*> currently_playing_;
+	static unsigned int volume_ = 100;
 	void AudioPlayer::Init()
 	{
 		device_ = alcOpenDevice(nullptr);
@@ -41,24 +42,23 @@ namespace Aegis {
 		alcCloseDevice(device_);
 	}
 
-	void AudioPlayer::Play(unsigned int id, unsigned int volume)
+	void AudioPlayer::Play(const SoundEffect& sound,  unsigned int volume)
 	{
 		volume = volume < 0 ? 0 : (volume > 100 ? 100 : volume);
-		if (volume != 100){
-			alSourcef(id, AL_GAIN, (volume/100.0f));
-		}
-		alSourcePlay(id);
 
-		currently_playing_.push_back(id);
+		alSourcef(sound.source_id_, AL_GAIN, sound.GetVolume() * (volume/100.0f));
+		alSourcePlay(sound.source_id_);
+
+		currently_playing_.push_back(&sound);
 	}
 
 	void AudioPlayer::SetVolume(unsigned int volume)
 	{
 		//clamp to between 0 and 100
-		volume = volume < 0 ? 0 : (volume > 100 ? 100 : volume);
+		volume_ = volume < 0 ? 0 : (volume > 100 ? 100 : volume);
 		
 		for (auto& sound : currently_playing_){
-			alSourcef(sound, AL_GAIN, (volume / 100.0f));
+			alSourcef(sound->source_id_, AL_GAIN, sound->GetVolume() * (volume / 100.0f));
 		}
 	}
 }

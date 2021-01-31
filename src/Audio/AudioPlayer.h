@@ -13,9 +13,9 @@ namespace Aegis
 
 		static void Init();
 		static void SetVolume(unsigned int volume);
-		static void Play(unsigned int id, unsigned int volume = 100);
+		static void Play(const SoundEffect& sound, unsigned int volume = 100);
 
-	public:
+	private:
 		static ALCdevice* device_;
 		static ALCcontext* context_;
 	};

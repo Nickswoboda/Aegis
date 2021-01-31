@@ -8,13 +8,16 @@ namespace Aegis{
 	class SoundEffect
 	{
 	public:
-		SoundEffect(const std::string& file_path);
+		SoundEffect(const std::string& file_path, unsigned int volume = 100);
 		~SoundEffect();
 
 		void Stop();
 		bool IsPlaying();
+		float GetVolume() const { return volume_; }
 
 		ALuint buffer_id_ = 0;
 		ALuint source_id_ = 0;
+	private:
+		float volume_ = 1.0f;
 	};
 }

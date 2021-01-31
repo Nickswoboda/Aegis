@@ -5,8 +5,10 @@
 
 namespace Aegis{
 
-	SoundEffect::SoundEffect(const std::string& file_path)
+	SoundEffect::SoundEffect(const std::string& file_path, unsigned int volume)
 	{
+		//clamp between 0 and 100
+		volume_ = volume < 0 ? 0 : (volume > 100 ? 1 : (volume/100.0f));
 		int channels, sample_rate, samples;
 		short* data;
 
