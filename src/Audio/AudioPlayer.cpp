@@ -45,8 +45,7 @@ namespace Aegis {
 	void AudioPlayer::Play(const SoundEffect& sound,  unsigned int volume)
 	{
 		volume = volume < 0 ? 0 : (volume > 100 ? 100 : volume);
-
-		alSourcef(sound.source_id_, AL_GAIN, sound.GetVolume() * (volume/100.0f));
+		alSourcef(sound.source_id_, AL_GAIN, sound.GetVolume() *  (volume / 100.0f) * (volume_/100.0f));
 		alSourcePlay(sound.source_id_);
 
 		currently_playing_.push_back(&sound);
@@ -58,7 +57,7 @@ namespace Aegis {
 		volume_ = volume < 0 ? 0 : (volume > 100 ? 100 : volume);
 		
 		for (auto& sound : currently_playing_){
-			alSourcef(sound->source_id_, AL_GAIN, sound->GetVolume() * (volume / 100.0f));
+			alSourcef(sound->source_id_, AL_GAIN, sound->GetVolume() * (volume_ / 100.0f));
 		}
 	}
 }
