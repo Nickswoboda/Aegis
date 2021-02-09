@@ -10,8 +10,11 @@ namespace Aegis{
 		void OnEvent(Event& event) override {};
 		void Render() override;
 
-		std::string text_;
-		Vec2 pos_;
+		void SetText(const std::string& text);
+
 		Vec4 color_;
+
+	private:
+		std::string text_;
 	};
 }

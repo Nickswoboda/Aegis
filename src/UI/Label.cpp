@@ -5,13 +5,23 @@
 namespace Aegis{
 
 	Label::Label(const std::string& text, Vec2 pos, Vec4 color)
-		: text_(text), pos_(pos), color_(color)
+		:color_(color), text_(text)
 	{
+		auto size = font_->GetStringPixelSize(text);
+		rect_ = {pos.x, pos.y, size.x, size.y};
 	};
 
 	void Label::Render()
 	{
 		Renderer2D::SetFont(font_);
-		DrawText(text_, pos_, color_);
+		DrawText(text_, rect_.pos, color_);
 	};
+
+	void Label::SetText(const std::string& text)
+	{
+		text_ = text;
+		
+		rect_.size = font_->GetStringPixelSize(text);
+	}
+
 }
