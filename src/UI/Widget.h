@@ -12,8 +12,7 @@ namespace Aegis {
 	class Widget : public Object
 	{
 	public:
-		Widget(AABB rect = {0.0, 0.0, 0.0, 0.0})
-			:Object(), rect_(rect) {}
+		Widget(AABB rect = { 0.0, 0.0, 0.0, 0.0 });
 		virtual ~Widget() = default;
 		virtual void OnEvent(Event& event) = 0;
 		virtual void Render() = 0;

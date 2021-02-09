@@ -21,6 +21,7 @@ set(AegisSrc
 	"src/Math/Vec2.cpp" 
 	"src/Math/Vec3.cpp" 
 	"src/Math/AABB.cpp"
+	"src/UI/Widget.cpp"
 	"src/UI/Dialog.cpp"
 	"src/UI/Button.cpp" 
 	"src/UI/Dropdown.cpp" 
@@ -41,7 +42,7 @@ add_library (Aegis STATIC
 	${DependencySrc})
 
 add_executable(Sandbox 
-	"Sandbox/Sandbox.cpp" "src/UI/UILayer.cpp")
+	"Sandbox/Sandbox.cpp")
 
 target_include_directories(Aegis
 PUBLIC
