@@ -10,6 +10,7 @@ set(AegisSrc
 	"src/Timer.cpp" 
 	"src/Camera.cpp" 
 	"src/Scene.cpp"
+	"src/Sprite.cpp"
 	"src/FontManager.cpp" 
 	"src/TextureManager.cpp" 
 	"src/Renderer/Renderer.cpp"
@@ -29,7 +30,7 @@ set(AegisSrc
 	"src/UI/Container.cpp" 
 	"src/UI/Checkbox.cpp"
 	"src/UI/Label.cpp" 
-	"src/UI/TextureWidget.cpp"
+	"src/UI/SpriteWidget.cpp"
 	"src/Audio/Audioplayer.cpp" 
 	"src/Audio/SoundEffect.cpp")
 

@@ -29,15 +29,4 @@ namespace Aegis {
 		Texture(unsigned char* data, int width, int height, int channels);
 		static std::shared_ptr<Texture> GetPlaceholderTexture();
 	};
-
-	class SubTexture
-	{
-	public:
-		SubTexture(std::shared_ptr<Texture> texture, Vec2 pos_on_tex, Vec2 size);
-		static std::shared_ptr<SubTexture> Create(std::shared_ptr<Texture> texture, Vec2 pos_on_tex, Vec2 size);
-
-		Vec4 tex_coords_;
-		Vec2 size_;
-		std::shared_ptr<Texture> texture_;
-	};
 }

@@ -12,14 +12,23 @@ namespace Aegis
 	{
 	public:
 		Sprite() = default;
-		explicit Sprite(Vec2 pos, Vec2 size, std::shared_ptr<Texture> texture, Vec2 subtex_pos = {0.0f, 0.0f}, const Vec4& color = {1.0f, 1.0f, 1.0f, 1.0f})
-			: texture_(SubTexture::Create(texture, subtex_pos, size)), rect_(pos.x, pos.y, size.x, size.y),
-				color_(color)
-		{}
+		explicit Sprite(std::shared_ptr<Texture>);
+		Sprite(std::shared_ptr<Texture> texture, AABB subtex_rect);
 
-		std::shared_ptr<SubTexture> texture_;
-		AABB rect_;
-		Vec4 color_;
+		void SetSubTextureRect(AABB subtex_rect);
+		AABB GetSubTextureRect() const;
+		
+		Vec4 GetTextureCoords() const;
+
+		std::shared_ptr<Texture> texture_;
+		Vec4 color_ = {1.0f, 1.0f, 1.0f, 1.0f};
+		Vec2 scale_ = {1.0f, 1.0f};
+
+	private:
+
+		void UpdateTextureCoords();
+		Vec4 texture_coords_;
+		AABB subtexture_rect_;
 
 	};
 }

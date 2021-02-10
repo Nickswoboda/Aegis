@@ -128,16 +128,6 @@ namespace Aegis {
         DrawQuad(pos, size, texture.ID_, color, z_idx, { 0.0f, 0.0f, 1.0f, 1.0f });
     }
 
-    void DrawQuad(const Vec2& pos, const SubTexture& subtexture, const float z_idx, const Vec4& color)
-    {
-        DrawQuad(pos, subtexture.size_, subtexture, z_idx, color);
-    }
-
-    void DrawQuad(const Vec2& pos, const Vec2& size, const SubTexture& subtexture, const float z_idx, const Vec4& color)
-    {
-        DrawQuad(pos, size, subtexture.texture_->ID_, color, z_idx, subtexture.tex_coords_);
-	}
-
     void DrawQuad(const Vec2& pos, const Vec2& size, unsigned int texture_id, const Vec4& color, const float z_idx, const Vec4& tex_coords)
     {
         if (data_.index_count_ >= vertex_array_->max_index_count_ || data_.texture_slot_index_ > 31) {
@@ -216,13 +206,13 @@ namespace Aegis {
         for (const auto& c : text) {
 
             auto glyph = default_font_->glyphs_[c];
-            DrawQuad({ pen_pos.x + glyph.bearing.x, pen_pos.y - glyph.bearing.y }, *glyph.texture_, z_idx, color);
+            DrawQuad({ pen_pos.x + glyph.bearing.x, pen_pos.y - glyph.bearing.y }, glyph.size, default_font_->atlas_->ID_, color, z_idx, glyph.texture_coords_);
             pen_pos.x += glyph.advance;
         }
     }
-    void RenderSprite(const Sprite& sprite)
+    void RenderSprite(const Vec2& pos, const Sprite& sprite)
     {
-        DrawQuad(sprite.rect_.pos, *sprite.texture_);
+        DrawQuad(pos, sprite.GetSubTextureRect().size * sprite.scale_, sprite.texture_->ID_, sprite.color_, 0, sprite.GetTextureCoords());
     }
     void Renderer2D::SetFont(std::shared_ptr<Font> font)
     {

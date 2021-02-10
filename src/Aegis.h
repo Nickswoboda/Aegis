@@ -25,7 +25,7 @@
 #include "UI/Container.h"
 #include "UI/Checkbox.h"
 #include "UI/Label.h"
-#include "UI/TextureWidget.h"
+#include "UI/SpriteWidget.h"
 #include "UI/Dialog.h"
 
 #include "Audio/AudioPlayer.h"
