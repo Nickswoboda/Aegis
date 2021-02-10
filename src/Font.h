@@ -14,7 +14,7 @@ namespace Aegis {
 
 	struct Glyph
 	{
-		std::shared_ptr<SubTexture> texture_;
+		Vec4 texture_coords_;
 		Vec2 atlas_pos;
 		Vec2 size;
 		Vec2 bearing;
@@ -28,7 +28,7 @@ namespace Aegis {
 		Font(const std::string& path, int size, int num_glyphs = 128);
 		Font(const std::string& name, const unsigned char* data, unsigned int data_size, int font_size, int num_glyphs = 128);  
 		std::shared_ptr<Texture> CreateTextureAtlas(const FT_Face& face);
-		void SetGlyphSubTextures();
+		void SetGlyphTextureCoords();
 		Vec2 GetStringPixelSize(const std::string& string) const;
 
 		std::string font_name_;

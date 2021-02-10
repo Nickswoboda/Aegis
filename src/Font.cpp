@@ -39,7 +39,7 @@ namespace Aegis {
 		: font_name_(path), size_(size), num_glyphs_(num_glyphs)
 	{
 		atlas_ = CreateTextureAtlas(face);
-		SetGlyphSubTextures();
+		SetGlyphTextureCoords();
 
 		FT_Done_Face(face);
 		FT_Done_FreeType(library);
@@ -61,7 +61,7 @@ namespace Aegis {
 		AE_ASSERT(error == 0, "Unable to set pixel size");
 
 		atlas_ = CreateTextureAtlas(face);
-		SetGlyphSubTextures();
+		SetGlyphTextureCoords();
 
 		FT_Done_Face(face);
 		FT_Done_FreeType(library);
@@ -86,7 +86,7 @@ namespace Aegis {
 		AE_ASSERT(error == 0, "Unable to set pixel size");
 
 		atlas_ = CreateTextureAtlas(face);
-		SetGlyphSubTextures();
+		SetGlyphTextureCoords();
 
 		FT_Done_Face(face);
 		FT_Done_FreeType(library);	
@@ -149,10 +149,14 @@ namespace Aegis {
 		return Texture::Create(pixels, tex_width, tex_height, 4);
 	}
 
-	void Font::SetGlyphSubTextures()
+	void Font::SetGlyphTextureCoords()
 	{
 		for (auto& glyph : glyphs_) {
-			glyph.texture_ = SubTexture::Create(atlas_, glyph.atlas_pos, glyph.size);
+			float x1 = glyph.atlas_pos.x / atlas_->size_.x;
+			float y1 = glyph.atlas_pos.y / atlas_->size_.y;
+			float x2 = (glyph.atlas_pos.x + glyph.size.x) / atlas_->size_.x;
+			float y2 = (glyph.atlas_pos.y + glyph.size.y) / atlas_->size_.y;
+			glyph.texture_coords_ = { x1, y1, x2, y2 };
 		}
 	}
 
