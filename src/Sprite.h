@@ -23,6 +23,8 @@ namespace Aegis
 		std::shared_ptr<Texture> texture_;
 		Vec4 color_ = {1.0f, 1.0f, 1.0f, 1.0f};
 		Vec2 scale_ = {1.0f, 1.0f};
+		float rotation_ = 0.0f;
+		bool horizontal_flip = false;
 
 	private:
 

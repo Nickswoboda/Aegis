@@ -4,6 +4,7 @@
 #include "Texture.h"
 #include "Shader.h"
 #include "../Font.h"
+#include "../Assert.h"
 
 #include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>
@@ -128,7 +129,7 @@ namespace Aegis {
         DrawQuad(pos, size, texture.ID_, color, z_idx, { 0.0f, 0.0f, 1.0f, 1.0f });
     }
 
-    void DrawQuad(const Vec2& pos, const Vec2& size, unsigned int texture_id, const Vec4& color, const float z_idx, const Vec4& tex_coords)
+    void DrawQuad(const Vec2& pos, const Vec2& size, unsigned int texture_id, const Vec4& color, const float z_idx, const Vec4& tex_coords, const float rotation, bool h_flip)
     {
         if (data_.index_count_ >= vertex_array_->max_index_count_ || data_.texture_slot_index_ > 31) {
             Renderer2D::EndScene();
@@ -148,33 +149,54 @@ namespace Aegis {
             data_.texture_slot_index_++;
         }
 
-        if (data_.quad_buffer_ptr_ == nullptr) {
-            std::cout << "Must Call BeginScene() before drawing\n";
-        }
-        glm::mat4 transform = glm::translate(glm::mat4(1.0f), { pos.x, pos.y, z_idx }) * glm::scale(glm::mat4(1.0), { size.x, size.y, 1.0 });
+        AE_ASSERT(data_.quad_buffer_ptr_ != nullptr, "Must Call BeginScence() before drawing\n");
 
-        glm::vec4 vertex1_pos = transform * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+        glm::mat4 transform = glm::mat4(1.0f);
+        transform = glm::translate(transform, glm::vec3(pos.x, pos.y , 0.0f));
+
+        //move origin to center to rotate properly
+        transform = glm::translate(transform, glm::vec3(0.5f * size.x, 0.5f * size.y, 0.0f));
+        transform = glm::rotate(transform, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f));
+        transform = glm::translate(transform, glm::vec3(-0.5f * size.x, -0.5f * size.y, 0.0f));
+
+        transform = glm::scale(transform, glm::vec3(size.x, size.y, 1.0f));
+
+
+        glm::vec4 vertex1_pos;
+        glm::vec4 vertex2_pos;
+        glm::vec4 vertex3_pos;
+        glm::vec4 vertex4_pos;
+        if (h_flip) {
+            vertex2_pos = transform * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+            vertex1_pos = transform * glm::vec4(1.0f, 0.0f, 0.0f, 1.0f); 
+            vertex4_pos = transform * glm::vec4(1.0f, 1.0f, 0.0f, 1.0f);
+            vertex3_pos = transform * glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
+        }
+        else {
+            vertex1_pos = transform * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+            vertex2_pos = transform * glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+            vertex3_pos = transform * glm::vec4(1.0f, 1.0f, 0.0f, 1.0f);
+            vertex4_pos = transform * glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
+        }
+
         data_.quad_buffer_ptr_->position_ = { vertex1_pos.x, vertex1_pos.y, vertex1_pos.z };
         data_.quad_buffer_ptr_->color_ = color;
         data_.quad_buffer_ptr_->tex_coords_ = { tex_coords.x, tex_coords.y };
         data_.quad_buffer_ptr_->texture_ID_ = texture_index;
         data_.quad_buffer_ptr_++;
 
-        glm::vec4 vertex2_pos = transform * glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
         data_.quad_buffer_ptr_->position_ = { vertex2_pos.x, vertex2_pos.y, vertex2_pos.z };
         data_.quad_buffer_ptr_->color_ = color;
         data_.quad_buffer_ptr_->tex_coords_ = { tex_coords.z, tex_coords.y };
         data_.quad_buffer_ptr_->texture_ID_ = texture_index;
         data_.quad_buffer_ptr_++;
 
-        glm::vec4 vertex3_pos = transform * glm::vec4(1.0f, 1.0f, 0.0f, 1.0f);
         data_.quad_buffer_ptr_->position_ = { vertex3_pos.x, vertex3_pos.y, vertex3_pos.z };
         data_.quad_buffer_ptr_->color_ = color;
         data_.quad_buffer_ptr_->tex_coords_ = { tex_coords.z, tex_coords.w };
         data_.quad_buffer_ptr_->texture_ID_ = texture_index;
         data_.quad_buffer_ptr_++;
 
-        glm::vec4 vertex4_pos = transform * glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
         data_.quad_buffer_ptr_->position_ = { vertex4_pos.x, vertex4_pos.y, vertex4_pos.z };
         data_.quad_buffer_ptr_->color_ = color;
         data_.quad_buffer_ptr_->tex_coords_ = { tex_coords.x, tex_coords.w };
@@ -212,7 +234,7 @@ namespace Aegis {
     }
     void RenderSprite(const Vec2& pos, const Sprite& sprite)
     {
-        DrawQuad(pos, sprite.GetSubTextureRect().size * sprite.scale_, sprite.texture_->ID_, sprite.color_, 0, sprite.GetTextureCoords());
+        DrawQuad(pos, sprite.GetSubTextureRect().size * sprite.scale_, sprite.texture_->ID_, sprite.color_, 0, sprite.GetTextureCoords(), sprite.rotation_, sprite.horizontal_flip);
     }
     void Renderer2D::SetFont(std::shared_ptr<Font> font)
     {
