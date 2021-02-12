@@ -33,13 +33,13 @@ namespace Aegis {
 
 	void DrawQuad(const Vec2& pos, const Vec2& size, const Vec4& color = {1.0f, 1.0f, 1.0f, 1.0f}, const float z_idx = 0);
 
-	void DrawQuad(const Vec2& pos, const Texture& texture, const float z_idx = 0, const Vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f });
-	void DrawQuad(const Vec2& pos, const Vec2& size, const Texture& texture, const float z_idx = 0, const Vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f });
+	void DrawQuad(const Vec2& pos, const Texture& texture, const Vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f }, const float z_idx = 0);
+	void DrawQuad(const Vec2& pos, const Vec2& size, const Texture& texture, const Vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f }, const float z_idx = 0);
 
-	void DrawQuad(const Vec2& pos, const Vec2& size, unsigned int texture_id, const Vec4& color, const float z_idx = 0, const Vec4& tex_coords = { 0.0f, 0.0f, 1.0f, 1.0f }, const float rotation = 0.0f, bool h_flip = false);
+	void DrawQuad(const glm::mat4& transform, unsigned int texture_id, const Vec4& tex_coords, const Vec4& color, const float z_idx = 0);
 
 	void DrawStaticText(const std::string& text, const Vec2& pos, const Vec4& color = {1.0f, 1.0f, 1.0f, 1.0f}, const float z_idx = 0);
 	void DrawText(const std::string& text, const Vec2& pos, const Vec4& color = {1.0f, 1.0f, 1.0f, 1.0f}, const float z_idx = 0);
 
-	void RenderSprite(const Vec2& pos, const Sprite& sprite);
+	void DrawSprite(const Vec2& pos, const Sprite& sprite);
 }

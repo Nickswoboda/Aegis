@@ -18,7 +18,7 @@ namespace Aegis {
 	void SpriteWidget::Render()
 	{
 		if (visible_) {
-			RenderSprite(rect_.pos, sprite_);
+			DrawSprite(rect_.pos, sprite_);
 		}
 	}
 }

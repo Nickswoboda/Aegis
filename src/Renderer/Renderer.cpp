@@ -15,22 +15,23 @@
 
 namespace Aegis {
 
-    static const size_t max_textures = 32;
-    static std::unique_ptr<Shader> shader_;
-    static std::unique_ptr<VertexArray> vertex_array_;
-    static glm::mat4 projection_;
-    static std::shared_ptr<Font> default_font_;
-    static std::shared_ptr<Texture> white_texture_;
-    static std::unordered_map<std::string, std::shared_ptr<Texture>> cached_text_;
+    static std::shared_ptr<Font> s_default_font;
+    static std::shared_ptr<Texture> s_white_texture;
+    static std::unordered_map<std::string, std::shared_ptr<Texture>> s_cached_text;
 
     struct RenderData
     {
+        std::unique_ptr<Shader> shader_;
+        glm::mat4 projection_;
+
         uint32_t index_count_ = 0;
 
+        std::unique_ptr<VertexArray> vertex_array_;
         VertexArray::Vertex* quad_buffer_ = nullptr;
         VertexArray::Vertex* quad_buffer_ptr_ = nullptr;
 
-        std::array<uint32_t, max_textures> texture_slots_;
+        static const size_t max_textures_ = 32;
+        std::array<uint32_t, max_textures_> texture_slots_{};
         uint32_t texture_slot_index_ = 1;
     };
 
@@ -44,28 +45,25 @@ namespace Aegis {
 		glDepthFunc(GL_LEQUAL);
 		glClearDepth(1.0f);
 
-        int samplers[max_textures];
-        for (int i = 0; i < max_textures; ++i) {
+        int samplers[data_.max_textures_];
+        for (int i = 0; i < data_.max_textures_; ++i) {
             samplers[i] = i;
         }
 
         //default shaders are hardcoded in Shader.h
-        shader_ = std::make_unique<Shader>(default_vertex_shader, default_fragment_shader);
-        shader_->Bind();
-        shader_->SetMat4("u_Projection", projection_);
-        shader_->SetIntVector("u_Textures", max_textures, samplers);
+        data_.shader_ = std::make_unique<Shader>(default_vertex_shader, default_fragment_shader);
+        data_.shader_->Bind();
+        data_.shader_->SetMat4("u_Projection", data_.projection_);
+        data_.shader_->SetIntVector("u_Textures", data_.max_textures_, samplers);
 
         //1x1 square texture for colored quads.
         unsigned char white_data[4] = { 255, 255, 255, 255 };
-        white_texture_ = Texture::Create(white_data, 1, 1, 4);
+        s_white_texture = Texture::Create(white_data, 1, 1, 4);
 
-        vertex_array_ = std::make_unique<VertexArray>();
-        data_.quad_buffer_ = new VertexArray::Vertex[vertex_array_->max_vertex_count_];
+        data_.vertex_array_ = std::make_unique<VertexArray>();
+        data_.quad_buffer_ = new VertexArray::Vertex[data_.vertex_array_->max_vertex_count_];
        
-        data_.texture_slots_[0] = white_texture_->ID_;
-        for (size_t i = 1; i < max_textures; ++i) {
-            data_.texture_slots_[i] = 0;
-        }
+        data_.texture_slots_[0] = s_white_texture->ID_;
     }
 
     void Renderer2D::Shutdown()
@@ -75,10 +73,10 @@ namespace Aegis {
 
     void Renderer2D::BeginScene(const glm::mat4& camera_projection)
 	{
-        projection_ = camera_projection;
+        data_.projection_ = camera_projection;
 
-        shader_->Bind();
-        shader_->SetMat4("u_Projection", projection_);
+        data_.shader_->Bind();
+        data_.shader_->SetMat4("u_Projection", data_.projection_);
 
         data_.quad_buffer_ptr_ = data_.quad_buffer_;
 	}
@@ -86,14 +84,14 @@ namespace Aegis {
 	void Renderer2D::EndScene()
 	{
         GLsizeiptr size = (uint8_t*)data_.quad_buffer_ptr_ - (uint8_t*)data_.quad_buffer_;
-        glBindBuffer(GL_ARRAY_BUFFER, vertex_array_->vertex_buffer_);
+        glBindBuffer(GL_ARRAY_BUFFER, data_.vertex_array_->vertex_buffer_);
         glBufferSubData(GL_ARRAY_BUFFER, 0, size, data_.quad_buffer_);
 
         for (uint32_t i = 0; i < data_.texture_slot_index_; ++i) {
             glBindTextureUnit(i, data_.texture_slots_[i]);
         }
 
-        glBindVertexArray(vertex_array_->ID_);
+        data_.vertex_array_->Bind();
         glDrawElements(GL_TRIANGLES, data_.index_count_, GL_UNSIGNED_INT, nullptr);
         data_.index_count_ = 0;
         data_.texture_slot_index_ = 1;
@@ -106,7 +104,7 @@ namespace Aegis {
 
     Font& Renderer2D::GetFont()
     {
-        return *default_font_;
+        return *s_default_font;
     }
 
     void RendererClear()
@@ -116,129 +114,105 @@ namespace Aegis {
 
     void DrawQuad(const Vec2& pos, const Vec2& size, const Vec4& color, const float z_idx)
 	{
-        DrawQuad(pos, size, white_texture_->ID_, color, z_idx);
+        DrawQuad(pos, size, *s_white_texture, color, z_idx);
 	}
 
-    void DrawQuad(const Vec2& pos, const Texture& texture, const float z_idx, const Vec4& color)
+    void DrawQuad(const Vec2& pos, const Texture& texture, const Vec4& color, const float z_idx)
     {
-        DrawQuad(pos, texture.size_, texture, z_idx, color);
+        DrawQuad(pos, texture.size_, texture, color, z_idx);
     }
 
-    void DrawQuad(const Vec2& pos, const Vec2& size, const Texture& texture, const float z_idx, const Vec4& color)
+    void DrawQuad(const Vec2& pos, const Vec2& size, const Texture& texture, const Vec4& color, const float z_idx)
     {
-        DrawQuad(pos, size, texture.ID_, color, z_idx, { 0.0f, 0.0f, 1.0f, 1.0f });
+        glm::mat4 transform = glm::translate(glm::mat4(1.0f), { pos.x, pos.y, z_idx }) * glm::scale(glm::mat4(1.0), { size.x, size.y, 1.0 });
+        DrawQuad(transform, texture.ID_, { 0.0f, 0.0f, 1.0f, 1.0f }, color, z_idx);
     }
 
-    void DrawQuad(const Vec2& pos, const Vec2& size, unsigned int texture_id, const Vec4& color, const float z_idx, const Vec4& tex_coords, const float rotation, bool h_flip)
+    void DrawQuad(const glm::mat4& transform, unsigned int texture_id, const Vec4& tex_coords, const Vec4& color, const float z_idx)
     {
-        if (data_.index_count_ >= vertex_array_->max_index_count_ || data_.texture_slot_index_ > 31) {
+        AE_ASSERT(data_.quad_buffer_ptr_ != nullptr, "Must Call BeginScence() before drawing\n");
+
+        if (data_.index_count_ >= data_.vertex_array_->max_index_count_ || data_.texture_slot_index_ > 31) {
             Renderer2D::EndScene();
-            Renderer2D::BeginScene(projection_);
+            Renderer2D::BeginScene(data_.projection_);
         }
 
-        float texture_index = 0.0f;
-        for (uint32_t i = 1; i < data_.texture_slot_index_; ++i) {
+        float texture_index = -1.0f;
+        for (uint32_t i = 0; i < data_.texture_slot_index_; ++i) {
             if (data_.texture_slots_[i] == texture_id) {
                 texture_index = (float)i;
                 break;
             }
         }
-        if (texture_index == 0.0f) {
+        if (texture_index == -1.0f) {
             texture_index = (float)data_.texture_slot_index_;
             data_.texture_slots_[data_.texture_slot_index_] = texture_id;
             data_.texture_slot_index_++;
         }
 
-        AE_ASSERT(data_.quad_buffer_ptr_ != nullptr, "Must Call BeginScence() before drawing\n");
+        Vec2 texture_coords[4] = { {tex_coords.x, tex_coords.y}, 
+                                   {tex_coords.z, tex_coords.y}, 
+                                   {tex_coords.z, tex_coords.w}, 
+                                   {tex_coords.x, tex_coords.w} };
 
-        glm::mat4 transform = glm::mat4(1.0f);
-        transform = glm::translate(transform, glm::vec3(pos.x, pos.y , 0.0f));
-
-        //move origin to center to rotate properly
-        transform = glm::translate(transform, glm::vec3(0.5f * size.x, 0.5f * size.y, 0.0f));
-        transform = glm::rotate(transform, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f));
-        transform = glm::translate(transform, glm::vec3(-0.5f * size.x, -0.5f * size.y, 0.0f));
-
-        transform = glm::scale(transform, glm::vec3(size.x, size.y, 1.0f));
-
-
-        glm::vec4 vertex1_pos;
-        glm::vec4 vertex2_pos;
-        glm::vec4 vertex3_pos;
-        glm::vec4 vertex4_pos;
-        if (h_flip) {
-            vertex2_pos = transform * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-            vertex1_pos = transform * glm::vec4(1.0f, 0.0f, 0.0f, 1.0f); 
-            vertex4_pos = transform * glm::vec4(1.0f, 1.0f, 0.0f, 1.0f);
-            vertex3_pos = transform * glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
+        for (int i = 0; i < 4; ++i) {
+            glm::vec4 vertex_pos = transform * data_.vertex_array_->vertex_positions_[i];
+            data_.quad_buffer_ptr_->position_ = { vertex_pos.x, vertex_pos.y, vertex_pos.z };
+            data_.quad_buffer_ptr_->color_ = color;
+            data_.quad_buffer_ptr_->tex_coords_ = texture_coords[i];
+            data_.quad_buffer_ptr_->texture_ID_ = texture_index;
+            data_.quad_buffer_ptr_++;
         }
-        else {
-            vertex1_pos = transform * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-            vertex2_pos = transform * glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
-            vertex3_pos = transform * glm::vec4(1.0f, 1.0f, 0.0f, 1.0f);
-            vertex4_pos = transform * glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
-        }
-
-        data_.quad_buffer_ptr_->position_ = { vertex1_pos.x, vertex1_pos.y, vertex1_pos.z };
-        data_.quad_buffer_ptr_->color_ = color;
-        data_.quad_buffer_ptr_->tex_coords_ = { tex_coords.x, tex_coords.y };
-        data_.quad_buffer_ptr_->texture_ID_ = texture_index;
-        data_.quad_buffer_ptr_++;
-
-        data_.quad_buffer_ptr_->position_ = { vertex2_pos.x, vertex2_pos.y, vertex2_pos.z };
-        data_.quad_buffer_ptr_->color_ = color;
-        data_.quad_buffer_ptr_->tex_coords_ = { tex_coords.z, tex_coords.y };
-        data_.quad_buffer_ptr_->texture_ID_ = texture_index;
-        data_.quad_buffer_ptr_++;
-
-        data_.quad_buffer_ptr_->position_ = { vertex3_pos.x, vertex3_pos.y, vertex3_pos.z };
-        data_.quad_buffer_ptr_->color_ = color;
-        data_.quad_buffer_ptr_->tex_coords_ = { tex_coords.z, tex_coords.w };
-        data_.quad_buffer_ptr_->texture_ID_ = texture_index;
-        data_.quad_buffer_ptr_++;
-
-        data_.quad_buffer_ptr_->position_ = { vertex4_pos.x, vertex4_pos.y, vertex4_pos.z };
-        data_.quad_buffer_ptr_->color_ = color;
-        data_.quad_buffer_ptr_->tex_coords_ = { tex_coords.x, tex_coords.w };
-        data_.quad_buffer_ptr_->texture_ID_ = texture_index;
-        data_.quad_buffer_ptr_++;
 
         data_.index_count_ += 6;
     }
     void DrawStaticText(const std::string& text, const Vec2& pos, const Vec4& color, const float z_idx)
     {
         //if already cached
-	    std::string index = text + default_font_->font_name_ + std::to_string(default_font_->size_);
-        if (cached_text_.count(index)) {
-            DrawQuad(pos, *cached_text_[index], z_idx, color);
+	    std::string index = text + s_default_font->font_name_ + std::to_string(s_default_font->size_);
+        if (s_cached_text.count(index)) {
+            DrawQuad(pos, *s_cached_text[index], color, z_idx);
         }
         //create texture and cache
         else{
-            auto texture = Texture::CreateFromText(text, *default_font_);
+            auto texture = Texture::CreateFromText(text, *s_default_font);
             
-            DrawQuad(pos, *texture, z_idx, color);
-            cached_text_[index] = texture;
+            DrawQuad(pos, *texture, color, z_idx);
+            s_cached_text[index] = texture;
         }
     }
     void DrawText(const std::string& text, const Vec2& pos, const Vec4& color, const float z_idx)
     {
         Vec2 pen_pos = pos;
-        pen_pos.y += default_font_->tallest_glyph_height_;
+        pen_pos.y += s_default_font->tallest_glyph_height_;
 
         for (const auto& c : text) {
 
-            auto glyph = default_font_->glyphs_[c];
-            DrawQuad({ pen_pos.x + glyph.bearing.x, pen_pos.y - glyph.bearing.y }, glyph.size, default_font_->atlas_->ID_, color, z_idx, glyph.texture_coords_);
+            const auto& glyph = s_default_font->glyphs_[c];
+
+            glm::mat4 transform = glm::translate(glm::mat4(1.0f), { pen_pos.x + glyph.bearing.x, pen_pos.y - glyph.bearing.y, z_idx }) 
+                                * glm::scale(glm::mat4(1.0), { glyph.size.x, glyph.size.y, 1.0 });
+
+            DrawQuad(transform, s_default_font->atlas_->ID_, glyph.texture_coords_,color, z_idx);
             pen_pos.x += glyph.advance;
         }
     }
-    void RenderSprite(const Vec2& pos, const Sprite& sprite)
+    void DrawSprite(const Vec2& pos, const Sprite& sprite)
     {
-        DrawQuad(pos, sprite.GetSubTextureRect().size * sprite.scale_, sprite.texture_->ID_, sprite.color_, 0, sprite.GetTextureCoords(), sprite.rotation_, sprite.horizontal_flip);
+        glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(pos.x, pos.y, 0.0f));
+
+        //move origin to center of sprite, rotate, then move back
+        Vec2 size = sprite.GetSubTextureRect().size * sprite.scale_;
+        transform = glm::translate(transform, glm::vec3(0.5f * size.x, 0.5f * size.y, 0.0f));
+        transform = glm::rotate(transform, glm::radians(sprite.rotation_), glm::vec3(0.0f, 0.0f, 1.0f));
+        transform = glm::translate(transform, glm::vec3(-0.5f * size.x, -0.5f * size.y, 0.0f));
+        transform = glm::scale(transform, glm::vec3(size.x, size.y, 1.0f));
+
+        DrawQuad(transform, sprite.texture_->ID_, sprite.GetTextureCoords(), sprite.color_, 0);
     }
     void Renderer2D::SetFont(std::shared_ptr<Font> font)
     {
-        default_font_ = font;
+        s_default_font = font;
     }
     void Renderer2D::SetProjection(const glm::mat4& projection)
     {

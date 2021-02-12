@@ -4,6 +4,9 @@
 #include "../Math/Vec3.h"
 #include "../Math/Vec4.h"
 
+#include <glm/glm.hpp>
+#include <array>
+
 namespace Aegis {
 
 	class VertexArray
@@ -28,5 +31,6 @@ namespace Aegis {
 		static const size_t max_quad_count_ = 1000;
 		static const size_t max_vertex_count_ = max_quad_count_ * 4;
 		static constexpr size_t max_index_count_ = max_quad_count_ * 6;
+		static const std::array<glm::vec4, 4> vertex_positions_;
 	};
 }

@@ -2,11 +2,14 @@
 
 #include <glad/glad.h>
 
-#include <array>
 #include <stdint.h>
 
 namespace Aegis {
 
+    const std::array<glm::vec4, 4> VertexArray::vertex_positions_{ glm::vec4{0.0f, 0.0f, 0.0f, 1.0f},
+                                                                      {1.0f, 0.0f, 0.0f, 1.0f},
+                                                                      {1.0f, 1.0f, 0.0f, 1.0f},
+                                                                      {0.0f, 1.0f, 0.0f, 1.0f} };
     VertexArray::VertexArray()
     {
         glCreateVertexArrays(1, &ID_);
