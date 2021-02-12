@@ -19,18 +19,19 @@ namespace Aegis
 		AABB GetSubTextureRect() const;
 		
 		Vec4 GetTextureCoords() const;
+		void SetHorizontalFlip(bool flip);
+		bool GetHorizontalFlip() const;
 
 		std::shared_ptr<Texture> texture_;
 		Vec4 color_ = {1.0f, 1.0f, 1.0f, 1.0f};
 		Vec2 scale_ = {1.0f, 1.0f};
 		float rotation_ = 0.0f;
-		bool horizontal_flip = false;
 
 	private:
-
 		void UpdateTextureCoords();
 		Vec4 texture_coords_;
 		AABB subtexture_rect_;
+		bool horizontally_flipped_ = false;
 
 	};
 }

@@ -39,4 +39,20 @@ namespace Aegis{
 		float y2 = (subtexture_rect_.pos.y + subtexture_rect_.size.y) / texture_->size_.y;
 		texture_coords_ = { x1, y1, x2, y2 };
 	}
+
+	void Sprite::SetHorizontalFlip(bool flip)
+	{
+		if (horizontally_flipped_ != flip) {
+			float temp = texture_coords_.x;
+			texture_coords_.x = texture_coords_.z;
+			texture_coords_.z = temp;
+			horizontally_flipped_ = flip;
+		}
+	}
+
+	bool Sprite::GetHorizontalFlip() const
+	{
+		return horizontally_flipped_;
+	}
+
 }
