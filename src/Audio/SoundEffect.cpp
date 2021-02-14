@@ -19,6 +19,7 @@ namespace Aegis{
 		
 		alGenBuffers(1, &buffer_id_);
 		alBufferData(buffer_id_, format, data, samples * channels * sizeof(short), sample_rate);
+		delete data;
 
 		alGenSources(1, &source_id_);
 		alSourceQueueBuffers(source_id_, 1, &buffer_id_);
