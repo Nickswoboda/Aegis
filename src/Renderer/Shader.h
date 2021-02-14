@@ -11,6 +11,8 @@ namespace Aegis {
 	public:
 		explicit Shader(const std::string& file_path);
 		Shader(const std::string& vertex_shader, const std::string& fragment_shader);
+
+        ~Shader();
 		
 		void SetInt(const std::string& name, int value);
 		void SetIntVector(const std::string& name, int count, int* values);
