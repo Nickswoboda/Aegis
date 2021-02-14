@@ -55,4 +55,12 @@ namespace Aegis{
 		return horizontally_flipped_;
 	}
 
+	AABB Sprite::GetRect() const 
+	{
+		Vec2 size = subtexture_rect_.size * scale_;
+
+		return {position_.x, position_.y, size.x, size.y};
+
+	}
+
 }

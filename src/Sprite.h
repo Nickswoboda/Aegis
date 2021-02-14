@@ -21,10 +21,12 @@ namespace Aegis
 		Vec4 GetTextureCoords() const;
 		void SetHorizontalFlip(bool flip);
 		bool GetHorizontalFlip() const;
+		AABB GetRect() const;
 
 		std::shared_ptr<Texture> texture_;
 		Vec4 color_ = {1.0f, 1.0f, 1.0f, 1.0f};
 		Vec2 scale_ = {1.0f, 1.0f};
+		Vec2 position_;
 		float rotation_ = 0.0f;
 
 	private:

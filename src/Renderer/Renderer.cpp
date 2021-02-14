@@ -125,10 +125,16 @@ namespace Aegis {
     void DrawQuad(const Vec2& pos, const Vec2& size, const Texture& texture, const Vec4& color, const float z_idx)
     {
         glm::mat4 transform = glm::translate(glm::mat4(1.0f), { pos.x, pos.y, z_idx }) * glm::scale(glm::mat4(1.0), { size.x, size.y, 1.0 });
-        DrawQuad(transform, texture.ID_, { 0.0f, 0.0f, 1.0f, 1.0f }, color, z_idx);
+        DrawQuad(transform, texture.ID_, { 0.0f, 0.0f, 1.0f, 1.0f }, color);
     }
 
-    void DrawQuad(const glm::mat4& transform, unsigned int texture_id, const Vec4& tex_coords, const Vec4& color, const float z_idx)
+	void DrawSubTexture(const Vec2& pos, const Vec2& size, const Texture& texture, const Vec4& tex_coords)
+	{
+        glm::mat4 transform = glm::translate(glm::mat4(1.0f), { pos.x, pos.y, 0 }) * glm::scale(glm::mat4(1.0), { size.x, size.y, 1.0 });
+        DrawQuad(transform, texture.ID_, tex_coords, {1.0f, 1.0f, 1.0f, 1.0f});
+	}
+
+    void DrawQuad(const glm::mat4& transform, unsigned int texture_id, const Vec4& tex_coords, const Vec4& color)
     {
         AE_ASSERT(data_.quad_buffer_ptr_ != nullptr, "Must Call BeginScence() before drawing\n");
 
@@ -193,13 +199,13 @@ namespace Aegis {
             glm::mat4 transform = glm::translate(glm::mat4(1.0f), { pen_pos.x + glyph.bearing.x, pen_pos.y - glyph.bearing.y, z_idx }) 
                                 * glm::scale(glm::mat4(1.0), { glyph.size.x, glyph.size.y, 1.0 });
 
-            DrawQuad(transform, s_default_font->atlas_->ID_, glyph.texture_coords_,color, z_idx);
+            DrawQuad(transform, s_default_font->atlas_->ID_, glyph.texture_coords_,color);
             pen_pos.x += glyph.advance;
         }
     }
-    void DrawSprite(const Vec2& pos, const Sprite& sprite)
+    void DrawSprite(const Sprite& sprite)
     {
-        glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(pos.x, pos.y, 0.0f));
+        glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(sprite.position_.x, sprite.position_.y, 0.0f));
 
         //move origin to center of sprite, rotate, then move back
         Vec2 size = sprite.GetSubTextureRect().size * sprite.scale_;
@@ -208,7 +214,7 @@ namespace Aegis {
         transform = glm::translate(transform, glm::vec3(-0.5f * size.x, -0.5f * size.y, 0.0f));
         transform = glm::scale(transform, glm::vec3(size.x, size.y, 1.0f));
 
-        DrawQuad(transform, sprite.texture_->ID_, sprite.GetTextureCoords(), sprite.color_, 0);
+        DrawQuad(transform, sprite.texture_->ID_, sprite.GetTextureCoords(), sprite.color_);
     }
     void Renderer2D::SetFont(std::shared_ptr<Font> font)
     {
