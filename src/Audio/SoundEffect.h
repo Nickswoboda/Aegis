@@ -8,7 +8,7 @@ namespace Aegis{
 	class SoundEffect
 	{
 	public:
-		SoundEffect(const std::string& file_path, unsigned int volume = 100);
+		SoundEffect(const std::string& file_path, unsigned int volume = 100, bool looping = false);
 		~SoundEffect();
 
 		void Stop();
