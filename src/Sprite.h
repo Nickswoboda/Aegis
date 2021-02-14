@@ -15,6 +15,8 @@ namespace Aegis
 		explicit Sprite(std::shared_ptr<Texture>);
 		Sprite(std::shared_ptr<Texture> texture, AABB subtex_rect);
 
+		void Draw() const;
+
 		void SetSubTextureRect(AABB subtex_rect);
 		AABB GetSubTextureRect() const;
 		

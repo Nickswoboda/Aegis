@@ -41,6 +41,4 @@ namespace Aegis {
 
 	void DrawStaticText(const std::string& text, const Vec2& pos, const Vec4& color = {1.0f, 1.0f, 1.0f, 1.0f}, const float z_idx = 0);
 	void DrawText(const std::string& text, const Vec2& pos, const Vec4& color = {1.0f, 1.0f, 1.0f, 1.0f}, const float z_idx = 0);
-
-	void DrawSprite(const Sprite& sprite);
 }

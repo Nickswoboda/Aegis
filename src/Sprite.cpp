@@ -1,5 +1,8 @@
 #include "Sprite.h"
 
+#include "Renderer/Renderer.h"
+#include <glm/gtc/matrix_transform.hpp>
+
 namespace Aegis{
 
 	Sprite::Sprite(std::shared_ptr<Texture> texture)
@@ -13,6 +16,20 @@ namespace Aegis{
 		: texture_(texture), subtexture_rect_(subtex_rect)
 	{
 		UpdateTextureCoords();
+	}
+
+	void Sprite::Draw() const
+	{
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(position_.x, position_.y, 0.0f));
+
+		//move origin to center of sprite, rotate, then move back
+		Vec2 size = subtexture_rect_.size * scale_;
+		transform = glm::translate(transform, glm::vec3(0.5f * size.x, 0.5f * size.y, 0.0f));
+		transform = glm::rotate(transform, glm::radians(rotation_), glm::vec3(0.0f, 0.0f, 1.0f));
+		transform = glm::translate(transform, glm::vec3(-0.5f * size.x, -0.5f * size.y, 0.0f));
+		transform = glm::scale(transform, glm::vec3(size.x, size.y, 1.0f));
+
+		DrawQuad(transform, texture_->ID_, texture_coords_, color_);
 	}
 
 	void Sprite::SetSubTextureRect(AABB subtex_rect)
