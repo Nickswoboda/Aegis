@@ -32,7 +32,8 @@ set(AegisSrc
 	"src/UI/Label.cpp" 
 	"src/UI/SpriteWidget.cpp"
 	"src/Audio/Audioplayer.cpp" 
-	"src/Audio/SoundEffect.cpp")
+	"src/Audio/SoundEffect.cpp"
+	"src/Audio/AudioStream.cpp")
 
 set(DependencySrc 
 	"dependencies/GLAD/src/glad.c"

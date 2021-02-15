@@ -30,3 +30,4 @@
 
 #include "Audio/AudioPlayer.h"
 #include "Audio/SoundEffect.h"
+#include "Audio/AudioStream.h"

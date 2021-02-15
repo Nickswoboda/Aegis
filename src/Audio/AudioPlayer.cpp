@@ -15,6 +15,8 @@ namespace Aegis {
 	ALCcontext* AudioPlayer::context_ = nullptr;
 
 	static std::vector<const SoundEffect*> currently_playing_;
+	static std::vector<AudioStream*> currently_streaming_;
+
 	static unsigned int volume_ = 100;
 	void AudioPlayer::Init()
 	{
@@ -51,6 +53,23 @@ namespace Aegis {
 		currently_playing_.push_back(&sound);
 	}
 
+	void AudioPlayer::Stream(AudioStream& stream, unsigned int volume)
+	{
+		volume = volume < 0 ? 0 : (volume > 100 ? 100 : volume);
+		alSourcef(stream.source_id_, AL_GAIN, stream.volume_ * (volume / 100.0f) * (volume_ / 100.0f));
+
+		stream.Play();
+
+		currently_streaming_.push_back(&stream);
+	}
+
+	void AudioPlayer::Update()
+	{
+		for (auto& stream : currently_streaming_) {
+			stream->Update();
+		}
+	}
+
 	void AudioPlayer::SetVolume(unsigned int volume)
 	{
 		//clamp to between 0 and 100
@@ -58,6 +77,10 @@ namespace Aegis {
 		
 		for (auto& sound : currently_playing_){
 			alSourcef(sound->source_id_, AL_GAIN, sound->GetVolume() * (volume_ / 100.0f));
+		}
+		
+		for (auto& stream : currently_streaming_) {
+			alSourcef(stream->source_id_, AL_GAIN, stream->volume_ * (volume_ / 100.0f));
 		}
 	}
 }

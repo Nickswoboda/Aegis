@@ -64,7 +64,8 @@ namespace Aegis {
 
 				accumulator_ -= time_step_;
 			}
-
+			
+			AudioPlayer::Update();
 			RendererClear();
 			Renderer2D::BeginScene(glm::ortho(0.0f, window_->GetResolution().x, window_->GetResolution().y, 0.0f));
 			scene_mgr_.CurrentScene()->Render(accumulator_ / time_step_);
