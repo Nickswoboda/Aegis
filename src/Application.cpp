@@ -27,6 +27,7 @@ namespace Aegis {
 	void Application::Shutdown()
 	{
 		Renderer2D::Shutdown();
+		AudioPlayer::Shutdown();
 		glfwTerminate();
 	}
 
