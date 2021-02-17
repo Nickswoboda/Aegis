@@ -5,6 +5,7 @@
 #include <AL/alc.h>
 
 #include <unordered_map>
+#include <unordered_set>
 #include <memory>
 
 namespace Aegis
@@ -33,7 +34,9 @@ namespace Aegis
 		static ALCdevice* device_;
 		static ALCcontext* context_;
 
+		static std::unordered_map<std::string, SoundID> id_map_;
 		static std::unordered_map<SoundID, std::shared_ptr<Sound>> sound_map_;
+		static std::unordered_set<SoundID> playing_set_;
 		static float master_volume_;
 	};
 

@@ -14,7 +14,9 @@ namespace Aegis {
 	ALCdevice* AudioPlayer::device_ = nullptr;
 	ALCcontext* AudioPlayer::context_ = nullptr;
 
+	std::unordered_map<std::string, SoundID> AudioPlayer::id_map_;
 	std::unordered_map<SoundID, std::shared_ptr<Sound>> AudioPlayer::sound_map_;
+	std::unordered_set<SoundID> AudioPlayer::playing_set_;
 	float AudioPlayer::master_volume_ = 1.0f;
 
 	void AudioPlayer::Init()
@@ -48,6 +50,10 @@ namespace Aegis {
 
 	SoundID AudioPlayer::LoadSound(const std::string& path, bool looping, bool streaming)
 	{
+		if (id_map_.count(path)) {
+			return id_map_[path];
+		}
+
 		auto sound = std::make_shared<Sound>();
         sound->stream = stb_vorbis_open_filename(path.c_str(), NULL, NULL);
         auto info = stb_vorbis_get_info(sound->stream);
@@ -79,6 +85,7 @@ namespace Aegis {
 			alGenBuffers(sound->num_buffers, sound->buffer_ids);
 		}
 
+		id_map_[path] = source_id;
 		sound_map_[source_id] = sound;
 		return source_id;
 	}
@@ -137,18 +144,28 @@ namespace Aegis {
 			alSourceQueueBuffers(id, sound->num_buffers, sound->buffer_ids);
 		} 
 		alSourcePlay(id);
+		playing_set_.insert(id);
 	}
 
 	void AudioPlayer::StopSound(SoundID id)
 	{
 		alSourceStop(id);
+		playing_set_.erase(id);
 	}
 
 	void AudioPlayer::Update()
 	{
-		for (auto it : sound_map_){
-			SoundID id = it.first;
-			auto sound = it.second;
+		std::vector<SoundID> stopped;
+
+		for (SoundID id : playing_set_){
+
+			int state;
+			alGetSourcei(id, AL_SOURCE_STATE, &state);
+			if (state == AL_STOPPED) {
+				stopped.push_back(id);
+				continue;
+			}
+			auto sound = sound_map_[id];
 
 			if (sound->streaming){
 				int processed;
@@ -174,6 +191,10 @@ namespace Aegis {
 					}
 				}
 			}
+		}
+
+		for (auto id : stopped) {
+			playing_set_.erase(id);
 		}
 	}
 
