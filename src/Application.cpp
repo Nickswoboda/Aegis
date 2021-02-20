@@ -26,6 +26,9 @@ namespace Aegis {
 
 	void Application::Shutdown()
 	{
+		//Call mgr dtor makes sure all user's scenes, 
+		//which may reference audio or renderer, are destroyed first
+		scene_mgr_.~SceneManager();
 		Renderer2D::Shutdown();
 		AudioPlayer::Shutdown();
 		glfwTerminate();
