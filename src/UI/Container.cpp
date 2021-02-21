@@ -11,7 +11,14 @@ namespace Aegis{
 
 	void Container::OnEvent(Event& event)
 	{
-		//handle window resizing events?
+		for (auto& widget : widgets_) {
+			if (widget->visible_) {
+				widget->OnEvent(event);
+				if (event.handled_) {
+					return;
+				}
+			}
+		}
 	}
 
 	void Container::Render() const

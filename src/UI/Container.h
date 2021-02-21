@@ -36,6 +36,15 @@ namespace Aegis{
 		void OnEvent(Event& event) override;
 		void SetPos(Aegis::Vec2 pos) override;
 
+		template<typename T, typename... Args>
+		std::shared_ptr<T> AddWidget(Args&&... args)
+		{
+			auto ref = std::shared_ptr<T>(new T(std::forward<Args>(args)...));
+			ref->SetFont(font_);
+			AddWidget(ref);
+			return ref;
+		}
+
 		void AddWidget(std::shared_ptr<Widget> widget);
 		void UpdateWidgets();
 
