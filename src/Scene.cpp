@@ -8,6 +8,27 @@ namespace Aegis{
 
 	}
 
+	void SceneManager::Update()
+	{
+		scenes_.back()->Update();
+	}
+
+	void SceneManager::Render(float dt)
+	{
+		scenes_.back()->Render(dt);
+		if (scenes_.back()->ui_layer_){
+			scenes_.back()->ui_layer_->Render(dt);
+		}
+	}
+
+	void SceneManager::OnEvent(Event& event)
+	{
+		scenes_.back()->OnEvent(event);
+		if (scenes_.back()->ui_layer_){
+			scenes_.back()->ui_layer_->OnEvent(event);
+		}
+	}
+
 	void SceneManager::PushScene(std::unique_ptr<Scene> scene)
 	{
 		scene->manager_ = this;
@@ -25,11 +46,6 @@ namespace Aegis{
 	{
 		scenes_.pop_back();
 		PushScene(std::move(scene));
-	}
-
-	std::unique_ptr<Scene>& SceneManager::CurrentScene()
-	{
-		return scenes_.back();
 	}
 
 	void SceneManager::UpdateAllCameraProjections(float left, float right, float bottom, float top)

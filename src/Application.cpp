@@ -64,7 +64,7 @@ namespace Aegis {
 			window_->OnUpdate();
 			
 			while (accumulator_ >= time_step_) {
-				scene_mgr_.CurrentScene()->Update();
+				scene_mgr_.Update();
 
 				accumulator_ -= time_step_;
 			}
@@ -72,11 +72,7 @@ namespace Aegis {
 			AudioPlayer::Update();
 			RendererClear();
 			Renderer2D::BeginScene(glm::ortho(0.0f, window_->GetResolution().x, window_->GetResolution().y, 0.0f));
-			scene_mgr_.CurrentScene()->Render(accumulator_ / time_step_);
-
-			if (scene_mgr_.CurrentScene()->ui_layer_){
-				scene_mgr_.CurrentScene()->ui_layer_->Render(0.0f);
-			}
+			scene_mgr_.Render(accumulator_ / time_step_);
 
 			if (show_frame_time_) {
 				Renderer2D::SetProjection(glm::ortho(0.0f, window_->GetResolution().x, window_->GetResolution().y, 0.0f));
@@ -102,10 +98,7 @@ namespace Aegis {
 		}
 
 		if (!event.handled_) {
-			scene_mgr_.CurrentScene()->OnEvent(event);
-			if (scene_mgr_.CurrentScene()->ui_layer_) {
-				scene_mgr_.CurrentScene()->ui_layer_->OnEvent(event);
-			}
+			scene_mgr_.OnEvent(event);
 		}
 	}
 

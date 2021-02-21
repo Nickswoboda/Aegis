@@ -36,10 +36,13 @@ namespace Aegis {
 	class SceneManager
 	{
 	public:
+		void Update();
+		void Render(float dt);
+		void OnEvent(Event& event);
+
 		void PushScene(std::unique_ptr<Scene> scene); 
 		void PopScene();
 		void ReplaceScene(std::unique_ptr<Scene> scene);
-		std::unique_ptr<Scene>& CurrentScene();
 
 		void UpdateAllCameraProjections(float left, float right, float bottom, float top);
 	private:
