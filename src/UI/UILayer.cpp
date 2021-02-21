@@ -36,7 +36,7 @@ namespace Aegis {
 
 	}
 
-	std::shared_ptr<Container> UILayer::AddContainer(AABB rect, Container::Orientation orientation, int padding, Container::Alignment alignment)
+	std::shared_ptr<Container> UILayer::AddContainer(AABB rect, Container::Orientation orientation, int padding, Alignment alignment)
 	{
 		auto container = std::make_shared<Container>(rect, orientation, padding, alignment);
 		containers_.push_back(container);

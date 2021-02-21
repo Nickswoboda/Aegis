@@ -4,7 +4,24 @@
 #include "../Math/Vec4.h"
 
 namespace Aegis{
-	class Container
+
+	enum Alignment 
+	{
+		Top =		1 << 0,
+		Bottom =	1 << 1,
+		VCenter =   1 << 2,
+		Left =      1 << 3,
+		Right =     1 << 4,
+		HCenter =   1 << 5 
+
+	};
+
+	inline Alignment operator|(Alignment a, Alignment b)
+	{
+		return static_cast<Alignment>(static_cast<int>(a) | static_cast<int>(b));
+	}
+
+	class Container: public Widget
 	{
 	public:
 		enum Orientation
@@ -13,29 +30,28 @@ namespace Aegis{
 			Vertical
 		};
 
-		enum Alignment
-		{
-			Top,
-			Bottom,
-			Left,
-			Right,
-			Center
-		};
+		Container(AABB rect_, Orientation orientation, int padding, Alignment alignment = Alignment::Top | Alignment::Left);
 
-		Container(AABB rect_, Orientation orientation, int padding, Alignment alignment);
+		void Render() const override;
+		void OnEvent(Event& event) override;
+		void SetPos(Aegis::Vec2 pos) override;
 
 		void AddWidget(std::shared_ptr<Widget> widget);
 		void UpdateWidgets();
-		void AlignWidget(Widget& widget, Alignment alignment);
-		void Render();
 
+		void SetAlignment(Alignment alignment);
 
-		std::vector<std::shared_ptr<Widget>> widgets_;
-		Vec4 bg_color_;
-		AABB rect_;
+		Vec4 bg_color_ = {0.0f, 0.0f, 1.0f, 0.0f};
 		int padding_;
-		Alignment alignment_;
+
+	private:
+		bool WidgetFits(const Widget& widget) const;
+		void AlignWidget(Widget& widget, Vec2& pen_pos);
+
+		float occupied_space_;
 		Orientation orientation_;
+		Alignment alignment_ = Alignment::Top | Alignment::Left;
+		std::vector<std::shared_ptr<Widget>> widgets_;
 	};
 }
 

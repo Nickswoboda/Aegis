@@ -30,7 +30,7 @@ namespace Aegis{
 			widgets_.push_back(ref);
 			return ref;
 		}
-		std::shared_ptr<Container> AddContainer(AABB rect, Container::Orientation orientation, int padding, Container::Alignment alignment);
+		std::shared_ptr<Container> AddContainer(AABB rect, Container::Orientation orientation, int padding, Alignment alignment);
 
 		std::vector<std::shared_ptr<Container>> containers_;
 		std::vector<std::shared_ptr<Widget>> widgets_;
