@@ -15,7 +15,7 @@ namespace Aegis {
 		rect_ = { pos.x, pos.y, subtex_rect.size.x, subtex_rect.size.y };
 	}
 
-	void SpriteWidget::Render()
+	void SpriteWidget::Render() const
 	{
 		if (visible_) {
 			DrawSubTexture(rect_.pos, sprite_.GetRect().size, *sprite_.texture_, sprite_.GetTextureCoords());

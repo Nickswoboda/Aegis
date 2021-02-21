@@ -30,7 +30,7 @@ namespace Aegis {
 		return false;
 	}
 
-	void Button::Render()
+	void Button::Render() const
 	{
 		if (textures_[state_]){
 			DrawQuad(rect_.pos, rect_.size, *textures_[state_], { 1.0f, 1.0f, 1.0f, 1.0f }, z_idx_);

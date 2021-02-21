@@ -23,7 +23,7 @@ namespace Aegis {
 
 		bool IsPressed(int action);
 		void OnEvent(Event& event) override;
-		void Render() override;
+		void Render() const override;
 
 		void SetStateTexture(State state, std::shared_ptr<Texture> texture);
 		std::array<std::shared_ptr<Texture>, NumStates> textures_;

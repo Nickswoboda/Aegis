@@ -8,7 +8,7 @@ namespace Aegis{
 		Label(const std::string& text, Vec2 pos, Vec4 color = {1.0f, 1.0f, 1.0f, 1.0f});
 
 		void OnEvent(Event& event) override {};
-		void Render() override;
+		void Render() const override;
 
 		void SetText(const std::string& text);
 

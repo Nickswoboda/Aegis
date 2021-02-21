@@ -12,7 +12,7 @@ namespace Aegis{
 	public:
 		Checkbox(const std::string& label, AABB box);
 		void OnEvent(Event& event) override;
-		void Render() override;
+		void Render() const override;
 		void SetFont(std::shared_ptr<Font> font) override;
 
 		void SetTexture(bool checked, std::shared_ptr<Texture> texture);

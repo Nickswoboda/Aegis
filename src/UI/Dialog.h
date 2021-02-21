@@ -13,7 +13,7 @@ namespace Aegis{
 		Dialog(const std::string& text, Vec2 pos_, Vec2 size_);
 		
 		void OnEvent(Event& event) override;
-		void Render() override;
+		void Render() const override;
 
 		std::unique_ptr<Button> accept_button_;
 		std::unique_ptr<Button> reject_button_;

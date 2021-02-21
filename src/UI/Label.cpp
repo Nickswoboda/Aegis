@@ -11,7 +11,7 @@ namespace Aegis{
 		rect_ = {pos.x, pos.y, size.x, size.y};
 	};
 
-	void Label::Render()
+	void Label::Render() const
 	{
 		Renderer2D::SetFont(font_);
 		DrawText(text_, rect_.pos, color_);

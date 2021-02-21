@@ -18,7 +18,7 @@ namespace Aegis{
 		button_->OnEvent(event);
 	}
 
-	void Checkbox::Render()
+	void Checkbox::Render() const
 	{
 		Renderer2D::SetFont(font_);
 		if (textures_[checked_]){

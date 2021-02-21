@@ -13,7 +13,7 @@ namespace Aegis{
 		SpriteWidget(const Vec2 pos, std::shared_ptr<Texture> texture, AABB subtex_rect);
 
 		void OnEvent(Event& event) override {}
-		void Render() override;
+		void Render() const override;
 
 		Sprite sprite_;
 		Vec2 pos_;
