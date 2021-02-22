@@ -31,7 +31,8 @@ set(AegisSrc
 	"src/UI/Checkbox.cpp"
 	"src/UI/Label.cpp" 
 	"src/UI/SpriteWidget.cpp"
-	"src/Audio/AudioPlayer.cpp" )
+	"src/Audio/AudioPlayer.cpp"
+	"src/Audio/Sound.cpp")
 
 set(DependencySrc 
 	"dependencies/GLAD/src/glad.c"

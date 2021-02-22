@@ -30,7 +30,6 @@ namespace Aegis
 
 	private:
 
-		static void DeleteSound(SoundID id);
 		static ALCdevice* device_;
 		static ALCcontext* context_;
 

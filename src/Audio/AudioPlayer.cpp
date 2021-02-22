@@ -40,8 +40,8 @@ namespace Aegis {
 
 	void AudioPlayer::Shutdown()
 	{
-		for (auto it : sound_map_) {
-			DeleteSound(it.first);
+		while (!sound_map_.empty()){
+			UnloadSound(sound_map_.begin()->first);
 		}
 		alcMakeContextCurrent(nullptr);
 		alcDestroyContext(context_);
@@ -54,55 +54,19 @@ namespace Aegis {
 			return id_map_[path];
 		}
 
-		auto sound = std::make_shared<Sound>();
-        sound->stream = stb_vorbis_open_filename(path.c_str(), NULL, NULL);
-        auto info = stb_vorbis_get_info(sound->stream);
-		sound->samples = stb_vorbis_stream_length_in_samples(sound->stream) * info.channels;
-		sound->sample_rate = info.sample_rate;
-		sound->channels = info.channels;
-		sound->format = sound->channels == 1 ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16;
-		sound->looping = looping;
-		sound->streaming = streaming;
-		AE_ASSERT(sound->samples != -1, "Unable to decode .ogg file. Make sure the path is valid.");
-		
 		ALuint source_id;
         alGenSources(1, &source_id);
 
+		auto sound = std::make_shared<Sound>(path, looping, streaming);
+
 		if (!streaming){
-			int data_size = sound->samples * sound->channels * sizeof(short);
-			sound->data = new short[data_size];
-            int amount = stb_vorbis_get_samples_short_interleaved(sound->stream, sound->channels, sound->data, sound->samples*sound->channels);
-			alGenBuffers(1, &sound->buffer_ids[0]);
-			alBufferData(sound->buffer_ids[0], sound->format, sound->data, data_size, sound->sample_rate);
-			delete[] sound->data;
-			sound->data = nullptr;
-
-			alSourceQueueBuffers(source_id, 1, &sound->buffer_ids[0]);
+			alSourceQueueBuffers(source_id, 1, &sound->buffer_ids_[0]);
 			alSourcei(source_id, AL_LOOPING, looping);
-
-		} else {
-			sound->data = new short[sound->buffer_size];
-			alGenBuffers(sound->num_buffers, sound->buffer_ids);
 		}
 
 		id_map_[path] = source_id;
 		sound_map_[source_id] = sound;
 		return source_id;
-	}
-
-	void AudioPlayer::DeleteSound(SoundID id)
-	{
-		auto sound = sound_map_[id];
-		if (sound->data != nullptr) {
-			delete[] sound->data;
-		}
-		alDeleteSources(1, &id);
-		if (sound->streaming) {
-			alDeleteBuffers(sound->num_buffers, sound->buffer_ids);
-		}
-		else {
-			alDeleteBuffers(1, &sound->buffer_ids[0]);
-		}
 	}
 
 	void AudioPlayer::UnloadSound(SoundID id)
@@ -111,7 +75,7 @@ namespace Aegis {
 			std::cout << "No sound found with id: " << id << "\n";
 			return;
 		} else {
-			DeleteSound(id);
+			alDeleteSources(1, &id);
 			sound_map_.erase(id);
 		}
 	}
@@ -124,25 +88,16 @@ namespace Aegis {
 		alSourcef(id, AL_GAIN, (volume / 100.0f) * master_volume_);
 
 		auto sound = sound_map_[id];
-		sound->volume = volume;
 
-		if (sound->streaming){
+		if (sound->streaming_) {
 			alSourceRewind(id);
 			alSourcei(id, AL_BUFFER, 0);
-			//DECLARE, processed, state, amount, which TYPE int
 
-			stb_vorbis_seek_start(sound->stream);
-			for (int i = 0; i < sound->num_buffers; ++i) {
-				int amount = stb_vorbis_get_samples_short_interleaved(sound->stream, sound->channels, sound->data, sound->buffer_size);
-				alBufferData(sound->buffer_ids[i], sound->format, sound->data, sound->buffer_size * sizeof(short), sound->sample_rate);
+			sound->StartStream(volume);
 
-				if (amount == 0) {
-					break;
-				}
-			}
+			alSourceQueueBuffers(id, sound->num_buffers_, sound->buffer_ids_);
+		}
 
-			alSourceQueueBuffers(id, sound->num_buffers, sound->buffer_ids);
-		} 
 		alSourcePlay(id);
 		playing_set_.insert(id);
 	}
@@ -165,28 +120,18 @@ namespace Aegis {
 				stopped.push_back(id);
 				continue;
 			}
-			auto sound = sound_map_[id];
 
-			if (sound->streaming){
+			auto sound = sound_map_[id];
+			if (sound->streaming_){
 				int processed;
 				alGetSourcei(id, AL_BUFFERS_PROCESSED, &processed);
-
 				while (processed > 0) {
-					int amount = stb_vorbis_get_samples_short_interleaved(sound->stream, sound->channels, sound->data, sound->buffer_size);
-					if (amount == 0) {
-						if (sound->looping) {
-							stb_vorbis_seek_start(sound->stream);
-							stb_vorbis_get_samples_short_interleaved(sound->stream, sound->channels, sound->data, sound->buffer_size);
-						}
-						else {
-							break;
-						}
-					} 
-					else {
-						ALuint buffer;
-						alSourceUnqueueBuffers(id, 1, &buffer);
-						--processed;
-						alBufferData(buffer, sound->format, sound->data, sound->buffer_size * sizeof(short), sound->sample_rate);
+					ALuint buffer;
+					alSourceUnqueueBuffers(id, 1, &buffer);
+					--processed;
+
+					bool updated = sound->UpdateBuffer(buffer);
+					if (updated) {
 						alSourceQueueBuffers(id, 1, &buffer);
 					}
 				}
@@ -204,7 +149,7 @@ namespace Aegis {
 		master_volume_ = volume < 0 ? 0 : (volume > 100 ? 1 : volume/100.0f);
 		
 		for (auto it : sound_map_) {
-			alSourcef(it.first, AL_GAIN, it.second->volume * master_volume_);
+			alSourcef(it.first, AL_GAIN, it.second->volume_ * master_volume_);
 		}
 	}
 
@@ -217,6 +162,6 @@ namespace Aegis {
 
 		volume = volume < 0 ? 0 : (volume > 100 ? 1 : volume/100.0f);
 		alSourcef(id, AL_GAIN, volume * master_volume_);
-		sound_map_[id]->volume = volume;
+		sound_map_[id]->volume_ = volume;
 	}
 }
