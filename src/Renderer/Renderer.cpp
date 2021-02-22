@@ -3,8 +3,8 @@
 #include "VertexArray.h"
 #include "Texture.h"
 #include "Shader.h"
-#include "../Font.h"
-#include "../Assert.h"
+#include "Font.h"
+#include "../Core/Assert.h"
 
 #include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>

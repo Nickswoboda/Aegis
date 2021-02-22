@@ -1,11 +1,11 @@
 #pragma once
 #include "Widget.h"
-#include "../Event.h"
+#include "../Core/Event.h"
 #include "../Math/AABB.h"
 #include "../Math/Vec4.h"
-#include "../Font.h"
+#include "../Renderer/Font.h"
 
-#include "array"
+#include <array>
 #include <functional>
 
 namespace Aegis {

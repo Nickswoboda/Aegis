@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Event.h"
-#include "Math/Vec2.h"
+#include "../Math/Vec2.h"
 
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>

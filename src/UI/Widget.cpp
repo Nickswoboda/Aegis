@@ -1,5 +1,5 @@
 #include "Widget.h"
-#include "../Application.h"
+#include "../Core/Application.h"
 
 namespace Aegis {
 

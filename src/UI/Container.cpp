@@ -1,6 +1,6 @@
 #include "Container.h"
 #include "../Renderer/Renderer.h"
-#include "../Assert.h"
+#include "../Core/Assert.h"
 
 namespace Aegis{
 	Container::Container(AABB rect, Orientation orientation, int padding, Alignment alignment)

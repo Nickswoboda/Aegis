@@ -1,6 +1,6 @@
 #include "Font.h"
-#include "Assert.h"
-#include "Application.h"
+#include "../Core/Assert.h"
+#include "../Core/Application.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H

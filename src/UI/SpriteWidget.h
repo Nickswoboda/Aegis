@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Widget.h"
-#include "../Sprite.h"
+#include "../Renderer/Sprite.h"
 
 namespace Aegis{
 

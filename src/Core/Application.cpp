@@ -1,16 +1,17 @@
 #include "Application.h"
 
-#include "Renderer/Renderer.h"
-#include "Font.h"
 #include "Assert.h"
-#include "WorkSansFont.h"
-#include "Audio/AudioPlayer.h"
+#include "../Renderer/Renderer.h"
+#include "../Renderer/Font.h"
+#include "../Utility/WorkSansFont.h"
+#include "../Audio/AudioPlayer.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+
 #include <iostream>
 #include <chrono>
 
@@ -62,14 +63,13 @@ namespace Aegis {
 			accumulator_ += frame_time_sec_;
 
 			window_->OnUpdate();
+			AudioPlayer::Update();
 			
 			while (accumulator_ >= time_step_) {
 				scene_mgr_.Update();
-
 				accumulator_ -= time_step_;
 			}
 			
-			AudioPlayer::Update();
 			RendererClear();
 			Renderer2D::BeginScene(glm::ortho(0.0f, window_->GetResolution().x, window_->GetResolution().y, 0.0f));
 			scene_mgr_.Render(accumulator_ / time_step_);

@@ -1,9 +1,8 @@
 #include "Dropdown.h"
 
 #include "../Renderer/Renderer.h"
-#include "../FontManager.h"
-#include "../Application.h"
-#include "../MouseCodes.h"
+#include "../Core/Application.h"
+#include "../Core/MouseCodes.h"
 
 namespace Aegis {
 	Dropdown::Dropdown(const std::string& label, Aegis::AABB rect)

@@ -1,12 +1,14 @@
 #pragma once
 
 #include "Texture.h"
-#include "../Font.h"
+#include "Font.h"
+#include "Sprite.h"
+
 #include "../Math/Vec2.h"
 #include "../Math/Vec4.h"
 #include "../Math/Color.h"
+
 #include <glm/glm.hpp>
-#include "../Sprite.h"
 
 #include <string>
 #include <memory>

@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Event.h"
-#include "Renderer/Renderer.h"
-#include "Camera.h"
-#include "UI/UILayer.h"
+#include "../Renderer/Renderer.h"
+#include "../Renderer/Camera.h"
+#include "../UI/UILayer.h"
 
 #include <vector>
 #include <memory>

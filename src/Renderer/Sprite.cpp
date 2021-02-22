@@ -1,6 +1,6 @@
 #include "Sprite.h"
 
-#include "Renderer/Renderer.h"
+#include "Renderer.h"
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace Aegis{

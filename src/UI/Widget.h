@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../Object.h"
-#include "../Event.h"
-#include "../Font.h"
+#include "../Core/Object.h"
+#include "../Core/Event.h"
+#include "../Renderer/Font.h"
 #include "../Math/AABB.h"
 
 #include <memory>

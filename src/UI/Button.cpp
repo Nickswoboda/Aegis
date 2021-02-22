@@ -1,7 +1,7 @@
 #include "Button.h"
 
-#include "../MouseCodes.h"
-#include "../Application.h"
+#include "../Core/MouseCodes.h"
+#include "../Core/Application.h"
 #include "../Renderer/Renderer.h"
 
 namespace Aegis {

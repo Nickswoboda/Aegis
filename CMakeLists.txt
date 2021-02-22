@@ -3,16 +3,16 @@ set (CMAKE_CXX_STANDARD 17)
 project ("Aegis")
 
 set(AegisSrc
-	"src/Application.cpp"
-	"src/Window.cpp"
-	"src/Font.cpp"
-	"src/Object.cpp"
-	"src/Timer.cpp" 
-	"src/Camera.cpp" 
-	"src/Scene.cpp"
-	"src/Sprite.cpp"
-	"src/FontManager.cpp" 
-	"src/TextureManager.cpp" 
+	"src/Core/Application.cpp"
+	"src/Core/Window.cpp"
+	"src/Core/Object.cpp"
+	"src/Core/Scene.cpp"
+	"src/Utility/Timer.cpp" 
+	"src/Utility/FontManager.cpp" 
+	"src/Utility/TextureManager.cpp" 
+	"src/Renderer/Camera.cpp" 
+	"src/Renderer/Sprite.cpp"
+	"src/Renderer/Font.cpp"
 	"src/Renderer/Renderer.cpp"
 	"src/Renderer/Texture.cpp"
 	"src/Renderer/Shader.cpp"
@@ -31,7 +31,7 @@ set(AegisSrc
 	"src/UI/Checkbox.cpp"
 	"src/UI/Label.cpp" 
 	"src/UI/SpriteWidget.cpp"
-	"src/Audio/Audioplayer.cpp" )
+	"src/Audio/AudioPlayer.cpp" )
 
 set(DependencySrc 
 	"dependencies/GLAD/src/glad.c"

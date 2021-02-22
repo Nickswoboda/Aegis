@@ -1,7 +1,7 @@
 #include "Dialog.h"
 
 #include "../Renderer/Renderer.h"
-#include "../Application.h"
+#include "../Core/Application.h"
 
 namespace Aegis{
 	Dialog::Dialog(const std::string& text, Vec2 pos, Vec2 size)
