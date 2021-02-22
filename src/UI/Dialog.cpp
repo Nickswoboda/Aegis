@@ -36,9 +36,11 @@ namespace Aegis{
 
 	void Dialog::Render() const
 	{
-		DrawQuad(pos_, size_, { 0.309f, 0.517f, 0.811f, 1.0f});
-		text_->Render();
-		accept_button_->Render();
-		reject_button_->Render();
+		if (visible_){
+			DrawQuad(pos_, size_, { 0.309f, 0.517f, 0.811f, 1.0f});
+			text_->Render();
+			accept_button_->Render();
+			reject_button_->Render();
+		}
 	}
 }

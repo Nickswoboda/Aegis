@@ -20,14 +20,16 @@ namespace Aegis{
 
 	void Checkbox::Render() const
 	{
-		Renderer2D::SetFont(font_);
-		if (textures_[checked_]){
-			DrawQuad(rect_.pos, rect_.size, *textures_[checked_]);
-		} else {
-			auto color = checked_ ? Aegis::Vec4(0.2f, 0.2f, 0.2f, 1.0f) : Aegis::Vec4(0.8f, 0.8f, 0.2f, 1.0f);
-			DrawQuad(rect_.pos, rect_.size, color, z_idx_);
+		if (visible_){
+			Renderer2D::SetFont(font_);
+			if (textures_[checked_]){
+				DrawQuad(rect_.pos, rect_.size, *textures_[checked_]);
+			} else {
+				auto color = checked_ ? Aegis::Vec4(0.2f, 0.2f, 0.2f, 1.0f) : Aegis::Vec4(0.8f, 0.8f, 0.2f, 1.0f);
+				DrawQuad(rect_.pos, rect_.size, color, z_idx_);
+			}
+			DrawText(label_, {rect_.pos.x - label_offset_, rect_.pos.y});
 		}
-		DrawText(label_, {rect_.pos.x - label_offset_, rect_.pos.y});
 	}
 
 

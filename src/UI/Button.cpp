@@ -32,17 +32,19 @@ namespace Aegis {
 
 	void Button::Render() const
 	{
-		if (textures_[state_]){
-			DrawQuad(rect_.pos, rect_.size, *textures_[state_], { 1.0f, 1.0f, 1.0f, 1.0f }, z_idx_);
-		}
-		else{
-			DrawQuad(rect_.pos, rect_.size, {0.2f, 0.2f, 0.8f, 1.0f}, z_idx_);
-		}
-		if (!text_.empty()){
-			if (font_){
-				Renderer2D::SetFont(font_);
+		if (visible_){
+			if (textures_[state_]){
+				DrawQuad(rect_.pos, rect_.size, *textures_[state_], { 1.0f, 1.0f, 1.0f, 1.0f }, z_idx_);
 			}
-			DrawText(text_, rect_.pos, { 1.0, 1.0f, 1.0f, 1.0f }, z_idx_);
+			else{
+				DrawQuad(rect_.pos, rect_.size, {0.2f, 0.2f, 0.8f, 1.0f}, z_idx_);
+			}
+			if (!text_.empty()){
+				if (font_){
+					Renderer2D::SetFont(font_);
+				}
+				DrawText(text_, rect_.pos, { 1.0, 1.0f, 1.0f, 1.0f }, z_idx_);
+			}
 		}
 	}
 

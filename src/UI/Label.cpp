@@ -13,8 +13,10 @@ namespace Aegis{
 
 	void Label::Render() const
 	{
-		Renderer2D::SetFont(font_);
-		DrawText(text_, rect_.pos, color_);
+		if(visible_){
+			Renderer2D::SetFont(font_);
+			DrawText(text_, rect_.pos, color_);
+		}
 	};
 
 	void Label::SetText(const std::string& text)
