@@ -10,6 +10,9 @@ namespace Aegis{
 
 	void SceneManager::Update()
 	{
+		if (!queued_for_deletion_.empty()){
+			queued_for_deletion_.clear();
+		}
 		scenes_.back()->Update();
 	}
 
@@ -38,13 +41,14 @@ namespace Aegis{
 	void SceneManager::PopScene()
 	{
 		if (scenes_.size() > 1){
+			queued_for_deletion_.push_back(std::move(scenes_.back()));
 			scenes_.pop_back();
 		}
 	}
 
 	void SceneManager::ReplaceScene(std::unique_ptr<Scene> scene)
 	{
-		scenes_.pop_back();
+		PopScene();
 		PushScene(std::move(scene));
 	}
 

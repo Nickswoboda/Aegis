@@ -47,5 +47,6 @@ namespace Aegis {
 		void UpdateAllCameraProjections(float left, float right, float bottom, float top);
 	private:
 		std::vector<std::unique_ptr<Scene>> scenes_;
+		std::vector<std::unique_ptr<Scene>> queued_for_deletion_;
 	};
 }
