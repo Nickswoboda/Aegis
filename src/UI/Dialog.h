@@ -10,7 +10,7 @@ namespace Aegis{
 	class Dialog : public Widget
 	{
 	public:
-		Dialog(const std::string& text, Vec2 pos_, Vec2 size_);
+		Dialog(const std::string& text, const AABB& rect);
 		
 		void OnEvent(Event& event) override;
 		void Render() const override;
@@ -18,9 +18,5 @@ namespace Aegis{
 		std::unique_ptr<Button> accept_button_;
 		std::unique_ptr<Button> reject_button_;
 		std::unique_ptr<Label> text_;
-		
-		Vec2 pos_;
-		Vec2 size_;
-
 	};
 }
