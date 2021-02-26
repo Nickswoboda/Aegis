@@ -35,7 +35,7 @@ namespace Aegis
 
 		static std::unordered_map<std::string, SoundID> id_map_;
 		static std::unordered_map<SoundID, std::shared_ptr<Sound>> sound_map_;
-		static std::unordered_set<SoundID> playing_set_;
+		static std::unordered_set<SoundID> streaming_set_;
 		static float master_volume_;
 	};
 

@@ -16,7 +16,7 @@ namespace Aegis {
 
 	std::unordered_map<std::string, SoundID> AudioPlayer::id_map_;
 	std::unordered_map<SoundID, std::shared_ptr<Sound>> AudioPlayer::sound_map_;
-	std::unordered_set<SoundID> AudioPlayer::playing_set_;
+	std::unordered_set<SoundID> AudioPlayer::streaming_set_;
 	float AudioPlayer::master_volume_ = 1.0f;
 
 	void AudioPlayer::Init()
@@ -96,50 +96,55 @@ namespace Aegis {
 			sound->StartStream(volume);
 
 			alSourceQueueBuffers(id, sound->num_buffers_, sound->buffer_ids_);
+			streaming_set_.insert(id);
 		}
 
+		sound->stopped_ = false;
 		alSourcePlay(id);
-		playing_set_.insert(id);
 	}
 
 	void AudioPlayer::StopSound(SoundID id)
 	{
 		alSourceStop(id);
-		playing_set_.erase(id);
+		streaming_set_.erase(id);
 	}
 
 	void AudioPlayer::Update()
 	{
 		std::vector<SoundID> stopped;
 
-		for (SoundID id : playing_set_){
+		for (SoundID id : streaming_set_){
+
+			auto sound = sound_map_[id];
 
 			int state;
 			alGetSourcei(id, AL_SOURCE_STATE, &state);
 			if (state == AL_STOPPED) {
-				stopped.push_back(id);
-				continue;
+				if (sound->stopped_) {
+					stopped.push_back(id);
+					continue;
+				}
+				else { //was stopped automatically. i.e dragging window
+					alSourcePlay(id);
+				}
 			}
 
-			auto sound = sound_map_[id];
-			if (sound->streaming_){
-				int processed;
-				alGetSourcei(id, AL_BUFFERS_PROCESSED, &processed);
-				while (processed > 0) {
-					ALuint buffer;
-					alSourceUnqueueBuffers(id, 1, &buffer);
-					--processed;
+			int processed;
+			alGetSourcei(id, AL_BUFFERS_PROCESSED, &processed);
+			while (processed > 0) {
+				ALuint buffer;
+				alSourceUnqueueBuffers(id, 1, &buffer);
+				--processed;
 
-					bool updated = sound->UpdateBuffer(buffer);
-					if (updated) {
-						alSourceQueueBuffers(id, 1, &buffer);
-					}
+				bool updated = sound->UpdateBuffer(buffer);
+				if (updated) {
+					alSourceQueueBuffers(id, 1, &buffer);
 				}
 			}
 		}
 
 		for (auto id : stopped) {
-			playing_set_.erase(id);
+			streaming_set_.erase(id);
 		}
 	}
 

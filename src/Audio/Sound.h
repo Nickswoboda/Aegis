@@ -31,6 +31,7 @@ namespace Aegis{
 		float volume_ = 1.0f;
 		bool looping_;
 		bool streaming_;
+		bool stopped_ = true;
 
 		static const int buffer_size_ = 4096;
 		static const int num_buffers_ = 4;

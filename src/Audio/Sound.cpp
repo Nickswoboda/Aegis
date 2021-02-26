@@ -63,9 +63,14 @@ namespace Aegis {
 	bool Sound::UpdateBuffer(ALuint buffer_id)
 	{
 		int amount = stb_vorbis_get_samples_short_interleaved(stream_, channels_,data_, buffer_size_);
-		if (amount == 0 && looping_) {
-			stb_vorbis_seek_start(stream_);
-			amount = stb_vorbis_get_samples_short_interleaved(stream_, channels_, data_, buffer_size_);
+		if (amount == 0){
+			if (looping_) {
+				stb_vorbis_seek_start(stream_);
+				amount = stb_vorbis_get_samples_short_interleaved(stream_, channels_, data_, buffer_size_);
+			}
+			else {
+				stopped_ = true;
+			}
 		}
 
 		if (amount != 0){
