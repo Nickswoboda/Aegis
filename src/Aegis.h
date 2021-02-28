@@ -10,7 +10,7 @@
 #include "Renderer/Camera.h"
 #include "Renderer/Sprite.h"
 
-#include "Utility/Timer.h"
+#include "Utility/Timing.h"
 #include "Utility/TextureManager.h"
 #include "Utility/FontManager.h"
 
