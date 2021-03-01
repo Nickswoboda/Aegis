@@ -50,6 +50,12 @@ namespace Aegis {
 		scene_mgr_.PushScene(std::unique_ptr<Scene>(new BaseScene()));
 	}
 
+	void Application::Start(std::unique_ptr<Scene> scene)
+	{
+		scene_mgr_.PushScene(std::move(scene));
+		Run();
+	}
+
 	void Application::Run()
 	{
 		double accumulator_ = 0.0;
@@ -109,11 +115,6 @@ namespace Aegis {
 	void Application::OnWindowResize(const WindowResizeEvent& event)
 	{
 		window_->OnResize(event);
-	}
-
-	void Application::PushScene(std::unique_ptr<Scene> scene)
-	{
-		scene_mgr_.PushScene(std::move(scene));
 	}
 
 	float Application::GetTimeStep()
