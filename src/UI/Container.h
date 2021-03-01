@@ -39,8 +39,7 @@ namespace Aegis{
 		template<typename T, typename... Args>
 		std::shared_ptr<T> AddWidget(Args&&... args)
 		{
-			auto ref = std::shared_ptr<T>(new T(std::forward<Args>(args)...));
-			ref->SetFont(font_);
+			auto ref = std::make_shared<T>(std::forward<Args>(args)...);
 			AddWidget(ref);
 			return ref;
 		}

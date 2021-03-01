@@ -40,8 +40,20 @@ namespace Aegis {
 		void Render(float dt);
 		void OnEvent(Event& event);
 
+		template <typename T, typename... Args>
+		void PushScene(Args&& ... args)
+		{
+			PushScene(std::make_unique<T>(std::forward<Args>(args)...));
+		}
 		void PushScene(std::unique_ptr<Scene> scene); 
 		void PopScene();
+
+		template <typename T, typename... Args>
+		void ReplaceScene(Args&& ... args)
+		{
+			ReplaceScene(std::make_unique<T>(std::forward<Args>(args)...));
+		}
+
 		void ReplaceScene(std::unique_ptr<Scene> scene);
 
 		void UpdateAllCameraProjections(float left, float right, float bottom, float top);

@@ -23,6 +23,11 @@ namespace Aegis {
 		}
 	}
 
+	void UILayer::AddWidget(std::shared_ptr<Widget> widget)
+	{
+		widgets_.push_back(widget);
+	}
+
 	void UILayer::Render(float dt)
 	{
 		Renderer2D::SetProjection(glm::ortho(0.0f, Application::GetWindow().GetResolution().x, Application::GetWindow().GetResolution().y, 0.0f));
