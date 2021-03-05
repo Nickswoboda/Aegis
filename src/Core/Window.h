@@ -2,6 +2,7 @@
 
 #include "Event.h"
 #include "../Math/Vec2.h"
+#include "../Math/AABB.h"
 
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
@@ -39,6 +40,8 @@ namespace Aegis {
 		void OnUpdate();
 
 		void CenterOnScreen();
+
+		AABB GetViewport() const;
 
 		void SetPos(int x, int y);
 		Vec2 GetPos();

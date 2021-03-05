@@ -238,4 +238,9 @@ namespace Aegis {
 	{
 		return (glfwGetMouseButton(window_handle_, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS);
 	}
+
+	AABB Window::GetViewport() const
+	{
+		return {0,0, size_.x, size_.y};
+	}
 }
