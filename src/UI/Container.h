@@ -12,8 +12,8 @@ namespace Aegis{
 		VCenter =   1 << 2,
 		Left =      1 << 3,
 		Right =     1 << 4,
-		HCenter =   1 << 5 
-
+		HCenter =   1 << 5,
+		Center =	VCenter | HCenter
 	};
 
 	inline Alignment operator|(Alignment a, Alignment b)
