@@ -8,6 +8,8 @@ namespace Aegis {
 		AABB() = default;
 		AABB(float x, float y, float w, float h)
 			: pos{ x, y }, size{ w, h } {}
+		AABB(Vec2 pos, Vec2 size)
+			: pos(pos), size(size) {}
 		Vec2 pos;
 		Vec2 size;
 	};
@@ -16,4 +18,5 @@ namespace Aegis {
 	bool PointInAABB(const Vec2& point, const AABB& aabb);
 	void CenterAABBHorizontally(AABB& src, const AABB& dest);
 	void CenterAABBVertically(AABB& src, const AABB& dest);
+	void CenterAABB(AABB& src, const AABB& dest);
 }

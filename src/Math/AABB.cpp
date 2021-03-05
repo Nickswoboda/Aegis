@@ -25,5 +25,11 @@ namespace Aegis {
 		int width_diff = dest.size.x - src.size.x;
 		src.pos.x = dest.pos.x + (width_diff / 2);
 	}
+
+	void CenterAABB(AABB& src, const AABB& dest)
+	{
+		CenterAABBVertically(src, dest);
+		CenterAABBHorizontally(src, dest);
+	}
 }
 
