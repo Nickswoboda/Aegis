@@ -163,7 +163,7 @@ namespace Aegis {
 
         for (int i = 0; i < 4; ++i) {
             glm::vec4 vertex_pos = transform * data_.vertex_array_->vertex_positions_[i];
-            data_.quad_buffer_ptr_->position_ = { vertex_pos.x, vertex_pos.y, vertex_pos.z };
+            data_.quad_buffer_ptr_->position_ = Aegis::Vec3(static_cast<int>(vertex_pos.x), static_cast<int>(vertex_pos.y), vertex_pos.z );
             data_.quad_buffer_ptr_->color_ = color;
             data_.quad_buffer_ptr_->tex_coords_ = texture_coords[i];
             data_.quad_buffer_ptr_->texture_ID_ = texture_index;
