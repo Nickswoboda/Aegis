@@ -5,6 +5,7 @@
 #include "../Renderer/Renderer.h"
 
 namespace Aegis {
+
 	Button::Button(AABB rect, const std::string& label)
 		: Widget(rect), text_(label)
 	{
@@ -12,7 +13,14 @@ namespace Aegis {
 		AddSignal("double pressed");
 		AddSignal("entered");
 		AddSignal("exited");
+
+		for (int i = 0; i < NumStates; ++i){
+			bg_colors_[i] = {0.2f, 0.2f, 1.0f, 1.0f};
+		}
+
+		UpdateTextRenderPos();
 	}
+
 
 	bool Button::IsPressed(int action)
 	{
@@ -37,14 +45,21 @@ namespace Aegis {
 				DrawQuad(rect_.pos, rect_.size, *textures_[state_], { 1.0f, 1.0f, 1.0f, 1.0f }, z_idx_);
 			}
 			else{
-				DrawQuad(rect_.pos, rect_.size, {0.2f, 0.2f, 0.8f, 1.0f}, z_idx_);
+				DrawQuad(rect_.pos, rect_.size, bg_colors_[state_], z_idx_);
 			}
 			if (!text_.empty()){
 				if (font_){
 					Renderer2D::SetFont(font_);
 				}
-				DrawText(text_, rect_.pos, { 1.0, 1.0f, 1.0f, 1.0f }, z_idx_);
+				DrawText(text_, text_pos_, { 1.0f, 1.0f, 1.0f, 1.0f }, z_idx_);
 			}
+		}
+
+		if (border_size_ > 0){
+			Aegis::DrawQuad(rect_.pos, Vec2(border_size_, rect_.size.y), border_color_);
+			Aegis::DrawQuad(rect_.pos + Vec2{rect_.size.x - border_size_, 0}, Vec2(border_size_, rect_.size.y), border_color_);
+			Aegis::DrawQuad(rect_.pos + Vec2{0, rect_.size.y - border_size_}, Vec2(rect_.size.x, border_size_), border_color_);
+			Aegis::DrawQuad(rect_.pos, Vec2(rect_.size.x, border_size_), border_color_);
 		}
 	}
 
@@ -100,5 +115,35 @@ namespace Aegis {
 				textures_[State::Pressed] = texture;
 			}
 		}
+	}
+
+	void Button::SetStateBgColor(State state, const Vec4& color)
+	{
+		bg_colors_[state] = color;
+	}
+
+	void Button::UpdateTextRenderPos()
+	{
+		Aegis::AABB text_rect = {Vec2(0,0), font_->GetStringPixelSize(text_)};
+		Aegis::CenterAABB(text_rect, rect_);
+
+		text_pos_ = text_rect.pos;
+	}
+
+	void Button::SetFont(std::shared_ptr<Font> font)
+	{
+		font_ = font;
+		UpdateTextRenderPos();
+	}
+
+	const std::string& Button::GetText() const
+	{
+		return text_;
+	}
+
+	void Button::SetText(const std::string& text)
+	{
+		text_ = text;
+		UpdateTextRenderPos();
 	}
 }
