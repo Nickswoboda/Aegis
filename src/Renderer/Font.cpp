@@ -119,9 +119,9 @@ namespace Aegis {
 				for (int col = 0; col < bmp->width; ++col) {
 					int x = pen_x + col;
 					int y = pen_y + row;
-					pixels[y * tex_pitch + x*4 + 0] = 225;
-					pixels[y * tex_pitch + x*4 + 1] = 225;
-					pixels[y * tex_pitch + x*4 + 2] = 225;
+					pixels[y * tex_pitch + x*4 + 0] = 255;
+					pixels[y * tex_pitch + x*4 + 1] = 255;
+					pixels[y * tex_pitch + x*4 + 2] = 255;
 					pixels[y * tex_pitch + x*4 + 3] = bmp->buffer[row * bmp->pitch + col];
 				}
 			}
