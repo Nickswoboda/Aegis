@@ -28,10 +28,19 @@ namespace Aegis{
 	void Dialog::Render() const
 	{
 		if (visible_){
-			DrawQuad(rect_.pos, rect_.size, { 0.309f, 0.517f, 0.811f, 1.0f});
+			DrawQuad(rect_.pos, rect_.size, bg_color_);
 			text_->Render();
 			button_container_->Render();
 		}
+	}
+
+	void Dialog::SetPos(Vec2 pos)
+	{
+		Vec2 offset = pos - rect_.pos;
+		rect_.pos = pos;
+
+		button_container_->SetPos(button_container_->GetRect().pos + offset);
+		text_->SetPos(text_->GetRect().pos + offset);
 	}
 
 	void Dialog::AddButton(const std::string& label, std::function<void()> callback)

@@ -26,4 +26,9 @@ namespace Aegis{
 		rect_.size = font_->GetStringPixelSize(text);
 	}
 
+	const std::string& Label::GetText() const
+	{
+		return text_;
+	}
+
 }

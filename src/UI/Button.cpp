@@ -21,7 +21,6 @@ namespace Aegis {
 		UpdateTextRenderPos();
 	}
 
-
 	bool Button::IsPressed(int action)
 	{
 		//button must be pressed and released while hovering in ordering for it to be considered to be pressed
@@ -122,6 +121,11 @@ namespace Aegis {
 		bg_colors_[state] = color;
 	}
 
+	void Button::SetPos(Vec2 pos)
+	{
+		rect_.pos = pos;
+		UpdateTextRenderPos();
+	};
 	void Button::UpdateTextRenderPos()
 	{
 		Aegis::AABB text_rect = {Vec2(0,0), font_->GetStringPixelSize(text_)};
