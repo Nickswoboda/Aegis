@@ -15,8 +15,8 @@ namespace Aegis {
 
 	void UILayer::OnEvent(Event& event)
 	{
-		for (auto& widget : widgets_) {
-			widget->OnEvent(event);
+		for (auto it = widgets_.rbegin(); it != widgets_.rend(); ++it){
+			(*it)->OnEvent(event);
 			if (event.handled_){
 				return;
 			}
