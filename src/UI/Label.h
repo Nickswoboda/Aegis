@@ -10,6 +10,8 @@ namespace Aegis{
 		void OnEvent(Event& event) override {};
 		void Render() const override;
 
+		void SetFont(std::shared_ptr<Aegis::Font> font) override;
+
 		const std::string& GetText() const;
 		void SetText(const std::string& text);
 

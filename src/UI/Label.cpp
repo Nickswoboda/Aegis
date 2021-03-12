@@ -17,7 +17,13 @@ namespace Aegis{
 			Renderer2D::SetFont(font_);
 			DrawText(text_, rect_.pos, color_);
 		}
-	};
+	}
+
+	void Label::SetFont(std::shared_ptr<Aegis::Font> font)
+	{
+		font_ = font;
+		rect_.size = font_->GetStringPixelSize(text_);
+	}
 
 	void Label::SetText(const std::string& text)
 	{
