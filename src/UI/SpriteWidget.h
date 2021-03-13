@@ -15,8 +15,13 @@ namespace Aegis{
 		void OnEvent(Event& event) override {}
 		void Render() const override;
 
-		Sprite sprite_;
-		Vec2 pos_;
+		void SetPos(Vec2 pos) override;
 
+		void SetSubTextureRect(const AABB& subtex_rect);
+		void SetScale(Vec2 scale);
+
+
+	private:
+		Sprite sprite_;
 	};
 }

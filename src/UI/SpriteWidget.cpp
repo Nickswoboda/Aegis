@@ -4,21 +4,40 @@
 
 namespace Aegis {
 	SpriteWidget::SpriteWidget(const Vec2 pos, std::shared_ptr<Texture> texture)
-		: sprite_(texture), pos_(pos) 
+		: sprite_(texture) 
 	{
-		rect_ = { pos.x, pos.y, texture->size_.x, texture->size_.y };
+		sprite_.position_ = pos;
+		rect_ = sprite_.GetRect();
 	}
 
 	SpriteWidget::SpriteWidget(const Vec2 pos, std::shared_ptr<Texture> texture, AABB subtex_rect)
-		: sprite_(texture, subtex_rect), pos_(pos) 
+		: sprite_(texture, subtex_rect)
 	{
-		rect_ = { pos.x, pos.y, subtex_rect.size.x, subtex_rect.size.y };
+		sprite_.position_ = pos;
+		rect_ = sprite_.GetRect();
 	}
 
 	void SpriteWidget::Render() const
 	{
 		if (visible_) {
-			DrawSubTexture(rect_.pos, sprite_.GetRect().size, *sprite_.texture_, sprite_.GetTextureCoords());
+			sprite_.Draw();
 		}
+	}
+
+	void SpriteWidget::SetSubTextureRect(const AABB& subtex_rect)
+	{
+		sprite_.SetSubTextureRect(subtex_rect);
+	}
+
+	void SpriteWidget::SetScale(Vec2 scale)
+	{
+		sprite_.scale_ = scale;
+		rect_ = sprite_.GetRect();
+	}
+
+	void SpriteWidget::SetPos(Vec2 pos)
+	{
+		rect_.pos = pos;
+		sprite_.position_ = pos;
 	}
 }
