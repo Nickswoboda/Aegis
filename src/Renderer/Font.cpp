@@ -163,16 +163,20 @@ namespace Aegis {
 	Vec2 Font::GetStringPixelSize(const std::string& string) const
 	{
 		int width = 0;
-		int tallest_glyph_size = 0;
+		int height = 0;
 
 		for (const auto& c : string) {
 			auto glyph = glyphs_[c];
 			width += glyph.advance;
-			if (glyph.size.y > tallest_glyph_size) {
-				tallest_glyph_size = glyph.size.y;
+			if (glyph.size.y > height) {
+				height = glyph.size.y;
 			}
 		}
-		int height = tallest_glyph_size + (highest_glyph_bearing_ - tallest_glyph_size) * 2;
+		//the difference between the tallest glyph the actual height of the text
+		//is doubled in order to distribute the vertical empty space evenly
+		//this allows for proper vertical position alignment of the text
+		int padding = (highest_glyph_bearing_ - height) * 2; 
+		height +=  padding;
 		return Vec2(width, height);
 	}
 }
