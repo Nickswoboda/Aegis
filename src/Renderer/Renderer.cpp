@@ -190,7 +190,7 @@ namespace Aegis {
     void DrawText(const std::string& text, const Vec2& pos, const Vec4& color, const float z_idx)
     {
         Vec2 pen_pos = pos;
-        pen_pos.y += s_default_font->tallest_glyph_height_;
+        pen_pos.y += s_default_font->highest_glyph_bearing_;
 
         for (const auto& c : text) {
 

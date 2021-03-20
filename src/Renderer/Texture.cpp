@@ -92,7 +92,7 @@ namespace Aegis {
             for (int row = 0; row < glyph.size.y; ++row) {
 				for (int col = 0; col < glyph.size.x * 4; ++col){
                     int x = pen_x + col + glyph.bearing.x * 4;;
-                    int y = font.tallest_glyph_height_ + row - glyph.bearing.y;
+                    int y = font.highest_glyph_bearing_ + row - glyph.bearing.y;
                     new_tex_pixel_data[y * (int)tex_size.x * 4 + x] = atlas_pixel_data[ (int)(row + glyph.atlas_pos.y) * (int)atlas->size_.x * 4 + (col + (int)glyph.atlas_pos.x * 4)];
 				}
 			}

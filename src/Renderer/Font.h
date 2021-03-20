@@ -34,8 +34,9 @@ namespace Aegis {
 		std::string font_name_;
 		int size_;
 		std::vector<Glyph> glyphs_;
-		//used to align to top-left corner when rendering
-		int tallest_glyph_height_ = 0;
+		//used to allow specifying top-left corner when rendering
+		//while keeping a consistent baseline
+		int highest_glyph_bearing_ = 0;
 		std::shared_ptr<Texture> atlas_;
 		int num_glyphs_ = 0;
 		Font(FT_Library& library, FT_Face& face, const std::string& path, int size, int num_glyphs = 128);

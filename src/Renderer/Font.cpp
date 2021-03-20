@@ -139,8 +139,8 @@ namespace Aegis {
 
 			glyphs_.push_back(temp);
 
-			if (face->glyph->bitmap_top > tallest_glyph_height_) {
-				tallest_glyph_height_ = face->glyph->bitmap_top;
+			if (face->glyph->bitmap_top > highest_glyph_bearing_) {
+				highest_glyph_bearing_ = face->glyph->bitmap_top;
 			}
 
 			pen_x += (bmp->pitch) + 1;
@@ -163,16 +163,16 @@ namespace Aegis {
 	Vec2 Font::GetStringPixelSize(const std::string& string) const
 	{
 		int width = 0;
-		int height = 0;
+		int tallest_glyph_size = 0;
 
 		for (const auto& c : string) {
 			auto glyph = glyphs_[c];
 			width += glyph.advance;
-			if (glyph.size.y + (tallest_glyph_height_ - glyph.bearing.y) > height) {
-				//tallest glyph - bearing.y = the distance from top baseline
-				height = glyph.size.y + (tallest_glyph_height_ - glyph.bearing.y);
+			if (glyph.size.y > tallest_glyph_size) {
+				tallest_glyph_size = glyph.size.y;
 			}
 		}
+		int height = tallest_glyph_size + (highest_glyph_bearing_ - tallest_glyph_size) * 2;
 		return Vec2(width, height);
 	}
 }
