@@ -6,14 +6,14 @@ namespace Aegis {
 	SpriteWidget::SpriteWidget(const Vec2 pos, std::shared_ptr<Texture> texture)
 		: sprite_(texture) 
 	{
-		sprite_.position_ = pos;
+		sprite_.GetTransform().SetPosition(pos);
 		rect_ = sprite_.GetRect();
 	}
 
 	SpriteWidget::SpriteWidget(const Vec2 pos, std::shared_ptr<Texture> texture, AABB subtex_rect)
 		: sprite_(texture, subtex_rect)
 	{
-		sprite_.position_ = pos;
+		sprite_.GetTransform().SetPosition(pos);
 		rect_ = sprite_.GetRect();
 	}
 
@@ -31,13 +31,13 @@ namespace Aegis {
 
 	void SpriteWidget::SetScale(Vec2 scale)
 	{
-		sprite_.scale_ = scale;
+		sprite_.GetTransform().SetScale(scale);
 		rect_ = sprite_.GetRect();
 	}
 
 	void SpriteWidget::SetPos(Vec2 pos)
 	{
 		rect_.pos = pos;
-		sprite_.position_ = pos;
+		sprite_.GetTransform().SetPosition(pos);
 	}
 }

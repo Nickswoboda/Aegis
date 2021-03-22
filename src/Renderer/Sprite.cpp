@@ -1,6 +1,8 @@
 #include "Sprite.h"
 
 #include "Renderer.h"
+#include "Transform.h"
+
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace Aegis{
@@ -8,7 +10,7 @@ namespace Aegis{
 	Sprite::Sprite(std::shared_ptr<Texture> texture)
 		: texture_(texture)
 	{
-		subtexture_rect_ = {0,0, texture->size_.x, texture->size_.y};
+		SetSubTextureRect({ { 0,0 }, texture->size_ });
 		texture_coords_ = {0.0f, 0.0f, 1.0f, 1.0f};
 	}
 
@@ -16,25 +18,20 @@ namespace Aegis{
 		: texture_(texture), subtexture_rect_(subtex_rect)
 	{
 		UpdateTextureCoords();
+		SetSubTextureRect(subtex_rect);
 	}
 
 	void Sprite::Draw() const
 	{
-		glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(position_.x, position_.y, 0.0f));
-
-		//move origin to center of sprite, rotate, then move back
-		Vec2 size = subtexture_rect_.size * scale_;
-		transform = glm::translate(transform, glm::vec3(0.5f * size.x, 0.5f * size.y, 0.0f));
-		transform = glm::rotate(transform, glm::radians(rotation_), glm::vec3(0.0f, 0.0f, 1.0f));
-		transform = glm::translate(transform, glm::vec3(-0.5f * size.x, -0.5f * size.y, 0.0f));
-		transform = glm::scale(transform, glm::vec3(size.x, size.y, 1.0f));
-
-		DrawQuad(transform, texture_->ID_, texture_coords_, color_);
+		Transform to_global = transform_;
+		to_global.SetScale(transform_.GetScale() * subtexture_rect_.size);
+		DrawQuad(to_global, texture_->ID_, texture_coords_, color_);
 	}
 
 	void Sprite::SetSubTextureRect(AABB subtex_rect)
 	{
 		subtexture_rect_ = subtex_rect;
+		transform_.SetOrigin((subtex_rect.size * transform_.GetScale()) / 2);
 		UpdateTextureCoords();
 	}
 
@@ -74,10 +71,15 @@ namespace Aegis{
 
 	AABB Sprite::GetRect() const 
 	{
-		Vec2 size = subtexture_rect_.size * scale_;
+		Vec2 size = subtexture_rect_.size * transform_.GetScale();
 
-		return {position_.x, position_.y, size.x, size.y};
+		return {transform_.GetPosition(), size};
 
+	}
+
+	Transform& Sprite::GetTransform()
+	{
+		return transform_;
 	}
 
 }

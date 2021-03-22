@@ -17,6 +17,7 @@ set(AegisSrc
 	"src/Renderer/Texture.cpp"
 	"src/Renderer/Shader.cpp"
 	"src/Renderer/VertexArray.cpp"
+	"src/Renderer/Transform.cpp"
 	"src/Math/Vec4.cpp" 
 	"src/Math/Interpolation.cpp" 
 	"src/Math/Vec2.cpp" 
