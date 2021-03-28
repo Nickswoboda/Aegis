@@ -20,15 +20,16 @@ namespace Aegis{
 
 	void Sprite::Draw() const
 	{
-		glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(position_.x, position_.y, 0.0f));
+		Mat4 transform;
 
+		transform.Translate(position_);
 		//move origin to center of sprite, rotate, then move back
 		Vec2 size = subtexture_rect_.size * scale_;
-		transform = glm::translate(transform, glm::vec3(0.5f * size.x, 0.5f * size.y, 0.0f));
-		transform = glm::rotate(transform, glm::radians(rotation_), glm::vec3(0.0f, 0.0f, 1.0f));
-		transform = glm::translate(transform, glm::vec3(-0.5f * size.x, -0.5f * size.y, 0.0f));
-		transform = glm::scale(transform, glm::vec3(size.x, size.y, 1.0f));
+		transform.Translate(size * 0.5f);
+		transform.Rotate(rotation_);
+		transform.Translate(-size * 0.5f);
 
+		transform.Scale(size);
 		DrawQuad(transform, texture_->ID_, texture_coords_, color_);
 	}
 

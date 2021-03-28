@@ -124,17 +124,21 @@ namespace Aegis {
 
     void DrawQuad(const Vec2& pos, const Vec2& size, const Texture& texture, const Vec4& color, const float z_idx)
     {
-        glm::mat4 transform = glm::translate(glm::mat4(1.0f), { pos.x, pos.y, z_idx }) * glm::scale(glm::mat4(1.0), { size.x, size.y, 1.0 });
+		auto transform = Mat4::Identity;
+		transform.Translate(pos);
+		transform.Scale(size);
         DrawQuad(transform, texture.ID_, { 0.0f, 0.0f, 1.0f, 1.0f }, color);
     }
 
 	void DrawSubTexture(const Vec2& pos, const Vec2& size, const Texture& texture, const Vec4& tex_coords)
 	{
-        glm::mat4 transform = glm::translate(glm::mat4(1.0f), { pos.x, pos.y, 0 }) * glm::scale(glm::mat4(1.0), { size.x, size.y, 1.0 });
+		auto transform = Mat4::Identity;
+		transform.Translate(pos);
+		transform.Scale(size);
         DrawQuad(transform, texture.ID_, tex_coords, {1.0f, 1.0f, 1.0f, 1.0f});
 	}
 
-    void DrawQuad(const glm::mat4& transform, unsigned int texture_id, const Vec4& tex_coords, const Vec4& color)
+    void DrawQuad(const Mat4& transform, unsigned int texture_id, const Vec4& tex_coords, const Vec4& color)
     {
         AE_ASSERT(data_.quad_buffer_ptr_ != nullptr, "Must Call BeginScence() before drawing\n");
 
@@ -162,7 +166,7 @@ namespace Aegis {
                                    {tex_coords.x, tex_coords.w} };
 
         for (int i = 0; i < 4; ++i) {
-            glm::vec4 vertex_pos = transform * data_.vertex_array_->vertex_positions_[i];
+            Vec4 vertex_pos = data_.vertex_array_->vertex_positions_[i] * transform;
             data_.quad_buffer_ptr_->position_ = Aegis::Vec3(static_cast<int>(vertex_pos.x), static_cast<int>(vertex_pos.y), vertex_pos.z );
             data_.quad_buffer_ptr_->color_ = color;
             data_.quad_buffer_ptr_->tex_coords_ = texture_coords[i];
@@ -196,8 +200,9 @@ namespace Aegis {
 
             const auto& glyph = s_default_font->glyphs_[c];
 
-            glm::mat4 transform = glm::translate(glm::mat4(1.0f), { pen_pos.x + glyph.bearing.x, pen_pos.y - glyph.bearing.y, z_idx }) 
-                                * glm::scale(glm::mat4(1.0), { glyph.size.x, glyph.size.y, 1.0 });
+			auto transform = Mat4::Identity;
+			transform.Translate({pen_pos.x + glyph.bearing.x, pen_pos.y - glyph.bearing.y});
+			transform.Scale( {glyph.size.x, glyph.size.y} );
 
             DrawQuad(transform, s_default_font->atlas_->ID_, glyph.texture_coords_,color);
             pen_pos.x += glyph.advance;

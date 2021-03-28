@@ -31,6 +31,6 @@ namespace Aegis {
 		static const size_t max_quad_count_ = 1000;
 		static const size_t max_vertex_count_ = max_quad_count_ * 4;
 		static constexpr size_t max_index_count_ = max_quad_count_ * 6;
-		static const std::array<glm::vec4, 4> vertex_positions_;
+		static const std::array<Vec4, 4> vertex_positions_;
 	};
 }

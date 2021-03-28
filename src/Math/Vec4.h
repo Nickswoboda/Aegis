@@ -2,6 +2,8 @@
 
 namespace Aegis
 {
+	class Mat4;
+
 	struct Vec4
 	{
 		Vec4() = default;
@@ -29,4 +31,6 @@ namespace Aegis
 	Vec4 operator*(Vec4 a, float val);
 	Vec4 operator/(Vec4 a, const Vec4& b);
 	Vec4 operator/(Vec4 a, float val);
+
+	Vec4 operator*(const Vec4& vec, const Mat4& matrix);
 };

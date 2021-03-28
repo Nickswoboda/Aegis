@@ -10,6 +10,7 @@ namespace Aegis {
 
 		void Normalize();
 		Vec2 Normalized();
+		Vec2 operator-();
 		Vec2& operator+=(const Vec2& other);
 		Vec2& operator-=(const Vec2& other);
 		Vec2& operator*=(const Vec2& other);

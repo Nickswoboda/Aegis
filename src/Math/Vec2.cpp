@@ -17,6 +17,10 @@ namespace Aegis {
 		temp.Normalize();
 		return temp;
 	}
+	Vec2 Vec2::operator-()
+	{
+		return {-x, -y};
+	}
 	Vec2& Vec2::operator+=(const Vec2& other) {
 		x += other.x;
 		y += other.y;

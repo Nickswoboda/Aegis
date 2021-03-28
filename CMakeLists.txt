@@ -21,6 +21,7 @@ set(AegisSrc
 	"src/Math/Interpolation.cpp" 
 	"src/Math/Vec2.cpp" 
 	"src/Math/Vec3.cpp" 
+	"src/Math/Mat4.cpp"
 	"src/Math/AABB.cpp"
 	"src/UI/Widget.cpp"
 	"src/UI/Dialog.cpp"

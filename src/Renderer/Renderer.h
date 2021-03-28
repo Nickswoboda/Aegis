@@ -7,6 +7,7 @@
 #include "../Math/Vec2.h"
 #include "../Math/Vec4.h"
 #include "../Math/Color.h"
+#include "../Math/Mat4.h"
 
 #include <glm/glm.hpp>
 
@@ -39,7 +40,7 @@ namespace Aegis {
 	void DrawQuad(const Vec2& pos, const Texture& texture, const Vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f }, const float z_idx = 0);
 	void DrawQuad(const Vec2& pos, const Vec2& size, const Texture& texture, const Vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f }, const float z_idx = 0);
 
-	void DrawQuad(const glm::mat4& transform, unsigned int texture_id, const Vec4& tex_coords, const Vec4& color);
+	void DrawQuad(const Mat4& transform, unsigned int texture_id, const Vec4& tex_coords, const Vec4& color);
 
 	void DrawStaticText(const std::string& text, const Vec2& pos, const Vec4& color = {1.0f, 1.0f, 1.0f, 1.0f}, const float z_idx = 0);
 	void DrawText(const std::string& text, const Vec2& pos, const Vec4& color = {1.0f, 1.0f, 1.0f, 1.0f}, const float z_idx = 0);
