@@ -1,5 +1,7 @@
 #pragma once
 
+#include "functional"
+
 namespace Aegis {
 	struct Vec2
 	{
@@ -31,3 +33,16 @@ namespace Aegis {
 	Vec2 operator/(Vec2 a, const Vec2& b);
 	Vec2 operator/(Vec2 a, float val);
 }
+
+namespace std {
+	template<> struct hash<Aegis::Vec2>
+	{
+		std::size_t operator()(const Aegis::Vec2& vec) const
+		{
+			auto hasher = std::hash<float>{};
+			return hasher(vec.x) ^ (hasher(vec.y) << 1);
+		}
+	};
+}
+
+
