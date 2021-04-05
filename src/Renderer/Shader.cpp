@@ -8,6 +8,8 @@
 #include <memory>
 #include <vector>
 
+#include "../Math/Mat4.h"
+
 namespace Aegis{
     Shader::Shader(const std::string& file_path)
     {
@@ -67,10 +69,10 @@ namespace Aegis{
     {
         glDeleteProgram(ID_);
     }
-    void Shader::SetMat4(const std::string& name, const glm::mat4& value)
+    void Shader::SetMat4(const std::string& name, const Mat4& value)
     {
         GLint location = glGetUniformLocation(ID_, name.c_str());
-        glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));
+        glUniformMatrix4fv(location, 1, GL_TRUE, &value.elements[0][0]);
     }
 
     void Shader::Bind()

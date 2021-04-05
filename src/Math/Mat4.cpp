@@ -50,6 +50,14 @@ namespace Aegis{
 		return *this;
 	}
 
+	Mat4 operator*(const Mat4& lhs, const Mat4& rhs)
+	{
+		Mat4 mat = lhs;
+		mat *= rhs;
+
+		return mat;
+	}
+
 	void Mat4::Translate(Vec2 translation)
 	{
 		Mat4 matrix = {1, 0, 0, translation.x,
@@ -86,5 +94,16 @@ namespace Aegis{
 		*this *= matrix;
 	}
 
+	Mat4 OrthographicProjection(float left, float right, float bottom, float top)
+	{
+		float x_scale = 2 / (right - left);
+		float y_scale = 2 / (top - bottom);
+		float x_trans = -(right + left) / (right - left);
+		float y_trans = -(top + bottom) / (top - bottom);
 
+		return Mat4{ x_scale, 0, 0, x_trans,
+					 0, y_scale, 0, y_trans,
+					 0, 0, -1, 0,
+					 0, 0, 0, 1 };
+	}
 }

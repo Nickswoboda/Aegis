@@ -1,7 +1,8 @@
 #pragma once
-#include "../Math/Vec2.h"
 
-#include <glm/glm.hpp>
+#include "../Math/Vec2.h"
+#include "../Math/Mat4.h"
+
 namespace Aegis
 {
 	class Camera
@@ -11,10 +12,10 @@ namespace Aegis
 		void SetProjection(float left, float right, float bottom, float top);
 		void SetPosition(const Vec2& position) { position_ = position; RecalculateViewMatrix(); }
 		void RecalculateViewMatrix();
-		glm::mat4 view_projection_matrix_;
+		Mat4 view_projection_matrix_;
 	private:
-		glm::mat4 projection_matrix_;
-		glm::mat4 view_matrix_;
+		Mat4 projection_matrix_;
+		Mat4 view_matrix_;
 
 		Vec2 position_;
 	};

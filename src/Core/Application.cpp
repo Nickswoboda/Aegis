@@ -77,11 +77,11 @@ namespace Aegis {
 			}
 			
 			RendererClear();
-			Renderer2D::BeginScene(glm::ortho(0.0f, window_->GetResolution().x, window_->GetResolution().y, 0.0f));
+			Renderer2D::BeginScene(OrthographicProjection(0.0f, window_->GetResolution().x, window_->GetResolution().y, 0.0f));
 			scene_mgr_.Render(accumulator_ / time_step_);
 
 			if (show_frame_time_) {
-				Renderer2D::SetProjection(glm::ortho(0.0f, window_->GetResolution().x, window_->GetResolution().y, 0.0f));
+				Renderer2D::SetProjection(OrthographicProjection(0.0f, window_->GetResolution().x, window_->GetResolution().y, 0.0f));
 				Renderer2D::SetFont(default_font_);
 				DrawText(std::to_string(frame_time_sec_ * 1000), { 0, 0 });
 			}

@@ -21,9 +21,12 @@ namespace Aegis{
 
 		Mat4& operator *=(const Mat4& matrix);
 
+		//stored in row major order
 		float elements[4][4];
-
 	};
 
-	Mat4 operator*(const Mat4& matrix);
+//	Mat4 operator*(const Mat4& matrix);
+	Mat4 operator*(const Mat4& lhs, const Mat4& rhs);
+	
+	Mat4 OrthographicProjection(float left, float right, float bottom, float top);
 }

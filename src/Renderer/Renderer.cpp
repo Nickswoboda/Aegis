@@ -22,7 +22,7 @@ namespace Aegis {
     struct RenderData
     {
         std::unique_ptr<Shader> shader_;
-        glm::mat4 projection_;
+        Mat4 projection_;
 
         uint32_t index_count_ = 0;
 
@@ -71,7 +71,7 @@ namespace Aegis {
         delete[] data_.quad_buffer_;
     }
 
-    void Renderer2D::BeginScene(const glm::mat4& camera_projection)
+    void Renderer2D::BeginScene(const Mat4& camera_projection)
 	{
         data_.projection_ = camera_projection;
 
@@ -213,7 +213,7 @@ namespace Aegis {
     {
         s_default_font = font;
     }
-    void Renderer2D::SetProjection(const glm::mat4& projection)
+    void Renderer2D::SetProjection(const Mat4& projection)
     {
         EndScene();
         BeginScene(projection);

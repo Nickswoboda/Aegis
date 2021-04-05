@@ -1,8 +1,7 @@
 #pragma once
 
 #include "../Math/Vec4.h"
-
-#include <glm/glm.hpp>
+#include "../Math/Mat4.h"
 
 #include <string>
 namespace Aegis {
@@ -17,7 +16,7 @@ namespace Aegis {
 		void SetInt(const std::string& name, int value);
 		void SetIntVector(const std::string& name, int count, int* values);
 		void SetFloat4(const std::string& name, const Vec4& value);
-		void SetMat4(const std::string& name, const glm::mat4& value);
+		void SetMat4(const std::string& name, const Mat4& value);
 
 		void Bind();
 

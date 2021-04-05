@@ -30,7 +30,7 @@ namespace Aegis {
 
 	void UILayer::Render(float dt)
 	{
-		Renderer2D::SetProjection(glm::ortho(0.0f, Application::GetWindow().GetResolution().x, Application::GetWindow().GetResolution().y, 0.0f));
+		Renderer2D::SetProjection(OrthographicProjection(0.0f, Application::GetWindow().GetResolution().x, Application::GetWindow().GetResolution().y, 0.0f));
 		for (const auto& widget : widgets_) {
 			if (widget->visible_){
 				widget->Render();

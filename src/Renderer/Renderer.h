@@ -9,8 +9,6 @@
 #include "../Math/Color.h"
 #include "../Math/Mat4.h"
 
-#include <glm/glm.hpp>
-
 #include <string>
 #include <memory>
 namespace Aegis {
@@ -21,12 +19,12 @@ namespace Aegis {
 		static void Init();
 		static void Shutdown();
 
-		static void BeginScene(const glm::mat4& camera_projection);
+		static void BeginScene(const Mat4& camera_projection);
 		static void EndScene();
 
 		static void SetClearColor(float r, float g, float b, float a);
 		static void SetFont(const std::shared_ptr<Font> font);
-		static void SetProjection(const glm::mat4& projection);
+		static void SetProjection(const Mat4& projection);
 
 		static Font& GetFont();
 
