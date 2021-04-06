@@ -3,15 +3,12 @@
 #include <deque>
 #include <iostream>
 
-#include <glm/glm.hpp>
-
 class Sandbox : public Aegis::Scene
 {
 public:
 	Sandbox()
 	{
 		ui_layer_ = std::make_unique<Aegis::UILayer>();
-		auto dialog_ = ui_layer_->AddWidget<Aegis::Dialog>("You Lose. Try Again?", Aegis::Vec2(300, 300), Aegis::Vec2(400, 400));
 
 		auto dropdown = ui_layer_->AddWidget<Aegis::Dropdown>("Dropdown 1:", Aegis::AABB(20, 20, 300, 20));
 		dropdown->AddItem("1", []() {std::cout << 1 << "\n"; });
@@ -43,6 +40,5 @@ int main()
 {
 	Aegis::Application::CreateWindow("Sandbox", 1280, 720);
 	Aegis::Application::ShowFrameTime(true);
-	Aegis::Application::PushScene(std::unique_ptr<Aegis::Scene>(new Sandbox));
-	Aegis::Application::Run();
+	Aegis::Application::Start(std::make_unique<Sandbox>());
 }
