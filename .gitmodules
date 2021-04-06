@@ -1,9 +1,6 @@
 [submodule "dependencies/GLFW"]
 	path = dependencies/GLFW
 	url = https://github.com/glfw/glfw
-[submodule "dependencies/GLM"]
-	path = dependencies/GLM
-	url = https://github.com/g-truc/glm
 [submodule "dependencies/OpenAL-Soft"]
 	path = dependencies/OpenAL-Soft
 	url = https://github.com/kcat/openal-soft

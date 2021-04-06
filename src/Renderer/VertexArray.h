@@ -4,7 +4,6 @@
 #include "../Math/Vec3.h"
 #include "../Math/Vec4.h"
 
-#include <glm/glm.hpp>
 #include <array>
 
 namespace Aegis {

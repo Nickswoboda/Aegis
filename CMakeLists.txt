@@ -50,14 +50,12 @@ target_include_directories(Aegis
 PUBLIC
 	"dependencies/GLFW/include"
 	"dependencies/GLAD/include"
-	"dependencies/GLM/"
 	"dependencies/stb_image/"
 	"dependencies/stb_vorbis/"
 	"dependencies/FreeType/include"
 	"dependencies/OpenAL-Soft/include")
 
 add_subdirectory("dependencies/GLFW")
-add_subdirectory("dependencies/GLM")
 add_subdirectory("dependencies/FreeType")
 
 set(LIBTYPE STATIC)

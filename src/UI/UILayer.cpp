@@ -1,7 +1,6 @@
 #include "UILayer.h"
 #include "../Core/Application.h"
 
-#include "glm/gtc/matrix_transform.hpp"
 namespace Aegis {
 
 	UILayer::UILayer()
