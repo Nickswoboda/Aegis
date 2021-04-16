@@ -29,5 +29,6 @@
 #include "UI/Label.h"
 #include "UI/SpriteWidget.h"
 #include "UI/Dialog.h"
+#include "UI/SpinBox.h"
 
 #include "Audio/AudioPlayer.h"

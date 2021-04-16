@@ -32,6 +32,7 @@ set(AegisSrc
 	"src/UI/Checkbox.cpp"
 	"src/UI/Label.cpp" 
 	"src/UI/SpriteWidget.cpp"
+	"src/UI/SpinBox.cpp"
 	"src/Audio/AudioPlayer.cpp"
 	"src/Audio/Sound.cpp")
 
