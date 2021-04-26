@@ -21,6 +21,7 @@ namespace Aegis{
 		void SetFont(std::shared_ptr<Font> font) override;
 		void SetValue(int value);
 		int GetValue() const;
+		void SetSuffix(const std::string& suffix);
 
 		void SetButtonBorderSize(int size);
 		void SetButtonStateBgColor(Button::State state, const Vec4& color);
@@ -37,6 +38,7 @@ namespace Aegis{
 		std::shared_ptr<Button> plus_button_;
 		std::shared_ptr<Button> minus_button_;
 
+		std::string suffix_;
 		Vec4 border_color_ = {0.0f, 0.0f, 0.0f, 1.0f};
 		int value_ = 0;
 		int min_value_ = 0;

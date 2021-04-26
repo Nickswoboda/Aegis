@@ -45,7 +45,6 @@ namespace Aegis{
 		}
 
 		void AddWidget(std::shared_ptr<Widget> widget);
-		void UpdateWidgets();
 
 		void SetAlignment(Alignment alignment);
 
@@ -55,6 +54,7 @@ namespace Aegis{
 	private:
 		bool WidgetFits(const Widget& widget) const;
 		void AlignWidget(Widget& widget, Vec2& pen_pos);
+		void UpdateWidgets();
 
 		float occupied_space_;
 		Orientation orientation_;

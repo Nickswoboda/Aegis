@@ -44,12 +44,8 @@ namespace Aegis{
 		//TODO: resize widgets if they dont fit normally
 		AE_ASSERT(WidgetFits(*widget), "Unable to add widget to container. Not enough space");
 
-		if (orientation_ == Vertical){
-			occupied_space_ += widget->GetRect().size.y + padding_;
-		} else {
-			occupied_space_ += widget->GetRect().size.x + padding_;
-		}
 		widgets_.push_back(widget);
+		widget->ConnectSignal("size changed", [&](){UpdateWidgets();});
 		UpdateWidgets();
 	}
 
@@ -66,6 +62,17 @@ namespace Aegis{
 
 	void Container::UpdateWidgets()
 	{
+		occupied_space_ = 0;
+		if (orientation_ == Vertical){
+			for (const auto& widget : widgets_){
+				occupied_space_ += widget->GetRect().size.y + padding_;
+			}
+		} else {
+			for (const auto& widget : widgets_){
+				occupied_space_ += widget->GetRect().size.x + padding_;
+			}
+		}
+
 		Vec2 pen_pos;
 		if (orientation_ == Orientation::Vertical){
 			//assume align top

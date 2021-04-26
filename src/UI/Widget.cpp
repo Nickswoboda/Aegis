@@ -5,7 +5,9 @@ namespace Aegis {
 
 	Widget::Widget(AABB rect)
 		:Object(), rect_(rect), font_(Application::GetFont())
-	{}
+	{
+		AddSignal("size changed");
+	}
 	void Widget::SetPos(Aegis::Vec2 pos)
 	{
 		rect_.pos = pos;
@@ -13,6 +15,7 @@ namespace Aegis {
 	void Widget::SetSize(Aegis::Vec2 size)
 	{
 		rect_.size = size;
+		Emit("size changed");
 	}
 	const AABB& Widget::GetRect() const
 	{

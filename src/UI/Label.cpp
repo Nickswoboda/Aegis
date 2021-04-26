@@ -22,14 +22,13 @@ namespace Aegis{
 	void Label::SetFont(std::shared_ptr<Aegis::Font> font)
 	{
 		font_ = font;
-		rect_.size = font_->GetStringPixelSize(text_);
+		SetSize(font_->GetStringPixelSize(text_));
 	}
 
 	void Label::SetText(const std::string& text)
 	{
 		text_ = text;
-		
-		rect_.size = font_->GetStringPixelSize(text);
+		SetSize(font_->GetStringPixelSize(text));
 	}
 
 	const std::string& Label::GetText() const

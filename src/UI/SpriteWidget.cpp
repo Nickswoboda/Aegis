@@ -33,6 +33,7 @@ namespace Aegis {
 	{
 		sprite_.scale_ = scale;
 		rect_ = sprite_.GetRect();
+		Emit("size changed");
 	}
 
 	void SpriteWidget::SetPos(Vec2 pos)

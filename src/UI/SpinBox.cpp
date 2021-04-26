@@ -54,6 +54,7 @@ namespace Aegis {
 	{
 		rect_.size = size;
 		ResizeComponents();
+		Emit("size changed");
 	}
 
 	void SpinBox::SetFont(std::shared_ptr<Font> font)
@@ -81,8 +82,6 @@ namespace Aegis {
 		plus_button_->SetSize(Vec2(box_size.x, button_height));
 		minus_button_->SetSize(Vec2(box_size.x, button_height));
 		
-		button_box_->UpdateWidgets();
-		
 		SetValue(value_);
 
 	}
@@ -90,7 +89,7 @@ namespace Aegis {
 	void SpinBox::SetValue(int value)
 	{
 		value_ = value > max_value_ ? max_value_ : (value < min_value_ ? min_value_ : value);
-		value_label_->SetText(std::to_string(value_));
+		value_label_->SetText(std::to_string(value_) + suffix_);
 
 		AABB label_rect = value_label_->GetRect();
 		AABB label_bg_rect = {rect_.pos, rect_.size - Vec2(button_box_->GetRect().size.x, 0)};
@@ -115,4 +114,9 @@ namespace Aegis {
 		minus_button_->SetStateBgColor(state, color);
 	}
 
+	void SpinBox::SetSuffix(const std::string& suffix)
+	{
+		suffix_ = suffix;
+		SetValue(value_);
+	}
 }
