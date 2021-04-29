@@ -36,14 +36,16 @@ namespace Aegis{
 	{
 		scene->manager_ = this;
 		scenes_.push_back(std::move(scene));
+		scenes_.back()->OnAttach();
 	}
 
 	void SceneManager::PopScene()
 	{
-		if (scenes_.size() > 1){
-			queued_for_deletion_.push_back(std::move(scenes_.back()));
-			scenes_.pop_back();
-		}
+		if (scenes_.size() <= 1) return;
+
+		queued_for_deletion_.push_back(std::move(scenes_.back()));
+		scenes_.pop_back();
+		scenes_.back()->OnAttach();
 	}
 
 	void SceneManager::ReplaceScene(std::unique_ptr<Scene> scene)
@@ -51,13 +53,5 @@ namespace Aegis{
 		PopScene();
 		PushScene(std::move(scene));
 	}
-
-	void SceneManager::UpdateAllCameraProjections(float left, float right, float bottom, float top)
-	{
-		for (auto& scene : scenes_){
-			scene->camera_.SetProjection(left, right, bottom, top);
-		}
-	}
-
 }
 

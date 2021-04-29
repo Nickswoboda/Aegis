@@ -20,6 +20,9 @@ namespace Aegis {
 		virtual void Render(float delta_time) = 0;
 		virtual void OnEvent(Event& event) = 0;
 
+		//called when scene becomes the active scene
+		virtual void OnAttach() {};
+
 		SceneManager* manager_;
 		std::unique_ptr<UILayer> ui_layer_;
 		Camera camera_;
@@ -56,7 +59,6 @@ namespace Aegis {
 
 		void ReplaceScene(std::unique_ptr<Scene> scene);
 
-		void UpdateAllCameraProjections(float left, float right, float bottom, float top);
 	private:
 		std::vector<std::unique_ptr<Scene>> scenes_;
 		std::vector<std::unique_ptr<Scene>> queued_for_deletion_;
