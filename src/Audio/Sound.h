@@ -15,7 +15,7 @@ namespace Aegis{
 		~Sound();
 
 	private:
-		void StartStream(unsigned int volume);
+		void StartStream();
 		bool UpdateBuffer(ALuint buffer_id);
 
 		stb_vorbis* stream_;
@@ -29,6 +29,7 @@ namespace Aegis{
 		short* data_ = nullptr;
 
 		float volume_ = 1.0f;
+
 		bool looping_;
 		bool streaming_;
 		bool stopped_ = true;

@@ -46,9 +46,8 @@ namespace Aegis {
 		}
 	}
 
-	void Sound::StartStream(unsigned int volume)
+	void Sound::StartStream()
 	{
-		volume_ = volume;
 		stb_vorbis_seek_start(stream_);
 		for (int i = 0; i < num_buffers_; ++i) {
 			int amount = stb_vorbis_get_samples_short_interleaved(stream_, channels_, data_, buffer_size_);

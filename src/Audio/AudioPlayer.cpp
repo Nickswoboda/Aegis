@@ -85,15 +85,16 @@ namespace Aegis {
  		AE_ASSERT(sound_map_.count(id), "Unable to play sound. Sound with id " << id << "not found\n");
 		
 		volume = volume < 0 ? 0 : (volume > 100 ? 100 : volume);
-		alSourcef(id, AL_GAIN, (volume / 100.0f) * master_volume_);
 
 		auto sound = sound_map_[id];
+		sound->volume_ = (volume / 100.f);
+		alSourcef(id, AL_GAIN, (volume / 100.0f) * master_volume_);
 
 		if (sound->streaming_) {
 			alSourceRewind(id);
 			alSourcei(id, AL_BUFFER, 0);
 
-			sound->StartStream(volume);
+			sound->StartStream();
 
 			alSourceQueueBuffers(id, sound->num_buffers_, sound->buffer_ids_);
 			streaming_set_.insert(id);
