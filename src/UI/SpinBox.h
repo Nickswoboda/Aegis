@@ -30,6 +30,8 @@ namespace Aegis{
 		std::shared_ptr<Label> value_label_;
 		int border_size_ = 3;
 		Vec4 bg_color_ = {0.0f, 0.0f, 0.8f, 1.0f};
+		int min_value_ = 0;
+		int max_value_ = std::numeric_limits<int>::max();
 
 	private:
 
@@ -41,8 +43,6 @@ namespace Aegis{
 		std::string suffix_;
 		Vec4 border_color_ = {0.0f, 0.0f, 0.0f, 1.0f};
 		int value_ = 0;
-		int min_value_ = 0;
-		int max_value_ = std::numeric_limits<int>::max();
 		int step_ = 1;
 	};
 }

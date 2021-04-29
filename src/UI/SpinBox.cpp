@@ -7,14 +7,15 @@ namespace Aegis {
 	SpinBox::SpinBox(int value, int step)
 		:Widget({0, 0, 100, 25}), step_(step)
 	{
+		AddSignal("value changed");
 		button_box_ = std::make_shared<Container>(AABB(75, 0, 25, 25), Container::Vertical, 1);
 		plus_button_ = button_box_->AddWidget<Button>(AABB(0, 0, 25, 10), "+");
 		minus_button_ = button_box_->AddWidget<Button>(AABB(0, 0, 25, 10), "-");
 		value_label_ = std::make_shared<Label>("", Vec2{0,0});
 		SetValue(value);
 
-		plus_button_->ConnectSignal("pressed", [&](){SetValue(value_ + step_);});
-		minus_button_->ConnectSignal("pressed", [&](){SetValue(value_ - step_);});
+		plus_button_->ConnectSignal("pressed", [&](){SetValue(value_ + step_); Emit("value changed");});
+		minus_button_->ConnectSignal("pressed", [&](){SetValue(value_ - step_); Emit("value changed");});
 
 		ResizeComponents();
 	}
