@@ -3,14 +3,26 @@
 #include "../Renderer/Renderer.h"
 
 namespace Aegis{
-	Checkbox::Checkbox(const std::string& label, AABB box)
-		:Widget(box), label_(label)
+	Checkbox::Checkbox(const std::string& label)
+		:Widget({0, 0, 100, 50})
 	{
 		AddSignal("checked");
 		AddSignal("unchecked");
 
-		button_ = std::make_unique<Button>(box, "");
-		button_->ConnectSignal("pressed", [&]() { checked_ = !checked_; Emit(checked_ ? "checked" : "unchecked");});
+		h_box_ = std::make_shared<Container>(rect_, Container::Horizontal, 8, Alignment::Center);
+
+		button_ = h_box_->AddWidget<Button>(AABB{0, 0, 25, 25}, "");
+		button_->ConnectSignal("pressed", [&]() {
+				SetState(!checked_);
+			});
+		button_->border_size_ = 3;
+
+		label_ = h_box_->AddWidget<Label>(label, Aegis::Vec2());
+		UpdateHBoxSize();
+
+		colors_[0] = {1.0f, 1.0f, 1.0f, 1.0f};
+		colors_[1] = {0.3f, 0.3f, 0.3f, 1.0f};
+		UpdateButtonTexture();
 	}
 
 	void Checkbox::OnEvent(Event& event)
@@ -20,30 +32,85 @@ namespace Aegis{
 
 	void Checkbox::Render() const
 	{
-		if (visible_){
-			Renderer2D::SetFont(font_);
-			if (textures_[checked_]){
-				DrawQuad(rect_.pos, rect_.size, *textures_[checked_]);
-			} else {
-				auto color = checked_ ? Aegis::Vec4(0.2f, 0.2f, 0.2f, 1.0f) : Aegis::Vec4(0.8f, 0.8f, 0.2f, 1.0f);
-				DrawQuad(rect_.pos, rect_.size, color, z_idx_);
-			}
-			DrawText(label_, {rect_.pos.x - label_offset_, rect_.pos.y});
-		}
-	}
+		if (!visible_) return;
 
+		h_box_->Render();
+	}
 
 	void Checkbox::SetFont(std::shared_ptr<Font> font)
 	{
 		font_ = font;
-
-		label_offset_ = font_->GetStringPixelSize(label_).x + 20;
+		label_->SetFont(font_);
+		UpdateHBoxSize();
 	}
 
-	void Checkbox::SetTexture(bool checked, std::shared_ptr<Texture> texture)
+	void Checkbox::SetPos(Vec2 pos)
+	{
+		rect_.pos = pos;
+		h_box_->SetPos(pos);
+	}
+
+	void Checkbox::SetSize(Vec2 size)
+	{
+		button_->SetSize(size);
+		UpdateHBoxSize();
+	}
+
+	void Checkbox::SetText(const std::string& text)
+	{
+		label_->SetText(text);
+		UpdateHBoxSize();
+	}
+
+	void Checkbox::SetState(bool checked)
+	{
+		checked_ = checked; 
+		UpdateButtonTexture();
+		Emit(checked_ ? "checked" : "unchecked");
+	}
+
+	void Checkbox::UpdateHBoxSize()
+	{
+		Vec2 new_size;
+		Vec2 button_size = button_->GetRect().size;
+		Vec2 text_size = label_->GetRect().size;
+
+		new_size.y = std::max(button_size.y, text_size.y);
+		new_size.x = button_size.x + text_size.x + (h_box_->padding_*3);
+
+		h_box_->SetSize(new_size);
+		rect_.size = new_size;
+		Emit("size changed");
+	}
+	void Checkbox::SetStateTexture(bool checked, std::shared_ptr<Texture> texture)
 	{
 		if (texture){
 			textures_[checked] = texture;
+		}
+
+		UpdateButtonTexture();
+	}
+
+	void Checkbox::SetStateColor(bool checked, const Vec4& color)
+	{
+		colors_[checked] = color;
+		UpdateButtonTexture();
+	}
+
+	void Checkbox::UpdateButtonTexture()
+	{
+		if (textures_[checked_]){
+			button_->SetStateTexture(Button::Normal, textures_[checked_]); 
+			button_->SetStateTexture(Button::Hovered, textures_[checked_]); 
+			button_->SetStateTexture(Button::Pressed, textures_[checked_]); 
+		} else {
+			button_->SetStateTexture(Button::Normal, {}); 
+			button_->SetStateTexture(Button::Hovered, {}); 
+			button_->SetStateTexture(Button::Pressed, {}); 
+
+			button_->SetStateBgColor(Button::Normal, colors_[checked_]); 
+			button_->SetStateBgColor(Button::Hovered, colors_[checked_]); 
+			button_->SetStateBgColor(Button::Pressed, colors_[checked_]); 
 		}
 	}
 }

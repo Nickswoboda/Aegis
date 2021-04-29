@@ -29,7 +29,7 @@ namespace Aegis{
 		}
 	}
 
-	void Container::SetPos(Aegis::Vec2 pos)
+	void Container::SetPos(Vec2 pos)
 	{
 		Vec2 offset = pos - rect_.pos;
 		rect_.pos = pos;
@@ -37,6 +37,13 @@ namespace Aegis{
 		for (auto& widget : widgets_){
 			widget->SetPos(widget->GetRect().pos + offset);
 		}
+	}
+
+	void Container::SetSize(Vec2 size)
+	{
+		rect_.size = size;
+		UpdateWidgets();
+		Emit("size changed");
 	}
 
 	void Container::AddWidget(std::shared_ptr<Widget> widget)

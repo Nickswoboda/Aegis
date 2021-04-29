@@ -34,7 +34,9 @@ namespace Aegis{
 
 		void Render() const override;
 		void OnEvent(Event& event) override;
-		void SetPos(Aegis::Vec2 pos) override;
+
+		void SetPos(Vec2 pos) override;
+		void SetSize(Vec2 size) override;
 
 		template<typename T, typename... Args>
 		std::shared_ptr<T> AddWidget(Args&&... args)
