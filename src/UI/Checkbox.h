@@ -32,7 +32,7 @@ namespace Aegis{
 		void UpdateHBoxSize();
 		void UpdateButtonTexture();
 
-		std::shared_ptr<Container> h_box_;
+		HContainer h_box_;
 		std::shared_ptr<Button> button_;
 		std::shared_ptr<Label> label_;
 

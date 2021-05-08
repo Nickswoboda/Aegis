@@ -3,11 +3,9 @@
 #include "../Core/Assert.h"
 
 namespace Aegis{
-	Container::Container(AABB rect, Orientation orientation, int padding, Alignment alignment)
-		:Widget(rect), padding_(padding), orientation_(orientation), occupied_space_(padding)
-	{
-		SetAlignment(alignment);
-	}
+	Container::Container()
+		:Widget(AABB{})
+	{}
 
 	void Container::OnEvent(Event& event)
 	{
@@ -46,6 +44,27 @@ namespace Aegis{
 		Emit("size changed");
 	}
 
+	void Container::SetPadding(int padding)
+	{
+		padding_ = padding;
+		UpdateWidgets();
+	}
+
+	int Container::GetPadding() const
+	{
+		return padding_;
+	}
+
+	void Container::SetBgColor(const Vec4& bg_color)
+	{
+		bg_color_ = bg_color;
+	}
+
+	Vec4 Container::GetBgColor() const
+	{
+		return bg_color_;
+	}
+
 	void Container::AddWidget(std::shared_ptr<Widget> widget)
 	{
 		//TODO: resize widgets if they dont fit normally
@@ -56,52 +75,57 @@ namespace Aegis{
 		UpdateWidgets();
 	}
 
-	bool Container::WidgetFits(const Widget& widget) const
-	{ 
-		if (orientation_ == Vertical){
-			return (widget.GetRect().size.x <= rect_.size.x &&
-					occupied_space_ + widget.GetRect().size.y + padding_ <= rect_.size.y);
-		}
-
+	bool HContainer::WidgetFits(const Widget& widget) const
+	{
 		return (widget.GetRect().size.y <= rect_.size.y &&
 				occupied_space_ + widget.GetRect().size.x + padding_ <= rect_.size.x);
 	}
 
-	void Container::UpdateWidgets()
+	bool VContainer::WidgetFits(const Widget& widget) const
+	{
+		return (widget.GetRect().size.x <= rect_.size.x &&
+				occupied_space_ + widget.GetRect().size.y + padding_ <= rect_.size.y);
+	}
+
+	void HContainer::UpdateWidgets()
 	{
 		occupied_space_ = 0;
-		if (orientation_ == Vertical){
-			for (const auto& widget : widgets_){
-				occupied_space_ += widget->GetRect().size.y + padding_;
-			}
-		} else {
-			for (const auto& widget : widgets_){
-				occupied_space_ += widget->GetRect().size.x + padding_;
-			}
+		for (const auto& widget : widgets_){
+			occupied_space_ += widget->GetRect().size.x + padding_;
 		}
 
 		Vec2 pen_pos;
-		if (orientation_ == Orientation::Vertical){
-			//assume align top
-			pen_pos.y = rect_.pos.y + padding_;
-			if (alignment_ & Alignment::Bottom){
-				pen_pos.y += rect_.size.y - occupied_space_;
-			} else if (alignment_ & Alignment::VCenter){
-				pen_pos.y += (rect_.size.y - occupied_space_) / 2;
-			}
-		}
-		else {
-			//assume align left
-			pen_pos.x = rect_.pos.x + padding_;
-			if (alignment_ & Alignment::Right) {
-				pen_pos.x += rect_.size.x - occupied_space_;
-			} else if (alignment_ & Alignment::HCenter) {
-				pen_pos.x += (rect_.size.x - occupied_space_) / 2;
-			}
+		pen_pos.x = rect_.pos.x + padding_;
+		if (alignment_ & Alignment::Right) {
+			pen_pos.x += rect_.size.x - occupied_space_;
+		} else if (alignment_ & Alignment::HCenter) {
+			pen_pos.x += (rect_.size.x - occupied_space_) / 2;
 		}
 
 		for (auto& widget : widgets_) {
 			AlignWidget(*widget, pen_pos);
+			pen_pos.x += widget->GetRect().size.x + padding_;
+		}
+	}
+
+	void VContainer::UpdateWidgets()
+	{
+		occupied_space_ = 0;
+		for (const auto& widget : widgets_){
+			occupied_space_ += widget->GetRect().size.y + padding_;
+		}
+
+		Vec2 pen_pos;
+		pen_pos.y = rect_.pos.y + padding_;
+		if (alignment_ & Alignment::Bottom){
+			pen_pos.y += rect_.size.y - occupied_space_;
+		} else if (alignment_ & Alignment::VCenter){
+			pen_pos.y += (rect_.size.y - occupied_space_) / 2;
+		}
+
+		for (auto& widget : widgets_) {
+			AlignWidget(*widget, pen_pos);
+			pen_pos.y += widget->GetRect().size.y + padding_;
 		}
 	}
 
@@ -117,33 +141,32 @@ namespace Aegis{
 		alignment_ = alignment;
 	}
 
-	void Container::AlignWidget(Widget& widget, Vec2& pen_pos)
+
+	void HContainer::AlignWidget(Widget& widget, Vec2 pen_pos)
 	{
-		if (orientation_ == Orientation::Vertical){
-			if (alignment_ & Alignment::HCenter){
-				int width_diff = rect_.size.x - widget.GetRect().size.x;
-				pen_pos.x = rect_.pos.x + (width_diff / 2);
-			} else if (alignment_ & Alignment::Left){
-				pen_pos.x = rect_.pos.x;
-			} else if (alignment_ & Alignment::Right){
-				int right_edge = rect_.pos.x + rect_.size.x;
-				pen_pos.x = right_edge - widget.GetRect().size.x;
-			}
-			widget.SetPos(pen_pos);
-			pen_pos.y += widget.GetRect().size.y + padding_;
+		if (alignment_ & Alignment::VCenter) {
+			int height_diff = rect_.size.y - widget.GetRect().size.y;
+			pen_pos.y = rect_.pos.y + (height_diff / 2);
+		} else if (alignment_ & Alignment::Top){
+			pen_pos.y = rect_.pos.y;
+		} else if (alignment_ & Alignment::Bottom) {
+			int bottom_edge = rect_.pos.y + rect_.size.y;
+			pen_pos.y = bottom_edge - widget.GetRect().size.y;
 		}
-		else {
-			if (alignment_ & Alignment::VCenter) {
-				int height_diff = rect_.size.y - widget.GetRect().size.y;
-				pen_pos.y = rect_.pos.y + (height_diff / 2);
-			} else if (alignment_ & Alignment::Top){
-				pen_pos.y = rect_.pos.y;
-			} else if (alignment_ & Alignment::Bottom) {
-				int bottom_edge = rect_.pos.y + rect_.size.y;
-				pen_pos.y = bottom_edge - widget.GetRect().size.y;
-			}
-			widget.SetPos(pen_pos);
-			pen_pos.x += widget.GetRect().size.x + padding_;
+		widget.SetPos(pen_pos);
+	}
+
+	void VContainer::AlignWidget(Widget& widget, Vec2 pen_pos)
+	{
+		if (alignment_ & Alignment::HCenter){
+			int width_diff = rect_.size.x - widget.GetRect().size.x;
+			pen_pos.x = rect_.pos.x + (width_diff / 2);
+		} else if (alignment_ & Alignment::Left){
+			pen_pos.x = rect_.pos.x;
+		} else if (alignment_ & Alignment::Right){
+			int right_edge = rect_.pos.x + rect_.size.x;
+			pen_pos.x = right_edge - widget.GetRect().size.x;
 		}
+		widget.SetPos(pen_pos);
 	}
 }

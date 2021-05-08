@@ -9,15 +9,17 @@ namespace Aegis{
 		AddSignal("checked");
 		AddSignal("unchecked");
 
-		h_box_ = std::make_shared<Container>(rect_, Container::Horizontal, 8, Alignment::Center);
+		h_box_.SetSize(rect_.size);
+		h_box_.SetPadding(8);
+		h_box_.SetAlignment(Alignment::Center);
 
-		button_ = h_box_->AddWidget<Button>(AABB{0, 0, 25, 25}, "");
+		button_ = h_box_.AddWidget<Button>(AABB{0, 0, 25, 25}, "");
 		button_->ConnectSignal("pressed", [&]() {
 				SetState(!checked_);
 			});
 		button_->border_size_ = 3;
 
-		label_ = h_box_->AddWidget<Label>(label, Aegis::Vec2());
+		label_ = h_box_.AddWidget<Label>(label, Aegis::Vec2());
 		UpdateHBoxSize();
 
 		colors_[0] = {1.0f, 1.0f, 1.0f, 1.0f};
@@ -34,7 +36,7 @@ namespace Aegis{
 	{
 		if (!visible_) return;
 
-		h_box_->Render();
+		h_box_.Render();
 	}
 
 	void Checkbox::SetFont(std::shared_ptr<Font> font)
@@ -47,7 +49,7 @@ namespace Aegis{
 	void Checkbox::SetPos(Vec2 pos)
 	{
 		rect_.pos = pos;
-		h_box_->SetPos(pos);
+		h_box_.SetPos(pos);
 	}
 
 	void Checkbox::SetSize(Vec2 size)
@@ -76,9 +78,9 @@ namespace Aegis{
 		Vec2 text_size = label_->GetRect().size;
 
 		new_size.y = std::max(button_size.y, text_size.y);
-		new_size.x = button_size.x + text_size.x + (h_box_->padding_*3);
+		new_size.x = button_size.x + text_size.x + (h_box_.GetPadding()*3);
 
-		h_box_->SetSize(new_size);
+		h_box_.SetSize(new_size);
 		rect_.size = new_size;
 		Emit("size changed");
 	}

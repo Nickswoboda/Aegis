@@ -36,7 +36,7 @@ namespace Aegis{
 	private:
 
 		void ResizeComponents();
-		std::shared_ptr<Container> button_box_;
+		VContainer button_box_;
 		std::shared_ptr<Button> plus_button_;
 		std::shared_ptr<Button> minus_button_;
 

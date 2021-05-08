@@ -12,16 +12,19 @@ namespace Aegis{
 		text_ = std::make_unique<Label>(text, text_pos);
 		text_->SetFont(font_);
 
-		int y_pos =  (rect_.pos.y + rect_.size.y) - (rect_.size.y / 4);
-		int height = rect_.pos.y + rect_.size.y - y_pos;
-		button_container_ = std::make_unique<Container>(AABB(rect_.pos.x, y_pos, rect_.size.x, height), Container::Horizontal, 5, Alignment::VCenter | Alignment::HCenter);
+		float y_pos =  (rect_.pos.y + rect_.size.y) - (rect_.size.y / 4);
+		float height = rect_.pos.y + rect_.size.y - y_pos;
+		button_container_.SetPos({rect_.pos.x, y_pos});
+		button_container_.SetSize({rect_.size.x, height});
+		button_container_.SetPadding(5);
+		button_container_.SetAlignment(Alignment::Center);
 		visible_ = false;
 	}
 
 	void Dialog::OnEvent(Event& event)
 	{
 		if (visible_){
-			button_container_->OnEvent(event);
+			button_container_.OnEvent(event);
 		}
 	}
 
@@ -30,7 +33,7 @@ namespace Aegis{
 		if (visible_){
 			DrawQuad(rect_.pos, rect_.size, bg_color_);
 			text_->Render();
-			button_container_->Render();
+			button_container_.Render();
 		}
 	}
 
@@ -39,7 +42,7 @@ namespace Aegis{
 		Vec2 offset = pos - rect_.pos;
 		rect_.pos = pos;
 
-		button_container_->SetPos(button_container_->GetRect().pos + offset);
+		button_container_.SetPos(button_container_.GetRect().pos + offset);
 		text_->SetPos(text_->GetRect().pos + offset);
 	}
 
@@ -47,7 +50,7 @@ namespace Aegis{
 	{
 		int button_width = rect_.size.x / 4;
 
-		auto button = button_container_->AddWidget<Button>(AABB(0,0, button_width, button_container_->GetRect().size.y), label);
+		auto button = button_container_.AddWidget<Button>(AABB(0,0, button_width, button_container_.GetRect().size.y), label);
 		button->ConnectSignal("pressed", [&visible = visible_, callback](){visible = false; callback();});
 	}
 }

@@ -8,9 +8,13 @@ namespace Aegis {
 		:Widget({0, 0, 100, 25}), step_(step)
 	{
 		AddSignal("value changed");
-		button_box_ = std::make_shared<Container>(AABB(75, 0, 25, 25), Container::Vertical, 1);
-		plus_button_ = button_box_->AddWidget<Button>(AABB(0, 0, 25, 10), "+");
-		minus_button_ = button_box_->AddWidget<Button>(AABB(0, 0, 25, 10), "-");
+
+		button_box_.SetPos({75, 0});
+		button_box_.SetSize({50, 50});
+		button_box_.SetPadding(0);
+
+		plus_button_ = button_box_.AddWidget<Button>(AABB(0, 0, 25, 10), "+");
+		minus_button_ = button_box_.AddWidget<Button>(AABB(0, 0, 25, 10), "-");
 		value_label_ = std::make_shared<Label>("", Vec2{0,0});
 		SetValue(value);
 
@@ -26,12 +30,12 @@ namespace Aegis {
 
 	void SpinBox::OnEvent(Event& event)
 	{
-		button_box_->OnEvent(event);
+		button_box_.OnEvent(event);
 	}
 	void SpinBox::Render() const
 	{
 		DrawQuad(rect_.pos, rect_.size, bg_color_);
-		button_box_->Render();
+		button_box_.Render();
 		value_label_->Render();
 
 		if (border_size_ > 0){
@@ -47,7 +51,7 @@ namespace Aegis {
 		Vec2 offset = pos - rect_.pos;
 		rect_.pos = pos;
 
-		button_box_->SetPos(button_box_->GetRect().pos + offset);
+		button_box_.SetPos(button_box_.GetRect().pos + offset);
 		value_label_->SetPos(value_label_->GetRect().pos + offset);
 	};
 
@@ -70,16 +74,16 @@ namespace Aegis {
 		Aegis::Vec2 box_size;
 		box_size.x = rect_.size.x / 4;
 		box_size.y = rect_.size.y - (border_size_ + 1) * 2;
-		button_box_->SetSize(box_size);
+		button_box_.SetSize(box_size);
 
 		int box_x_pos = rect_.pos.x + rect_.size.x - box_size.x - border_size_; 
 		int height_diff = rect_.size.y - box_size.y;
 		int box_y_pos = rect_.pos.y + (height_diff / 2);
-		button_box_->SetPos(Vec2(box_x_pos, box_y_pos));
+		button_box_.SetPos(Vec2(box_x_pos, box_y_pos));
 
-		int button_height = (box_size.y - button_box_->padding_) / 2;
+		int button_height = (box_size.y - button_box_.GetPadding()) / 2;
 
-		button_box_->SetSize(Vec2(box_size.x, rect_.size.y));
+		button_box_.SetSize(Vec2(box_size.x, rect_.size.y));
 		plus_button_->SetSize(Vec2(box_size.x, button_height));
 		minus_button_->SetSize(Vec2(box_size.x, button_height));
 		
@@ -93,7 +97,7 @@ namespace Aegis {
 		value_label_->SetText(std::to_string(value_) + suffix_);
 
 		AABB label_rect = value_label_->GetRect();
-		AABB label_bg_rect = {rect_.pos, rect_.size - Vec2(button_box_->GetRect().size.x, 0)};
+		AABB label_bg_rect = {rect_.pos, rect_.size - Vec2(button_box_.GetRect().size.x, 0)};
 		CenterAABB(label_rect, label_bg_rect);
 		value_label_->SetPos(label_rect.pos);
 	}

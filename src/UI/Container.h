@@ -24,13 +24,8 @@ namespace Aegis{
 	class Container: public Widget
 	{
 	public:
-		enum Orientation
-		{
-			Horizontal,
-			Vertical
-		};
 
-		Container(AABB rect_, Orientation orientation, int padding, Alignment alignment = Alignment::Top | Alignment::Left);
+		Container();
 
 		void Render() const override;
 		void OnEvent(Event& event) override;
@@ -50,18 +45,36 @@ namespace Aegis{
 
 		void SetAlignment(Alignment alignment);
 
+		void SetPadding(int padding);
+		int GetPadding() const;
+
+		void SetBgColor(const Vec4& bg_color);
+		Vec4 GetBgColor() const;
+
+	protected:
+		virtual bool WidgetFits(const Widget& widget) const = 0;
+		virtual void AlignWidget(Widget& widget, Vec2 pen_pos) = 0;
+		virtual void UpdateWidgets() = 0;
+
 		Vec4 bg_color_ = {0.0f, 0.0f, 1.0f, 0.0f};
-		int padding_;
-
-	private:
-		bool WidgetFits(const Widget& widget) const;
-		void AlignWidget(Widget& widget, Vec2& pen_pos);
-		void UpdateWidgets();
-
+		int padding_ = 2;
 		float occupied_space_;
-		Orientation orientation_;
 		Alignment alignment_ = Alignment::Top | Alignment::Left;
 		std::vector<std::shared_ptr<Widget>> widgets_;
+	};
+
+	class HContainer : public Container
+	{
+		bool WidgetFits(const Widget& widget) const override;
+		void AlignWidget(Widget& widget, Vec2 pen_pos) override;
+		void UpdateWidgets() override;
+	};
+
+	class VContainer : public Container
+	{
+		bool WidgetFits(const Widget& widget) const override;
+		void AlignWidget(Widget& widget, Vec2 pen_pos) override;
+		void UpdateWidgets() override;
 	};
 }
 
