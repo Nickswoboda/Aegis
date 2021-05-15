@@ -12,7 +12,7 @@ namespace Aegis {
 	class Widget : public Object
 	{
 	public:
-		Widget(AABB rect = { 0.0, 0.0, 0.0, 0.0 });
+		Widget();
 		virtual ~Widget() = default;
 		virtual void OnEvent(Event& event) = 0;
 		virtual void Render() const = 0;

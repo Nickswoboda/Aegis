@@ -10,7 +10,7 @@ namespace Aegis{
 	class Dialog : public Widget
 	{
 	public:
-		Dialog(const std::string& text, const AABB& rect);
+		Dialog(const std::string& text);
 		
 		void OnEvent(Event& event) override;
 		void Render() const override;

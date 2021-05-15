@@ -19,7 +19,7 @@ namespace Aegis {
 			Hovered,
 			NumStates
 		};
-		Button(AABB rect, const std::string& label = "");
+		Button(const std::string& label = "");
 
 		bool IsPressed(int action);
 		void OnEvent(Event& event) override;

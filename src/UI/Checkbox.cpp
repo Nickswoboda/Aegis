@@ -4,8 +4,11 @@
 
 namespace Aegis{
 	Checkbox::Checkbox(const std::string& label)
-		:Widget({0, 0, 100, 50})
 	{
+		button_ = h_box_.AddWidget<Button>();
+		label_ = h_box_.AddWidget<Label>(label, Aegis::Vec2());
+		SetSize({ 100, 50 });
+
 		AddSignal("checked");
 		AddSignal("unchecked");
 
@@ -13,13 +16,12 @@ namespace Aegis{
 		h_box_.SetPadding(8);
 		h_box_.SetAlignment(Alignment::Center);
 
-		button_ = h_box_.AddWidget<Button>(AABB{0, 0, 25, 25}, "");
+		button_->SetSize({ 25,25 });
 		button_->ConnectSignal("pressed", [&]() {
 				SetState(!checked_);
 			});
 		button_->border_size_ = 3;
 
-		label_ = h_box_.AddWidget<Label>(label, Aegis::Vec2());
 		UpdateHBoxSize();
 
 		colors_[0] = {1.0f, 1.0f, 1.0f, 1.0f};

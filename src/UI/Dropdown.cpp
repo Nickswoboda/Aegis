@@ -5,9 +5,9 @@
 #include "../Core/MouseCodes.h"
 
 namespace Aegis {
-	Dropdown::Dropdown(const std::string& label, Aegis::AABB rect)
-		:Widget(rect)
+	Dropdown::Dropdown(const std::string& label)
 	{
+		SetSize({ 100, 50 });
 		label_offset_ = Renderer2D::GetFont().GetStringPixelSize(label).x + 15;
 		label_ = label;
 	}

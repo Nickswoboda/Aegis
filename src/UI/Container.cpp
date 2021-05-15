@@ -4,7 +4,6 @@
 
 namespace Aegis{
 	Container::Container()
-		:Widget(AABB{})
 	{}
 
 	void Container::OnEvent(Event& event)

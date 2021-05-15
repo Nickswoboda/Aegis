@@ -3,8 +3,8 @@
 
 namespace Aegis {
 
-	Widget::Widget(AABB rect)
-		:Object(), rect_(rect), font_(Application::GetFont())
+	Widget::Widget()
+		:Object(), font_(Application::GetFont())
 	{
 		AddSignal("size changed");
 	}

@@ -4,9 +4,9 @@
 #include "../Core/Application.h"
 
 namespace Aegis{
-	Dialog::Dialog(const std::string& text, const AABB& rect)
-		:Widget(rect)
+	Dialog::Dialog(const std::string& text)
 	{
+		SetSize({ 400, 300 });
 		Vec2 text_size = font_->GetStringPixelSize(text);
 		Vec2 text_pos = rect_.pos + Vec2((rect_.size.x / 2) - (text_size.x / 2), rect_.size.y / 3);
 		text_ = std::make_unique<Label>(text, text_pos);
@@ -48,9 +48,10 @@ namespace Aegis{
 
 	void Dialog::AddButton(const std::string& label, std::function<void()> callback)
 	{
-		int button_width = rect_.size.x / 4;
+		float button_width = rect_.size.x / 4;
 
-		auto button = button_container_.AddWidget<Button>(AABB(0,0, button_width, button_container_.GetRect().size.y), label);
+		auto button = button_container_.AddWidget<Button>(label);
+		button->SetSize({ button_width, button_container_.GetRect().size.y });
 		button->ConnectSignal("pressed", [&visible = visible_, callback](){visible = false; callback();});
 	}
 }

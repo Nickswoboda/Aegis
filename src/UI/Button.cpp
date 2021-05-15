@@ -6,8 +6,8 @@
 
 namespace Aegis {
 
-	Button::Button(AABB rect, const std::string& label)
-		: Widget(rect), text_(label)
+	Button::Button(const std::string& label)
+		: text_(label)
 	{
 		AddSignal("pressed");
 		AddSignal("double pressed");

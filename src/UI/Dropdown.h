@@ -19,7 +19,7 @@ namespace Aegis {
 			int id_;
 		};
 
-		Dropdown(const std::string& label, AABB rect = {0,0,0,0});
+		Dropdown(const std::string& label);
 
 		void OnEvent(Event& event) override;
 		void Render() const override;
