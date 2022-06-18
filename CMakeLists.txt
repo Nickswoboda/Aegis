@@ -44,11 +44,9 @@ add_library (Aegis STATIC
 	${AegisSrc}
 	${DependencySrc})
 
-add_executable(Sandbox 
-	"Sandbox/Sandbox.cpp")
-
 target_include_directories(Aegis
 PUBLIC
+	"src/"
 	"dependencies/GLFW/include"
 	"dependencies/GLAD/include"
 	"dependencies/stb_image/"
@@ -66,8 +64,6 @@ target_link_libraries(Aegis glfw)
 target_link_libraries(Aegis freetype)
 target_link_libraries(Aegis OpenAL)
 
-target_link_libraries(Sandbox Aegis)
-
 Set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 IF( EXISTS "${CMAKE_CURRENT_BINARY_DIR}/compile_commands.json" )
   EXECUTE_PROCESS( COMMAND ${CMAKE_COMMAND} -E copy_if_different
@@ -78,4 +74,4 @@ ENDIF()
 
 add_custom_command(TARGET Aegis PRE_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
-                   ${CMAKE_SOURCE_DIR}/assets/ $<TARGET_FILE_DIR:Aegis>)
+                   ${CMAKE_CURRENT_SOURCE_DIR}/assets/ $<TARGET_FILE_DIR:Aegis>)
