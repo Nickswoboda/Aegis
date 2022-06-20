@@ -58,6 +58,7 @@ add_subdirectory("dependencies/GLFW")
 add_subdirectory("dependencies/FreeType")
 
 set(LIBTYPE STATIC)
+set(ALSOFT_UTILS OFF CACHE BOOL "Build utility programs")
 add_subdirectory("dependencies/OpenAL-Soft")
 
 target_link_libraries(Aegis glfw)
