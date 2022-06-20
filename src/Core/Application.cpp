@@ -56,10 +56,10 @@ namespace Aegis {
 	void Application::Run()
 	{
 		double accumulator_ = 0.0;
-		std::chrono::steady_clock::time_point start_time_ = std::chrono::high_resolution_clock::now();
+		std::chrono::high_resolution_clock::time_point start_time_ = std::chrono::high_resolution_clock::now();
 
 		while (running_) {
-			std::chrono::steady_clock::time_point end_time_ = std::chrono::high_resolution_clock::now();
+			std::chrono::high_resolution_clock::time_point end_time_ = std::chrono::high_resolution_clock::now();
 			frame_time_sec_ = std::chrono::duration<double>(end_time_ - start_time_).count();
 			start_time_ = end_time_;
 

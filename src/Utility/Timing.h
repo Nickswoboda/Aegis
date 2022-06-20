@@ -21,8 +21,8 @@ namespace Aegis
 		bool IsStopped() const;
 
 	protected:
-		std::chrono::steady_clock::time_point start_time_;
-		std::chrono::steady_clock::time_point end_time_;
+		std::chrono::high_resolution_clock::time_point start_time_;
+		std::chrono::high_resolution_clock::time_point end_time_;
 		double time_in_ms_ = 0.0;
 
 		bool stopped_ = true;
