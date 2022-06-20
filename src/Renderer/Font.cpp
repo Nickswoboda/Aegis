@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <numeric>
+#include <math.h>
 
 namespace Aegis {
 	std::shared_ptr<Font> Font::Create(const std::string& path, int size, int num_glyphs)
