@@ -7,6 +7,7 @@ set(AegisSrc
 	"src/Core/Window.cpp"
 	"src/Core/Object.cpp"
 	"src/Core/Scene.cpp"
+	"src/Utility/Utility.cpp" 
 	"src/Utility/Timing.cpp" 
 	"src/Utility/FontManager.cpp" 
 	"src/Utility/TextureManager.cpp" 
