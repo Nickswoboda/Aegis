@@ -11,7 +11,7 @@
 namespace Aegis {
 
 	Window::Window(const std::string& title, int width, int height, int flags)
-		:size_{width, height}
+		:size_{static_cast<float>(width), static_cast<float>(height)}
 	{
 		window_handle_ = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
 		
@@ -163,7 +163,7 @@ namespace Aegis {
 
 	Vec2 Window::GetPos()
 	{
-		return size_;
+		return pos_;
 	}
 
 	void Window::SetSize(int x, int y)

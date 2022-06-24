@@ -58,7 +58,7 @@ namespace Aegis {
 		auto new_rect = rect_;
 		new_rect.pos.y = rect_.pos.y + rect_.size.y * items_.size();
 
-		Item item = { new_rect, text, items_.size() };
+		Item item = { new_rect, text, static_cast<int>(items_.size()) };
 
 		items_.push_back(item);
 		callbacks_.push_back(callback);
