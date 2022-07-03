@@ -116,6 +116,21 @@ namespace Aegis {
         DrawQuad(pos, size, *s_white_texture, color, z_idx);
 	}
 
+	void DrawQuad(const Vec2& pos, const Vec2& size, const Color& color, const float z_idx)
+    {
+        DrawQuad(pos, size, color.Normalized(), z_idx);
+    }
+
+	void DrawQuad(const AABB& quad, const Vec4& color, const float z_idx)
+    {
+        DrawQuad(quad.pos, quad.size, color, z_idx);
+    }
+
+	void DrawQuad(const AABB& quad, const Color& color, const float z_idx)
+    {
+        DrawQuad(quad, color.Normalized(), z_idx);
+    }
+
     void DrawQuad(const Vec2& pos, const Texture& texture, const Vec4& color, const float z_idx)
     {
         DrawQuad(pos, texture.size_, texture, color, z_idx);

@@ -8,6 +8,7 @@
 #include "../Math/Vec4.h"
 #include "../Math/Color.h"
 #include "../Math/Mat4.h"
+#include "../Math/AABB.h"
 
 #include <string>
 #include <memory>
@@ -33,6 +34,9 @@ namespace Aegis {
 	void RendererClear();
 
 	void DrawQuad(const Vec2& pos, const Vec2& size, const Vec4& color = {1.0f, 1.0f, 1.0f, 1.0f}, const float z_idx = 0);
+	void DrawQuad(const Vec2& pos, const Vec2& size, const Color& color = {225, 225, 225, 225}, const float z_idx = 0);
+	void DrawQuad(const AABB& quad, const Vec4& color = {1.0f, 1.0f, 1.0f, 1.0f}, const float z_idx = 0);
+	void DrawQuad(const AABB& quad, const Color& color = {225, 225, 225, 225}, const float z_idx = 0);
 
 	void DrawSubTexture(const Vec2& pos, const Vec2& size, const Texture& texture, const Vec4& tex_coords);
 	void DrawQuad(const Vec2& pos, const Texture& texture, const Vec4& color = { 1.0f, 1.0f, 1.0f, 1.0f }, const float z_idx = 0);

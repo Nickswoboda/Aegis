@@ -42,12 +42,12 @@ namespace Aegis {
 
 		if (!expanded_ && !items_.empty()) {
 			auto curr_item = items_[current_item_index_];
-			DrawQuad(curr_item.rect_.pos, curr_item.rect_.size, {0.2f, 0.2f, 1.0f, 1.0f});
+			DrawQuad(curr_item.rect_, Aegis::Vec4{0.2f, 0.2f, 1.0f, 1.0f});
 			DrawStaticText(curr_item.text_, curr_item.rect_.pos);
 		}
 		else {
 			for (auto item : items_) {
-				DrawQuad(item.rect_.pos, item.rect_.size, {0.2f, 0.2f, 1.0f, 1.0f}, 1.0f);
+				DrawQuad(item.rect_, Aegis::Vec4{0.2f, 0.2f, 1.0f, 1.0f}, 1.0f);
 				DrawStaticText(item.text_, item.rect_.pos, {1.0f, 1.0f, 1.0f, 1.0f}, 1.0f);
 			}
 		}
