@@ -26,6 +26,7 @@ namespace Aegis {
 		void Render() const override;
 
 		void SetPos(Vec2 pos) override;
+        void SetSize(Vec2 size) override;
 
 		const std::string& GetText() const;
 		void SetText(const std::string& text);

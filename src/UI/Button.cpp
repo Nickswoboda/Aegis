@@ -126,6 +126,13 @@ namespace Aegis {
 		rect_.pos = pos;
 		UpdateTextRenderPos();
 	};
+
+	void Button::SetSize(Vec2 size)
+	{
+		rect_.size = size;
+		UpdateTextRenderPos();
+	};
+
 	void Button::UpdateTextRenderPos()
 	{
 		Aegis::AABB text_rect = {Vec2(0,0), font_->GetStringPixelSize(text_)};
